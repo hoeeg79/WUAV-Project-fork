@@ -18,7 +18,11 @@ public class CustomerManager {
         return facadeDAL.createCustomer(customer);
     }
 
-    public List<Customer> getCustomers()throws Exception {
+    public List<Customer> getCustomers()throws SQLException {
         return facadeDAL.getCustomers();
+    }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        facadeDAL.deleteCustomer(customer);
     }
 }

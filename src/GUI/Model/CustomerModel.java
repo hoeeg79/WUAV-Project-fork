@@ -5,6 +5,8 @@ import BLL.CustomerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.SQLException;
+
 public class CustomerModel {
     private CustomerManager customerManager;
 
@@ -19,9 +21,13 @@ public class CustomerModel {
         createCustomer(customer);
     }
 
-    public ObservableList<Customer> getCustomerList() throws Exception{
+    public ObservableList<Customer> getCustomerList() throws SQLException{
         customerList.clear();
         customerList.addAll(customerManager.getCustomers());
         return customerList;
+    }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        customerManager.deleteCustomer(customer);
     }
 }
