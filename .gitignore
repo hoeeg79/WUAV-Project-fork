@@ -144,3 +144,4 @@ replay_pid*
 
 #config file for DB access
 Config/Database.settings
+.idea/workspace.xml
