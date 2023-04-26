@@ -6,9 +6,9 @@ public class Customer {
     private String email;
     private int tlf;
     private String picture;
-    private String customerType;
+    private int customerType;
 
-    public Customer(int id, String name, String email, int tlf, String picture, String customerType) {
+    public Customer(int id, String name, String email, int tlf, String picture, int customerType) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -17,7 +17,7 @@ public class Customer {
         this.customerType = customerType;
     }
 
-    public Customer(String name, String email, int tlf, String picture, String customerType) {
+    public Customer(String name, String email, int tlf, String picture, int customerType) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;
@@ -66,11 +66,11 @@ public class Customer {
         this.picture = picture;
     }
 
-    public String getCustomerType() {
+    public int getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(String customerType) {
+    public void setCustomerType(int customerType) {
         this.customerType = customerType;
     }
 }
