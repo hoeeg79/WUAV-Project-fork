@@ -4,24 +4,49 @@ import BE.Customer;
 import BLL.CustomerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CustomerModel {
     private CustomerManager customerManager;
+    private ObservableList<Customer> businessCustomer;
+    private ObservableList<Customer> privateCustomer;
+    private ObservableList<Customer> governmentCustomer;
 
-    private ObservableList<Customer> customerList;
+
 
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();
-        customerList = FXCollections.observableArrayList();
     }
 
     public void createCustomer(Customer customer) {
         createCustomer(customer);
     }
 
-    public ObservableList<Customer> getCustomerList() throws Exception{
-        customerList.clear();
-        customerList.addAll(customerManager.getCustomers());
-        return customerList;
+    public ObservableList<Customer> getBusinessCustomer() throws Exception {
+        List<Customer> customers = new ArrayList<>();
+        customers.addAll(customerManager.getCustomers().get(1));
+        businessCustomer = FXCollections.observableArrayList();
+        businessCustomer.addAll(customers);
+        return businessCustomer;
+    }
+
+    public ObservableList<Customer> getGovernmentCustomer() throws Exception{
+        List<Customer> customers = new ArrayList<>();
+        customers.addAll(customerManager.getCustomers().get(2));
+        governmentCustomer = FXCollections.observableArrayList();
+        governmentCustomer.addAll(customers);
+        return governmentCustomer;
+    }
+
+    public ObservableList<Customer> getPrivateCustomer() throws Exception{
+        List<Customer> customers = new ArrayList<>();
+        customers.addAll(customerManager.getCustomers().get(3));
+        privateCustomer = FXCollections.observableArrayList();
+        privateCustomer.addAll(customers);
+        return privateCustomer;
     }
 }

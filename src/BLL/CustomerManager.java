@@ -6,6 +6,7 @@ import DAL.FacadeDAL;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerManager {
     private FacadeDAL facadeDAL;
@@ -18,7 +19,7 @@ public class CustomerManager {
         return facadeDAL.createCustomer(customer);
     }
 
-    public List<Customer> getCustomers()throws Exception {
+    public Map<Integer, List<Customer>> getCustomers()throws Exception {
         return facadeDAL.getCustomers();
     }
 }
