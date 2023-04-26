@@ -2,8 +2,11 @@ package DAL;
 
 import BE.Customer;
 import DAL.DatabaseConnector.DBConnector;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDAO {
     private final DBConnector dbc;
@@ -52,5 +55,37 @@ public class CustomerDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Customer> returnCustomers() throws Exception {
+        //Makes a list called allCustomers to store customers in, returns in the end
+        ArrayList<Customer> allCustomers = new ArrayList<>();
+
+        //Try with resources to connect to DB
+        try(Connection conn = dbc.getConnection()){
+            
+            //SQL string, selects all customers from db
+            String sql = "SELECT * FROM Customer;";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            //Loop through rows from database result set
+            while(rs.next()){
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                int tlf = rs.getInt("tlf");
+                String picture = rs.getString("picture");
+                int customerType = rs.getInt("customerType");
+
+                //Create event and add to list created in the beginning
+                Customer customer = new Customer(name, email, tlf, picture, customerType);
+                allCustomers.add(customer);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+        return allCustomers;
     }
 }
