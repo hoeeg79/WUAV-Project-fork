@@ -11,11 +11,11 @@ import java.util.List;
 public class CustomerDAO {
     private final DBConnector dbc;
 
-    public CustomerDAO(DBConnector dbc) {
-        this.dbc = dbc;
+    public CustomerDAO() throws Exception {
+        dbc = new DBConnector();
     }
 
-    public Customer createCustomer(Customer customer) {
+    public Customer createCustomer(Customer customer) throws SQLException {
 
         //Prepare variables from customer in parameter
         String name = customer.getName();
@@ -53,7 +53,7 @@ public class CustomerDAO {
             return new Customer(id, name, email, tlf, picture, customerType);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLException(e);
         }
     }
 
