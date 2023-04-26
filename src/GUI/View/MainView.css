@@ -1,0 +1,7 @@
+#createCustomerMenu {
+    -fx-background-color: black;
+}
+
+.menuText{
+    -fx-text-fill: white;
+}
