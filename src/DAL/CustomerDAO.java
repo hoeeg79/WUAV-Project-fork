@@ -88,4 +88,18 @@ public class CustomerDAO {
         }
         return allCustomers;
     }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+
+            String sql = "UPDATE Customer SET  WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, customer.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
 }
