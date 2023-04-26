@@ -73,6 +73,7 @@
       <TextField fx:id="searchBar" layoutX="699.0" layoutY="73.0" />
       <Label layoutX="355.0" layoutY="222.0" text="Private Customers" />
       <Label layoutX="353.0" layoutY="411.0" text="Corporate Customers" />
-      <Label layoutX="353.0" layoutY="604.0" text="Governmental Customers" />
+      <Label layoutX="353.0" layoutY="604.0" text="Govermental Customers" />
+      <Button fx:id="createUsers" layoutX="1321.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" />
    </children>
 </AnchorPane>
