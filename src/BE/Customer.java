@@ -6,9 +6,9 @@ public class Customer {
     private String email;
     private int tlf;
 
-    public Customer(int id, String firstName, String email, int tlf) {
+    public Customer(int id, String name, String email, int tlf) {
         this.id = id;
-        this.name = firstName;
+        this.name = name;
         this.email = email;
         this.tlf = tlf;
     }
