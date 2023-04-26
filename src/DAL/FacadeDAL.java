@@ -16,8 +16,10 @@ public class FacadeDAL {
         return customerDAO.createCustomer(customer);
     }
 
-    public List<Customer> getCustomers() throws Exception{
-        CustomerDAO customers = new CustomerDAO();
-        return customers.returnCustomers();
+    public List<Customer> getCustomers() throws SQLException{
+        return customerDAO.returnCustomers();
+    }
+    public void deleteCustomer(Customer customer) throws SQLException {
+        customerDAO.deleteCustomer(customer);
     }
 }

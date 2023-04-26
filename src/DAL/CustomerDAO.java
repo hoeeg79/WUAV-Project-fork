@@ -57,7 +57,7 @@ public class CustomerDAO {
         }
     }
 
-    public List<Customer> returnCustomers() throws Exception {
+    public List<Customer> returnCustomers() throws SQLException {
         //Makes a list called allCustomers to store customers in, returns in the end
         ArrayList<Customer> allCustomers = new ArrayList<>();
 
@@ -83,8 +83,8 @@ public class CustomerDAO {
                 allCustomers.add(customer);
             }
 
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
         return allCustomers;
     }
@@ -92,7 +92,7 @@ public class CustomerDAO {
     public void deleteCustomer(Customer customer) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
 
-            String sql = "UPDATE Customer SET  WHERE id = ?";
+            String sql = "UPDATE Customer SET softDeleted = 1 WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, customer.getId());
