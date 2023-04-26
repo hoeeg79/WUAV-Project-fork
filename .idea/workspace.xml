@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2496ea9-5680-478f-bace-97a40af5fac6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/BE/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/View/MainView.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,6 +17,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
