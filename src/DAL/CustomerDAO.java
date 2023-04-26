@@ -6,7 +6,9 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerDAO {
     private final DBConnector dbc;
@@ -57,15 +59,16 @@ public class CustomerDAO {
         }
     }
 
-    public List<Customer> returnCustomers() throws SQLException {
-        //Makes a list called allCustomers to store customers in, returns in the end
-        ArrayList<Customer> allCustomers = new ArrayList<>();
+
+    public Map<Integer, List<Customer>> returnCustomersByType() throws Exception {
+        //Create a map to store lists of customers by type
+        Map<Integer, List<Customer>> customersByType = new HashMap<>();
 
         //Try with resources to connect to DB
         try(Connection conn = dbc.getConnection()){
             
             //SQL string, selects all customers from db
-            String sql = "SELECT * FROM Customer;";
+            String sql = "SELECT * FROM Customer GROUP BY customerType;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -78,15 +81,22 @@ public class CustomerDAO {
                 String picture = rs.getString("picture");
                 int customerType = rs.getInt("customerType");
 
-                //Create event and add to list created in the beginning
+                //Create customer and add to list created in the beginning
                 Customer customer = new Customer(name, email, tlf, picture, customerType);
-                allCustomers.add(customer);
+
+                //Add the customer to the appropriate list based on their type
+                List<Customer> customersOfType = customersByType.get(customerType);
+                if (customersOfType == null){
+                    customersOfType = new ArrayList<>();
+                    customersByType.put(customerType, customersOfType);
+                }
+                customersByType.get(customerType).add(customer);
             }
 
         } catch (SQLException e) {
             throw new SQLException(e);
         }
-        return allCustomers;
+        return customersByType;
     }
 
     public void deleteCustomer(Customer customer) throws SQLException {
