@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -13,20 +14,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -142,10 +144,40 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void loadLists(CustomerModel model) throws Exception {
+        prepPrivate();
         lvPriv.setItems(model.getPrivateCustomer());
+
         lvCorp.setItems(model.getBusinessCustomer());
         lvGov.setItems(model.getGovernmentCustomer());
     }
+
+    private void prepPrivate() {
+        lvPriv.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
+            @Override
+            public ListCell call(ListView<Customer> param) {
+                return new ListCell() {
+                    ImageView imageView = new ImageView();
+
+                    @Override
+                    public void updateItem(Customer customer, boolean empty) {
+                        super.updateItem(customer, empty);
+                        if (customer != null && customer.getPicture() == null) {
+                            setText(customer.getName());
+                            Image image = new Image("resources/defaultUser.jpg");
+                            imageView.setImage(image);
+                            setGraphic(imageView);
+                        } else if (customer != null && customer.getPicture() != null) {
+                            setText(customer.getName());
+                            Image image = new Image(customer.getPicture());
+                            imageView.setImage(image);
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+
 
     public void handlePickImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
