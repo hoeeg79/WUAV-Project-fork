@@ -164,5 +164,8 @@ public class MainViewController extends BaseController implements Initializable 
         File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
     }
+
+    public void handleCreateCustomers(ActionEvent actionEvent) {
+    }
 }
 
