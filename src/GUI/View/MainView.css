@@ -4,11 +4,9 @@
 
 .menuText{
     -fx-text-fill: white;
-
 }
 
-.list-cell
-{
+listview.list-cell {
     -fx-background-image: url("/defaultUserResize.png");
     -fx-background-position: center;
     -fx-background-repeat: stretch;
