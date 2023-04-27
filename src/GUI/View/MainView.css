@@ -1,0 +1,15 @@
+#createCustomerMenu {
+    -fx-background-color: black;
+}
+
+.menuText{
+    -fx-text-fill: white;
+}
+
+.list-cell
+{
+    -fx-background-image: url("/defaultUserResize.jpg");
+    -fx-background-position: center;
+    -fx-background-radius: 10;
+    -fx-border-width: 1;
+}
