@@ -22,7 +22,7 @@ public class CreateUsersController extends BaseController{
     public Button saveUser;
     public Button deleteUser;
     public Button cancel;
-    public TableView userList;
+    public TableView<User> userList;
 
     private UsersModel userModel;
 
