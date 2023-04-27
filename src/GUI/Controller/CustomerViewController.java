@@ -6,9 +6,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
 
 public class CustomerViewController extends BaseController{
+    public ListView lvTechDocs;
     @FXML
     private TextField tfPictureFilepath;
     @FXML
@@ -90,6 +96,14 @@ public class CustomerViewController extends BaseController{
 
     @FXML
     private void handlePictureFinder(ActionEvent actionEvent) {
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Picture");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
+        Stage stage = (Stage) btnPictureFinder.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            tfPictureFilepath.setText(String.valueOf(selectedFile));
+        }
     }
 }

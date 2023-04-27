@@ -30,7 +30,7 @@
                         <Label styleClass="menuText" text="Email" />
                         <TextField fx:id="tfCustomerEmail" />
                         <Label styleClass="menuText" text="Phone number" />
-                        <TextField fx:id="tfCustomerPhonenumber" />
+                        <TextField fx:id="tfCustomerPhoneNumber" />
                         <Label styleClass="menuText" text="Image" />
                         <HBox>
                            <children>
@@ -56,7 +56,7 @@
                   <VBox layoutX="103.0" layoutY="102.0" spacing="10.0">
                      <children>
                         <Label prefHeight="25.0" prefWidth="111.0" text="Documentation" textFill="WHITE" />
-                        <ListView prefHeight="532.0" prefWidth="404.0" />
+                        <ListView fx:id="lvTechDocs" prefHeight="532.0" prefWidth="404.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
                               <Button mnemonicParsing="false" text="Create New" />

@@ -182,7 +182,7 @@ public class MainViewController extends BaseController implements Initializable 
             currentStage.show();
 
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load SpecificView.fxml");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
         }
     }
