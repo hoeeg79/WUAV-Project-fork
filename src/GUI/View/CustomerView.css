@@ -1,7 +1,8 @@
 #paneLeft {
-    -fx-alignment: CENTER_LEFT;
+-fx-background-color: white;
 }
 
 #paneRight {
-    -fx-alignment: CENTER_RIGHT;
+    -fx-background-color: black;
+    -fx-text-fill: white;
 }
