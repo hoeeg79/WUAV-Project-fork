@@ -75,7 +75,7 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
 
-    public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+    public void handleCreateCustomers(ActionEvent actionEvent) throws SQLException {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
         int tlf = Integer.parseInt(tfCustomerPhonenumber.getText());
