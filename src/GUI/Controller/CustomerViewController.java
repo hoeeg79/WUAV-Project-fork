@@ -4,9 +4,16 @@ import BE.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CustomerViewController extends BaseController{
+    @FXML
+    private TextField tfPictureFilepath;
+    @FXML
+    private Button btnPictureFinder;
+    @FXML
+    private ComboBox cbCustomerTypes;
     @FXML
     private Button btnEditCustomer;
     @FXML
@@ -66,5 +73,9 @@ public class CustomerViewController extends BaseController{
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @FXML
+    private void handlePictureFinder(ActionEvent actionEvent) {
     }
 }

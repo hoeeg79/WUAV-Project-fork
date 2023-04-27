@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,11 +13,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane fx:id="paneLeft" prefHeight="791.0" prefWidth="0.0" HBox.hgrow="ALWAYS" >
+            <Pane fx:id="paneLeft" prefHeight="791.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                <children>
                   <VBox alignment="CENTER_LEFT" layoutX="136.0" layoutY="292.0" prefHeight="462.0" prefWidth="338.0" spacing="10.0">
                      <padding>
@@ -27,17 +29,17 @@
                         <TextField fx:id="tfCustomerName" />
                         <Label styleClass="menuText" text="Email" />
                         <TextField fx:id="tfCustomerEmail" />
-                        <Label styleClass="menuText" text="Phonenumber" />
+                        <Label styleClass="menuText" text="Phone number" />
                         <TextField fx:id="tfCustomerPhonenumber" />
                         <Label styleClass="menuText" text="Image" />
-                        <HBox spacing="10.0">
+                        <HBox>
                            <children>
-                              <TextField />
-                              <Button mnemonicParsing="false" text="Button" />
+                              <TextField fx:id="tfPictureFilepath" />
+                              <Button fx:id="btnPictureFinder" mnemonicParsing="false" onAction="#handlePictureFinder" text="Find" />
                            </children>
                         </HBox>
                         <Label styleClass="menuText" text="Customer type" />
-                        <ChoiceBox prefHeight="25.0" prefWidth="210.0" />
+                        <ComboBox fx:id="cbCustomerTypes" prefWidth="150.0" />
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
                            <children>
                               <Button fx:id="btnCreateCustomer" mnemonicParsing="false" onAction="#handleSave" text="Save" />
@@ -49,7 +51,21 @@
                   </VBox>
                </children>
             </Pane>
-            <Pane fx:id="paneRight" HBox.hgrow="ALWAYS" />
+            <Pane fx:id="paneRight" prefWidth="0.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox layoutX="103.0" layoutY="102.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="25.0" prefWidth="111.0" text="Documentation" textFill="WHITE" />
+                        <ListView prefHeight="532.0" prefWidth="404.0" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Create New" />
+                              <Button mnemonicParsing="false" text="Edit" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></Pane>
          </children>
       </HBox>
       <ImageView fitHeight="215.0" fitWidth="340.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
