@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewConstroller">
+<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -24,11 +24,11 @@
                      </padding>
                      <children>
                         <Label styleClass="menuText" text="Name" />
-                        <TextField />
+                        <TextField fx:id="tfCustomerName" />
                         <Label styleClass="menuText" text="Email" />
-                        <TextField />
+                        <TextField fx:id="tfCustomerEmail" />
                         <Label styleClass="menuText" text="Phonenumber" />
-                        <TextField />
+                        <TextField fx:id="tfCustomerPhonenumber" />
                         <Label styleClass="menuText" text="Image" />
                         <HBox spacing="10.0">
                            <children>
@@ -40,9 +40,9 @@
                         <ChoiceBox prefHeight="25.0" prefWidth="210.0" />
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
                            <children>
-                              <Button fx:id="createCustomer" mnemonicParsing="false" text="Save" />
-                              <Button fx:id="cancelCustomer" mnemonicParsing="false" text="Cancel" />
-                              <Button mnemonicParsing="false" text="Edit" />
+                              <Button fx:id="btnCreateCustomer" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                              <Button fx:id="btnCancelCustomer" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                              <Button fx:id="btnEditCustomer" mnemonicParsing="false" onAction="#handleEdit" text="Edit" />
                            </children>
                         </HBox>
                      </children>
