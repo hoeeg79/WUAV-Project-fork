@@ -6,7 +6,8 @@
     -fx-text-fill: white;
 }
 
-listview.list-cell {
+.customerList .list-cell
+{
     -fx-background-image: url("/defaultUserResize.png");
     -fx-background-position: center;
     -fx-background-repeat: stretch;

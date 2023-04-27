@@ -32,7 +32,7 @@
                   <HBox spacing="10.0">
                      <children>
                         <TextField fx:id="tfCustomerImage" editable="false" focusTraversable="false" />
-                        <Button fx:id="btnCustomerImage" mnemonicParsing="false" text="Pick Image" />
+                        <Button fx:id="btnCustomerImage" mnemonicParsing="false" onAction="#handlePickImage" text="Pick Image" />
                      </children>
                   </HBox>
                   <Label styleClass="menuText" text="Customer type" />
@@ -53,8 +53,6 @@
          </image>
       </ImageView>
 
-      <Button fx:id="createCustomers" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomers" text="Create Customer" />
-
       <Button fx:id="createCustomersMenu" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomersMenu" text="Create Customer" />
 
       <Button layoutX="1319.0" layoutY="65.0" mnemonicParsing="false" text="Log out" />
@@ -63,9 +61,9 @@
       <Label layoutX="353.0" layoutY="411.0" text="Corporate Customers" />
       <Label layoutX="353.0" layoutY="604.0" text="Government Customers" />
       <Button fx:id="createUsers" layoutX="1321.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" />
-      <ListView fx:id="lvPriv" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
-      <ListView fx:id="lvCorp" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
-      <ListView fx:id="lvGov" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
+      <ListView fx:id="lvPriv" styleClass="customerList" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
+      <ListView fx:id="lvCorp" styleClass="customerList" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
+      <ListView fx:id="lvGov" styleClass="customerList" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
 
    </children>
 </AnchorPane>

@@ -24,8 +24,15 @@ public class CustomerModel {
         customerManager = new CustomerManager();
     }
 
-    public void createCustomer(Customer customer) {
-        createCustomer(customer);
+    public void createCustomer(Customer customer) throws SQLException {
+        customerManager.createCustomer(customer);
+        if (customer.getCustomerType() == 1) {
+            businessCustomer.add(customer);
+        } else if (customer.getCustomerType() == 2) {
+            governmentCustomer.add(customer);
+        } else {
+            privateCustomer.add(customer);
+        }
     }
 
 

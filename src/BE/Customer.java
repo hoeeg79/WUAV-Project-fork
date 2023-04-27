@@ -78,6 +78,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  name; //+ '\''
+        return name;
     }
 }
