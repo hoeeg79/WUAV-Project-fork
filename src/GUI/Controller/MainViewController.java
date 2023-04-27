@@ -118,12 +118,14 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    public void handleCreateUsers(ActionEvent actionEvent) throws IOException {
+    public void handleCreateUsers(ActionEvent actionEvent) throws Exception {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateUsersView.fxml"));
         Parent root = loader.load();
 
-        //Someday we will put a model here
+        CreateUsersController controller = loader.getController();
+        controller.setUModel(super.getUModel());
+        controller.setup();
 
         stage.setScene(new Scene(root));
         stage.setTitle("Create User");
