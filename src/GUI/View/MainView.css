@@ -4,4 +4,15 @@
 
 .menuText{
     -fx-text-fill: white;
+
+}
+
+.customerList .list-cell
+{
+    -fx-background-image: url("/defaultUserResize.png");
+    -fx-background-position: center;
+    -fx-background-repeat: stretch;
+    -fx-background-radius: 10;
+    -fx-border-width: 1;
+    -fx-pref-width: 180;
 }
