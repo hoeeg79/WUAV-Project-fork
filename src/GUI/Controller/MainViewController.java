@@ -62,12 +62,16 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private Pane createCustomerMenu;
 
-    CustomerModel model = new CustomerModel();
 
-    private CustomerModel CModel;
     @Override
     public void setup() throws Exception {
-
+        try {
+            loadLists(super.getCModel());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        clearCustomerMenu();
+        cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
     }
 
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
@@ -84,25 +88,16 @@ public class MainViewController extends BaseController implements Initializable 
 
         Customer customer = new Customer(name, email, tlf, image, customerType);
 
-        CModel.createCustomer(customer);
+        super.getCModel().createCustomer(customer);
     }
 
     public void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
     }
 
-    public MainViewController() throws Exception {
-        this.model = model;
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            loadLists(model);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        clearCustomerMenu();
-        cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+
     }
 
     private void clearCustomerMenu(){
@@ -147,12 +142,10 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void loadLists(CustomerModel model) throws Exception {
-        this.model = model;
         lvPriv.setItems(model.getPrivateCustomer());
         lvCorp.setItems(model.getBusinessCustomer());
         lvGov.setItems(model.getGovernmentCustomer());
     }
-
 
     public void handlePickImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -165,4 +158,3 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
     }
 }
-

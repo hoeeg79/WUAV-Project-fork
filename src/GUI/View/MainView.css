@@ -7,7 +7,7 @@
 
 }
 
-.list-cell
+.customerList .list-cell
 {
     -fx-background-image: url("/defaultUserResize.png");
     -fx-background-position: center;
