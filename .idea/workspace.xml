@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c625d943-e396-46a7-b2e1-06221fabfbec" name="Changes" comment="">
-<<<<<<< Updated upstream
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-=======
       <change afterPath="$PROJECT_DIR$/src/BLL/UsersManager.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/DAL/UsersDAO.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/GUI/Model/UsersModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BE/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BE/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" afterDir="false" />
->>>>>>> Stashed changes
+      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,12 +87,8 @@
       <option name="presentableId" value="Default" />
       <updated>1682493399618</updated>
       <workItem from="1682493748604" duration="424000" />
-<<<<<<< Updated upstream
-      <workItem from="1682578262036" duration="1120000" />
-=======
       <workItem from="1682578262036" duration="510000" />
       <workItem from="1682579263693" duration="3004000" />
->>>>>>> Stashed changes
     </task>
     <servers />
   </component>
