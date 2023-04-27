@@ -73,7 +73,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     public void handleCreateCustomer(ActionEvent actionEvent) {
 
-
     }
 
     public void handleCancelCustomer(ActionEvent actionEvent) {
