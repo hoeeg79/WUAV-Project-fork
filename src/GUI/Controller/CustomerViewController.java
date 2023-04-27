@@ -1,20 +1,21 @@
 package GUI.Controller;
 
 import BE.Customer;
+import BE.TechDoc;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 
 public class CustomerViewController extends BaseController{
-    public ListView lvTechDocs;
+    public ListView<TechDoc> lvTechDocs;
     @FXML
     private TextField tfPictureFilepath;
     @FXML
@@ -36,7 +37,6 @@ public class CustomerViewController extends BaseController{
     private Customer customer;
 
     @Override
-
     public void setup() throws Exception {
         lockFieldsAndButtons();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
@@ -90,10 +90,6 @@ public class CustomerViewController extends BaseController{
         cbCustomerTypes.setDisable(false);
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     @FXML
     private void handlePictureFinder(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -104,6 +100,35 @@ public class CustomerViewController extends BaseController{
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
             tfPictureFilepath.setText(String.valueOf(selectedFile));
+        }
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    private void openSelection() {
+        lvTechDocs.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            openTechDocEditor(btnCreateCustomer, newValue);
+        }));
+    }
+
+    private void openTechDocEditor(Button btn, TechDoc techDoc){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
+            Parent root = loader.load();
+
+            TechDocEditorController controller = loader.getController();
+            controller.setTechDoc(techDoc);
+            controller.setup();
+
+            Stage currentStage = (Stage) btn.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+            currentStage.show();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
+            alert.showAndWait();
         }
     }
 }
