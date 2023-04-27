@@ -31,12 +31,18 @@ public class CreateUsersController extends BaseController{
         String name = txtNameUser.getText();
         String confirmPassword = txtConfirmPwUser.getText();
         String password = txtPasswordUser.getText();
+        int userType = -1;
 
         String salt = BCrypt.gensalt(10);
         String hashedPassword1 = BCrypt.hashpw(password, salt);
         String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
 
         //idk
+        if(techCheckBox.isSelected()) {
+            userType = 2;
+        } else if (managerCheckBox.isSelected()) {
+            userType = 1;
+        }
 
     }
 
