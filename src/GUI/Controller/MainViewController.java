@@ -1,8 +1,8 @@
 package GUI.Controller;
 
-
 import javafx.event.ActionEvent;
 
+import BE.Customer;
 import GUI.Model.CustomerModel;
 import javafx.animation.TranslateTransition;
 
@@ -18,12 +18,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
@@ -64,15 +67,24 @@ public class MainViewController extends BaseController implements Initializable 
     private CustomerModel CModel;
     @Override
     public void setup() throws Exception {
-        CModel = super.getCModel();
+
     }
 
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
 
-    public void handleCreateCustomer(ActionEvent actionEvent) {
 
+    public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+        String name = tfCustomerName.getText();
+        String email = tfCustomerEmail.getText();
+        int tlf = Integer.parseInt(tfCustomerPhonenumber.getText());
+        String image = tfCustomerImage.getText();
+        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
+
+        Customer customer = new Customer(name, email, tlf, image, customerType);
+
+        CModel.createCustomer(customer);
     }
 
     public void handleCancelCustomer(ActionEvent actionEvent) {
@@ -90,7 +102,7 @@ public class MainViewController extends BaseController implements Initializable 
             throw new RuntimeException(e);
         }
         clearCustomerMenu();
-        cbCustomerTypes.setItems(FXCollections.observableArrayList("Technician", "Project Manager", "Salesperson"));
+        cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
     }
 
     private void clearCustomerMenu(){
@@ -141,13 +153,16 @@ public class MainViewController extends BaseController implements Initializable 
         lvGov.setItems(model.getGovernmentCustomer());
     }
 
-    public void handleCreateCustomers(ActionEvent actionEvent) {
-        String name = tfCustomerName.getText();
-        String Email = tfCustomerEmail.getText();
-        String tlf = tfCustomerPhonenumber.getText();
-        String image = tfCustomerImage.getText();
 
-        //CModel.createCustomer(customer);
+    public void handlePickImage(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
+        tfCustomerImage.setText(selectedFile.getAbsolutePath());
     }
 }
 
