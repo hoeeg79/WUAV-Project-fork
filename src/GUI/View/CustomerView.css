@@ -1,0 +1,7 @@
+#paneLeft {
+    -fx-alignment: CENTER_LEFT;
+}
+
+#paneRight {
+    -fx-alignment: CENTER_RIGHT;
+}

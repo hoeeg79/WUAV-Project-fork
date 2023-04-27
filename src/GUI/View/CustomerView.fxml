@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewConstroller">
+   <children>
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane fx:id="paneLeft" prefHeight="791.0" prefWidth="601.0">
+               <children>
+                  <VBox layoutX="132.0" layoutY="165.0" prefHeight="462.0" prefWidth="338.0" spacing="10.0">
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                     <children>
+                        <Label styleClass="menuText" text="Name" />
+                        <TextField />
+                        <Label styleClass="menuText" text="Email" />
+                        <TextField />
+                        <Label styleClass="menuText" text="Phonenumber" />
+                        <TextField />
+                        <Label styleClass="menuText" text="Image" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <TextField />
+                              <Button mnemonicParsing="false" text="Button" />
+                           </children>
+                        </HBox>
+                        <Label styleClass="menuText" text="Customer type" />
+                        <ChoiceBox prefHeight="25.0" prefWidth="210.0" />
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
+                           <children>
+                              <Button fx:id="createCustomer" mnemonicParsing="false" text="Save" />
+                              <Button fx:id="cancelCustomer" mnemonicParsing="false" text="Cancel" />
+                              <Button mnemonicParsing="false" text="Edit" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane fx:id="paneRight" prefHeight="791.0" prefWidth="601.0" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
