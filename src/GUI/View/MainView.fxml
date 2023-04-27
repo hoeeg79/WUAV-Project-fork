@@ -53,8 +53,6 @@
          </image>
       </ImageView>
 
-      <Button fx:id="createCustomers" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomers" text="Create Customer" />
-
       <Button fx:id="createCustomersMenu" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomersMenu" text="Create Customer" />
 
       <Button layoutX="1319.0" layoutY="65.0" mnemonicParsing="false" text="Log out" />
