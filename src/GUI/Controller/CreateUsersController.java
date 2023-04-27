@@ -4,10 +4,7 @@ import BE.User;
 import BLL.BCrypt;
 import GUI.Model.UsersModel;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.sql.SQLException;
 
@@ -16,14 +13,13 @@ public class CreateUsersController extends BaseController{
     public TextField txtUsernameUser;
     public TextField txtConfirmPwUser;
     public TextField txtPasswordUser;
-    public CheckBox techCheckBox;
-    public CheckBox managerCheckBox;
-    public CheckBox salesCheckBox;
     public Button saveUser;
     public Button deleteUser;
     public Button cancel;
     public TableView<User> userList;
-
+    public RadioButton techChecker;
+    public RadioButton salesChecker;
+    public RadioButton managerChecker;
     private UsersModel userModel;
 
     public void handleSaveUser(ActionEvent actionEvent) {
@@ -38,9 +34,9 @@ public class CreateUsersController extends BaseController{
         String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
 
         //idk
-        if(techCheckBox.isSelected()) {
+        if(techChecker.isSelected()) {
             userType = 2;
-        } else if (managerCheckBox.isSelected()) {
+        } else if (managerChecker.isSelected()) {
             userType = 1;
         }
 
