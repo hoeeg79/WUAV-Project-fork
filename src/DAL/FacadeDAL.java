@@ -36,8 +36,7 @@ public class FacadeDAL {
         usersDAO.deleteUser(user);
     }
 
-    public Map<Integer, List<User>> getUsers() throws SQLException {
-        return usersDAO.returnUsersByType();
+    public List<User> getUsers() throws SQLException {
+        return usersDAO.returnUsers();
     }
-
 }

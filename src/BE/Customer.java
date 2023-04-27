@@ -75,4 +75,9 @@ public class Customer {
     public void setCustomerType(int customerType) {
         this.customerType = customerType;
     }
+
+    @Override
+    public String toString() {
+        return  name; //+ '\''
+    }
 }

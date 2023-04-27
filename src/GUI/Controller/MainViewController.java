@@ -1,23 +1,53 @@
 package GUI.Controller;
 
-import javafx.animation.TranslateTransition;
+
 import javafx.event.ActionEvent;
+
+import GUI.Model.CustomerModel;
+import javafx.animation.TranslateTransition;
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainViewController {
+
+public class MainViewController extends BaseController implements Initializable {
+    @FXML
+    private ListView lvPriv;
+    @FXML
+    private ListView lvCorp;
+    @FXML
+    private ListView lvGov;
+
+    @FXML
+    private ComboBox cbCustomerTypes;
+    @FXML
+    private TextField tfCustomerName;
+    @FXML
+    private TextField tfCustomerEmail;
+    @FXML
+    private TextField tfCustomerPhonenumber;
+    @FXML
+    private TextField tfCustomerImage;
+    @FXML
+    private Button btnCustomerImage;
+
     @FXML
     private Button cancelCustomer;
     @FXML
@@ -29,15 +59,45 @@ public class MainViewController {
     @FXML
     private Pane createCustomerMenu;
 
+    CustomerModel model = new CustomerModel();
+
+    private CustomerModel CModel;
+    @Override
+    public void setup() throws Exception {
+        CModel = super.getCModel();
+    }
+
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
 
     public void handleCreateCustomer(ActionEvent actionEvent) {
+
     }
 
     public void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
+    }
+
+    public MainViewController() throws Exception {
+        this.model = model;
+    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            loadLists(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        clearCustomerMenu();
+        cbCustomerTypes.setItems(FXCollections.observableArrayList("Technician", "Project Manager", "Salesperson"));
+    }
+
+    private void clearCustomerMenu(){
+        tfCustomerName.clear();
+        tfCustomerEmail.clear();
+        tfCustomerPhonenumber.clear();
+        tfCustomerImage.clear();
     }
 
     private void customerMenu() {
@@ -58,12 +118,14 @@ public class MainViewController {
     }
 
     @FXML
-    public void handleCreateUsers(ActionEvent actionEvent) throws IOException {
+    public void handleCreateUsers(ActionEvent actionEvent) throws Exception {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateUsersView.fxml"));
         Parent root = loader.load();
 
-        //Someday we will put a model here
+        CreateUsersController controller = loader.getController();
+        controller.setUModel(super.getUModel());
+        controller.setup();
 
         stage.setScene(new Scene(root));
         stage.setTitle("Create User");
@@ -71,4 +133,21 @@ public class MainViewController {
         stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
         stage.show();
     }
+
+    private void loadLists(CustomerModel model) throws Exception {
+        this.model = model;
+        lvPriv.setItems(model.getPrivateCustomer());
+        lvCorp.setItems(model.getBusinessCustomer());
+        lvGov.setItems(model.getGovernmentCustomer());
+    }
+
+    public void handleCreateCustomers(ActionEvent actionEvent) {
+        String name = tfCustomerName.getText();
+        String Email = tfCustomerEmail.getText();
+        String tlf = tfCustomerPhonenumber.getText();
+        String image = tfCustomerImage.getText();
+
+        //CModel.createCustomer(customer);
+    }
 }
+

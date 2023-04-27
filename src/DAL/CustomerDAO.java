@@ -68,7 +68,7 @@ public class CustomerDAO {
         try(Connection conn = dbc.getConnection()){
             
             //SQL string, selects all customers from db
-            String sql = "SELECT * FROM Customer GROUP BY customerType;";
+            String sql = "SELECT * FROM Customer;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -78,19 +78,20 @@ public class CustomerDAO {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 int tlf = rs.getInt("tlf");
-                String picture = rs.getString("picture");
-                int customerType = rs.getInt("customerType");
+                String image = rs.getString("image");
+                int customertypeid = rs.getInt("customertypeid");
 
                 //Create customer and add to list created in the beginning
-                Customer customer = new Customer(name, email, tlf, picture, customerType);
+                Customer customer = new Customer(name, email, tlf, image, customertypeid);
 
                 //Add the customer to the appropriate list based on their type
-                List<Customer> customersOfType = customersByType.get(customerType);
+                List<Customer> customersOfType = customersByType.get(customertypeid);
+
                 if (customersOfType == null){
                     customersOfType = new ArrayList<>();
-                    customersByType.put(customerType, customersOfType);
+                    customersByType.put(customertypeid, customersOfType);
                 }
-                customersByType.get(customerType).add(customer);
+                customersByType.get(customertypeid).add(customer);
             }
 
         } catch (SQLException e) {

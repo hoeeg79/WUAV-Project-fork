@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
    <children>
-      <TableView layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
+      <TableView fx:id="userList" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
         <columns>
           <TableColumn prefWidth="164.55783081054688" text="Techs" />
             <TableColumn prefWidth="161.442138671875" text="Managers" />

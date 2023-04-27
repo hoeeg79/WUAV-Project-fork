@@ -19,7 +19,7 @@ public class UsersManager {
         return facadeDAL.createUser(user);
     }
 
-    public Map<Integer, List<User>> getUsers()throws Exception {
+    public List<User> getUsers() throws Exception {
         return facadeDAL.getUsers();
     }
 

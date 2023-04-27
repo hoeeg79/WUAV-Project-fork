@@ -74,39 +74,31 @@ public class UsersDAO {
 
     }
 
-    public Map<Integer, List<User>> returnUsersByType() throws SQLException {
-        Map<Integer, List<User>> usersByType = new HashMap<>();
+    public List<User> returnUsers() throws SQLException {
+        ArrayList<User> allUsers = new ArrayList<>();
 
-        try(Connection conn = dbConnector.getConnection()){
+        try (Connection conn = dbConnector.getConnection()) {
 
-            String sql = "SELECT * FROM User GROUP BY userType;";
+            String sql = "SELECT * FROM User_credentials;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
-            //Loop through rows from database result set
-            while(rs.next()){
+            while (rs.next()) {
+
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String name = rs.getString("name");
                 int userType = rs.getInt("userType");
                 String picture = rs.getString("picture");
 
-
                 User user = new User(username, password, username, userType, picture);
-
-                //Add the customer to the appropriate list based on their type
-                List<User> userByType = usersByType.get(usersByType);
-                if (userByType == null){
-                    userByType = new ArrayList<>();
-                    usersByType.put(userType, userByType);
-                }
-                userByType.get(userType).add(user);
+                allUsers.add(user);
             }
 
         } catch (SQLException e) {
             throw new SQLException(e);
         }
-        return usersByType;
+        return allUsers;
     }
 }
