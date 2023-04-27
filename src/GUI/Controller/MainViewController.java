@@ -41,8 +41,6 @@ public class MainViewController {
         customerMenu();
     }
 
-
-
     private void customerMenu() {
         if (createCustomerMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), createCustomerMenu);
