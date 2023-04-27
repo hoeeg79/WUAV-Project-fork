@@ -59,6 +59,7 @@ public class CustomerDAO {
         }
     }
 
+
     public Map<Integer, List<Customer>> returnCustomersByType() throws Exception {
         //Create a map to store lists of customers by type
         Map<Integer, List<Customer>> customersByType = new HashMap<>();
@@ -93,9 +94,23 @@ public class CustomerDAO {
                 customersByType.get(customertypeid).add(customer);
             }
 
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
         return customersByType;
+    }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+
+            String sql = "UPDATE Customer SET softDeleted = 1 WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, customer.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 }

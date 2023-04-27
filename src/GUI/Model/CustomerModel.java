@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import java.sql.SQLException;
+
 public class CustomerModel {
     private CustomerManager customerManager;
     private ObservableList<Customer> businessCustomer;
@@ -25,6 +27,7 @@ public class CustomerModel {
     public void createCustomer(Customer customer) {
         createCustomer(customer);
     }
+
 
     public ObservableList<Customer> getBusinessCustomer() throws Exception {
         List<Customer> customers = new ArrayList<>();
@@ -48,5 +51,9 @@ public class CustomerModel {
         privateCustomer = FXCollections.observableArrayList();
         privateCustomer.addAll(customers);
         return privateCustomer;
+    }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        customerManager.deleteCustomer(customer);
     }
 }

@@ -19,7 +19,12 @@ public class CustomerManager {
         return facadeDAL.createCustomer(customer);
     }
 
+
     public Map<Integer, List<Customer>> getCustomers()throws Exception {
         return facadeDAL.getCustomers();
+    }
+
+    public void deleteCustomer(Customer customer) throws SQLException {
+        facadeDAL.deleteCustomer(customer);
     }
 }

@@ -1,30 +1,22 @@
 package GUI.Controller;
 
-<<<<<<< Updated upstream
+
 import javafx.event.ActionEvent;
-=======
+
 import GUI.Model.CustomerModel;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
->>>>>>> Stashed changes
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-<<<<<<< Updated upstream
-
-public class MainViewController {
-    public Button createCustomers;
-    public TextField searchBar;
-
-    public void handleCreateCustomers(ActionEvent actionEvent) {
-=======
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,13 +26,28 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainViewController implements Initializable {
+
+public class MainViewController extends BaseController implements Initializable {
     @FXML
     private ListView lvPriv;
     @FXML
     private ListView lvCorp;
     @FXML
     private ListView lvGov;
+
+    @FXML
+    private ComboBox cbCustomerTypes;
+    @FXML
+    private TextField tfCustomerName;
+    @FXML
+    private TextField tfCustomerEmail;
+    @FXML
+    private TextField tfCustomerPhonenumber;
+    @FXML
+    private TextField tfCustomerImage;
+    @FXML
+    private Button btnCustomerImage;
+
     @FXML
     private Button cancelCustomer;
     @FXML
@@ -54,11 +61,19 @@ public class MainViewController implements Initializable {
 
     CustomerModel model = new CustomerModel();
 
+    private CustomerModel CModel;
+    @Override
+    public void setup() throws Exception {
+        CModel = super.getCModel();
+    }
+
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
 
     public void handleCreateCustomer(ActionEvent actionEvent) {
+
+
     }
 
     public void handleCancelCustomer(ActionEvent actionEvent) {
@@ -75,6 +90,15 @@ public class MainViewController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        clearCustomerMenu();
+        cbCustomerTypes.setItems(FXCollections.observableArrayList("Technician", "Project Manager", "Salesperson"));
+    }
+
+    private void clearCustomerMenu(){
+        tfCustomerName.clear();
+        tfCustomerEmail.clear();
+        tfCustomerPhonenumber.clear();
+        tfCustomerImage.clear();
     }
 
     private void customerMenu() {
@@ -107,7 +131,6 @@ public class MainViewController implements Initializable {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
         stage.show();
->>>>>>> Stashed changes
     }
 
     private void loadLists(CustomerModel model) throws Exception {
@@ -117,6 +140,13 @@ public class MainViewController implements Initializable {
         lvGov.setItems(model.getGovernmentCustomer());
     }
 
+    public void handleCreateCustomers(ActionEvent actionEvent) {
+        String name = tfCustomerName.getText();
+        String Email = tfCustomerEmail.getText();
+        String tlf = tfCustomerPhonenumber.getText();
+        String image = tfCustomerImage.getText();
 
-
+        //CModel.createCustomer(customer);
+    }
 }
+
