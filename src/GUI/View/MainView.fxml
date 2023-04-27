@@ -33,7 +33,7 @@
                   <HBox spacing="10.0">
                      <children>
                         <TextField fx:id="tfCustomerImage" editable="false" focusTraversable="false" />
-                        <Button fx:id="btnCustomerImage" mnemonicParsing="false" text="Pick Image" />
+                        <Button fx:id="btnCustomerImage" mnemonicParsing="false" onAction="#handlePickImage" text="Pick Image" />
                      </children>
                   </HBox>
                   <Label styleClass="menuText" text="Customer type" />

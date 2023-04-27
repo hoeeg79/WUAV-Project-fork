@@ -24,8 +24,8 @@ public class CustomerModel {
         customerManager = new CustomerManager();
     }
 
-    public void createCustomer(Customer customer) {
-        createCustomer(customer);
+    public void createCustomer(Customer customer) throws SQLException {
+        customerManager.createCustomer(customer);
     }
 
 
