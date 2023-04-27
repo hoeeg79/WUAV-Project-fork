@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.Customer;
 import BE.TechDoc;
+import GUI.Model.CustomerModel;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,10 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class CustomerViewController extends BaseController{
-    public ListView<TechDoc> lvTechDocs;
+    @FXML
+    private ListView<TechDoc> lvTechDocs;
+    @FXML
+    private Button btnHome;
     @FXML
     private TextField tfPictureFilepath;
     @FXML
@@ -103,6 +107,26 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    @FXML
+    private void handleHome(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/MainView.fxml"));
+            Parent root = loader.load();
+
+            MainViewController controller = loader.getController();
+            controller.setCModel(new CustomerModel());
+            controller.setup();
+
+            Stage currentStage = (Stage) btnHome.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+            currentStage.show();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load MainView.fxml");
+            alert.showAndWait();
+        }
+    }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -125,6 +149,7 @@ public class CustomerViewController extends BaseController{
             Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
             currentStage.show();
+            //Skal vi åbne et nyt vindue, og lade det andet være brugbart samtidigt?
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");

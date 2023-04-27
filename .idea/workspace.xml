@@ -5,11 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DAL/TechDocDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/Controller/TechDocEditorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/Model/TechDocModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/View/TechDocEditor.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +86,7 @@
       <workItem from="1682578262036" duration="510000" />
       <workItem from="1682579263693" duration="3004000" />
       <workItem from="1682586211639" duration="1147000" />
-      <workItem from="1682610164784" duration="9002000" />
+      <workItem from="1682610164784" duration="9372000" />
     </task>
     <servers />
   </component>
