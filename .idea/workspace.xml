@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c625d943-e396-46a7-b2e1-06221fabfbec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/BLL/UsersManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DAL/UsersDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/Model/UsersModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DAL/Login/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BE/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BE/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/BaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/View/CreateUsersView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/View/CreateUsersView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
