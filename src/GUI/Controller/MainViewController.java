@@ -29,7 +29,6 @@ public class MainViewController {
     @FXML
     private Pane createCustomerMenu;
 
-
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
@@ -40,8 +39,6 @@ public class MainViewController {
     public void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
     }
-
-
 
     private void customerMenu() {
         if (createCustomerMenu.isVisible()) {
