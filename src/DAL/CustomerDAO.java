@@ -31,7 +31,7 @@ public class CustomerDAO {
         }
         int customerType = customer.getCustomerType();
 
-        String sql = "INSERT INTO Customer (name, email, tlf, image, customertypeid) VALUES (?,?,?,?,?);";
+        String sql = "INSERT INTO Customer (name, email, tlf, image, customertypeid, softdeleted) VALUES (?,?,?,?,?,0);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -68,7 +68,7 @@ public class CustomerDAO {
         try(Connection conn = dbc.getConnection()){
             
             //SQL string, selects all customers from db
-            String sql = "SELECT * FROM Customer;";
+            String sql = "SELECT * FROM Customer WHERE softDeleted != 1;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);

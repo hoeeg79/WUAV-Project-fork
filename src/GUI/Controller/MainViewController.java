@@ -21,13 +21,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
 public class MainViewController extends BaseController implements Initializable {
+    @FXML
+    private Button btnOpenCustomer;
+    @FXML
+    private Button btnDeleteCustomer;
     @FXML
     private ListView<Customer> lvPriv;
     @FXML
@@ -47,37 +50,42 @@ public class MainViewController extends BaseController implements Initializable 
     private TextField tfCustomerImage;
     @FXML
     private Button btnCustomerImage;
-
     @FXML
-    private Button cancelCustomer;
+    private Button btnCancelCustomer;
     @FXML
-    private Button createCustomersMenu;
+    private Button btnCreateCustomersMenu;
     @FXML
-    private Button createCustomer;
+    private Button btnCreateCustomer;
     @FXML
     private TextField searchBar;
     @FXML
     private Pane createCustomerMenu;
+    private Customer selectedCustomer;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     @Override
     public void setup() throws Exception {
         try {
             loadLists(super.getCModel());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
-        openSelection();
+        changeSelectedCustomer();
     }
 
-    public void handleCreateCustomersMenu(ActionEvent actionEvent) {
+    @FXML
+    private void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
 
-
-    public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+    @FXML
+    private void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
@@ -89,13 +97,9 @@ public class MainViewController extends BaseController implements Initializable 
         super.getCModel().createCustomer(customer);
     }
 
-    public void handleCancelCustomer(ActionEvent actionEvent) {
+    @FXML
+    private void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     private void clearCustomerMenu(){
@@ -145,7 +149,8 @@ public class MainViewController extends BaseController implements Initializable 
         lvGov.setItems(model.getGovernmentCustomer());
     }
 
-    public void handlePickImage(ActionEvent actionEvent) {
+    @FXML
+    private void handlePickImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image File");
         fileChooser.getExtensionFilters().addAll(
@@ -156,15 +161,27 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
     }
 
-    private void openSelection(){
+    private void changeSelectedCustomer(){
         lvCorp.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->{
-            setSceneSelectCompany(createCustomer, newValue);
+            if (newValue != null) {
+                lvGov.getSelectionModel().clearSelection();
+                lvPriv.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
         }));
         lvGov.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            setSceneSelectCompany(createCustomer, newValue);
+            if (newValue != null) {
+                lvCorp.getSelectionModel().clearSelection();
+                lvPriv.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
         }));
         lvPriv.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            setSceneSelectCompany(createCustomer, newValue);
+            if (newValue != null) {
+                lvGov.getSelectionModel().clearSelection();
+                lvCorp.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
         }));
     }
 
@@ -185,5 +202,15 @@ public class MainViewController extends BaseController implements Initializable 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void handleDeleteCustomer(ActionEvent actionEvent) {
+        
+    }
+
+    @FXML
+    private void handleOpenCustomer(ActionEvent actionEvent) {
+        setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
     }
 }
