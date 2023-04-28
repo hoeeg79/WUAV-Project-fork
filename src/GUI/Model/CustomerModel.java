@@ -2,13 +2,12 @@ package GUI.Model;
 
 import BE.Customer;
 import BLL.CustomerManager;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import java.sql.SQLException;
 
