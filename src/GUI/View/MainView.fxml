@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1500.0" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainViewController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1500.0" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainViewController">
    <children>
       <Pane fx:id="createCustomerMenu" prefHeight="775.0" prefWidth="339.0" stylesheets="@MainView.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
@@ -53,7 +53,7 @@
          </image>
       </ImageView>
 
-      <Button fx:id="createCustomersMenu" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomersMenu" text="Create Customer" />
+      <Button fx:id="createCustomersMenu" layoutX="113.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCreateCustomersMenu" text="Create Customer" AnchorPane.bottomAnchor="509.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="1282.0" AnchorPane.topAnchor="366.0" />
 
       <Button layoutX="1319.0" layoutY="65.0" mnemonicParsing="false" text="Log out" />
       <TextField fx:id="searchBar" layoutX="699.0" layoutY="73.0" />
@@ -61,9 +61,11 @@
       <Label layoutX="353.0" layoutY="411.0" text="Corporate Customers" />
       <Label layoutX="353.0" layoutY="604.0" text="Government Customers" />
       <Button fx:id="createUsers" layoutX="1321.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" />
-      <ListView fx:id="lvPriv" styleClass="customerList" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
-      <ListView fx:id="lvCorp" styleClass="customerList" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
-      <ListView fx:id="lvGov" styleClass="customerList" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" />
+      <ListView fx:id="lvPriv" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <ListView fx:id="lvCorp" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <ListView fx:id="lvGov" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <Button fx:id="btnDeleteCustomer" layoutX="114.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" text="Delete Customer" AnchorPane.bottomAnchor="468.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="407.0" />
+      <Button fx:id="btnOpenCustomer" layoutX="116.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleOpenCustomer" text="Open Customer" AnchorPane.leftAnchor="116.0" AnchorPane.topAnchor="450.0" />
 
    </children>
 </AnchorPane>

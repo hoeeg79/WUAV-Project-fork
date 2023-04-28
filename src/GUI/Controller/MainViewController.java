@@ -65,7 +65,7 @@ public class MainViewController extends BaseController implements Initializable 
         try {
             loadLists(super.getCModel());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
@@ -185,5 +185,11 @@ public class MainViewController extends BaseController implements Initializable 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
         }
+    }
+
+    public void handleDeleteCustomer(ActionEvent actionEvent) {
+    }
+
+    public void handleOpenCustomer(ActionEvent actionEvent) {
     }
 }
