@@ -2,13 +2,12 @@ package GUI.Model;
 
 import BE.Customer;
 import BLL.CustomerManager;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import java.sql.SQLException;
 
@@ -17,8 +16,6 @@ public class CustomerModel {
     private ObservableList<Customer> businessCustomer;
     private ObservableList<Customer> privateCustomer;
     private ObservableList<Customer> governmentCustomer;
-
-
 
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();
@@ -34,7 +31,6 @@ public class CustomerModel {
             privateCustomer.add(customer);
         }
     }
-
 
     public ObservableList<Customer> getBusinessCustomer() throws Exception {
         List<Customer> customers = new ArrayList<>();
@@ -62,5 +58,16 @@ public class CustomerModel {
 
     public void deleteCustomer(Customer customer) throws SQLException {
         customerManager.deleteCustomer(customer);
+        if (customer.getCustomerType() == 1) {
+            businessCustomer.remove(customer);
+        } else if (customer.getCustomerType() == 2) {
+            governmentCustomer.remove(customer);
+        } else {
+            privateCustomer.remove(customer);
+        }
+    }
+
+    public void updateCustomer(Customer c) throws SQLException {
+        customerManager.updateCustomer(c);
     }
 }

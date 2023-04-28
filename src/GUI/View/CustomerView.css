@@ -1,0 +1,9 @@
+#paneLeft {
+    -fx-background-color: white;
+    -fx-tile-alignment: CENTER;
+}
+
+#paneRight {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}

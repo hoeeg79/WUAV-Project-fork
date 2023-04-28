@@ -16,8 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,11 +32,15 @@ import java.util.ResourceBundle;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
-    private ListView lvPriv;
+    private Button btnOpenCustomer;
     @FXML
-    private ListView lvCorp;
+    private Button btnDeleteCustomer;
     @FXML
-    private ListView lvGov;
+    private ListView<Customer> lvPriv;
+    @FXML
+    private ListView<Customer> lvCorp;
+    @FXML
+    private ListView<Customer> lvGov;
 
     @FXML
     private ComboBox cbCustomerTypes;
@@ -50,39 +54,45 @@ public class MainViewController extends BaseController implements Initializable 
     private TextField tfCustomerImage;
     @FXML
     private Button btnCustomerImage;
-
     @FXML
-    private Button cancelCustomer;
+    private Button btnCancelCustomer;
     @FXML
-    private Button createCustomersMenu;
+    private Button btnCreateCustomersMenu;
     @FXML
-    private Button createCustomer;
+    private Button btnCreateCustomer;
     @FXML
     private TextField searchBar;
     @FXML
     private Pane createCustomerMenu;
+    private Customer selectedCustomer;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     @Override
     public void setup() throws Exception {
         try {
             loadLists(super.getCModel());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+        changeSelectedCustomer();
     }
 
-    public void handleCreateCustomersMenu(ActionEvent actionEvent) {
+    @FXML
+    private void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
     }
 
-
-    public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+    @FXML
+    private void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
-        int tlf = Integer.parseInt(tfCustomerPhonenumber.getText());
+        String tlf = tfCustomerPhonenumber.getText();
         String image = tfCustomerImage.getText();
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
@@ -91,13 +101,9 @@ public class MainViewController extends BaseController implements Initializable 
         super.getCModel().createCustomer(customer);
     }
 
-    public void handleCancelCustomer(ActionEvent actionEvent) {
+    @FXML
+    private void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     private void clearCustomerMenu(){
@@ -131,7 +137,6 @@ public class MainViewController extends BaseController implements Initializable 
         Parent root = loader.load();
 
         CreateUsersController controller = loader.getController();
-        controller.setUModel(super.getUModel());
         controller.setup();
 
         stage.setScene(new Scene(root));
@@ -193,9 +198,8 @@ public class MainViewController extends BaseController implements Initializable 
         });
     }
 
-
-
-    public void handlePickImage(ActionEvent actionEvent) {
+    @FXML
+    private void handlePickImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image File");
         fileChooser.getExtensionFilters().addAll(
@@ -204,5 +208,58 @@ public class MainViewController extends BaseController implements Initializable 
         );
         File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
+    }
+
+    private void changeSelectedCustomer(){
+        lvCorp.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->{
+            if (newValue != null) {
+                lvGov.getSelectionModel().clearSelection();
+                lvPriv.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
+        }));
+        lvGov.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                lvCorp.getSelectionModel().clearSelection();
+                lvPriv.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
+        }));
+        lvPriv.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                lvGov.getSelectionModel().clearSelection();
+                lvCorp.getSelectionModel().clearSelection();
+                selectedCustomer = newValue;
+            }
+        }));
+    }
+
+    private void setSceneSelectCompany(Button btn, Customer customer){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
+            Parent root = loader.load();
+
+            CustomerViewController controller = loader.getController();
+            controller.setCustomer(customer);
+            controller.setup();
+
+            Stage currentStage = (Stage) btn.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+            currentStage.show();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+        super.getCModel().deleteCustomer(selectedCustomer);
+    }
+
+    @FXML
+    private void handleOpenCustomer(ActionEvent actionEvent) {
+        setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
     }
 }

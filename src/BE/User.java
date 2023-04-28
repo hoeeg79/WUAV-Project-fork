@@ -9,21 +9,20 @@ public class User {
     private String picture;
 
 
-    public User(int id, String username, String password, String name, int userType, String picture) {
+    public User(int id, String username, String password, String name, int userType) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.userType = userType;
-        this.picture = picture;
     }
 
-    public User(String username, String password, String name, int userType, String picture) {
+    public User(String username, String password, String name, int userType) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.userType = userType;
-        this.picture = picture;
+       // this.picture = picture;
     }
 
     public String getPicture() {

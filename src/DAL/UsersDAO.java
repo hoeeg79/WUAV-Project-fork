@@ -22,15 +22,15 @@ public class UsersDAO {
         String username = user.getUsername();
         String password = user.getPassword();
         String name = user.getName();
-        String picture = "";
+        /*String picture = "";
         if (user.getPicture() == null) {
             picture = "defaultUser.jpg";
         } else {
             picture = user.getPicture();
-        }
+        }*/
         int userType = user.getUserType();
 
-        String sql = "INSERT INTO User (username, password, name, usertype, picture) VALUES (?,?,?,?,?);";
+        String sql = "INSERT INTO [User] (username, password, name, usertypeID) VALUES (?,?,?,?);";
 
         try (Connection conn = dbConnector.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -39,7 +39,7 @@ public class UsersDAO {
             stmt.setString(2, password);
             stmt.setString(3, name);
             stmt.setInt(4, userType);
-            stmt.setString(5, picture);
+            //stmt.setString(5, picture);
 
             stmt.executeUpdate();
 
@@ -51,7 +51,7 @@ public class UsersDAO {
                 id = rs.getInt(1);
             }
 
-            return new User(id, username, password, name, userType, picture);
+            return new User(id, username, password, name, userType);
 
         } catch (SQLException e) {
             throw new SQLException(e);
@@ -79,7 +79,7 @@ public class UsersDAO {
 
         try (Connection conn = dbConnector.getConnection()) {
 
-            String sql = "SELECT * FROM User_credentials;";
+            String sql = "SELECT * FROM [User];";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -89,10 +89,9 @@ public class UsersDAO {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-                int userType = rs.getInt("userType");
-                String picture = rs.getString("picture");
+                int userType = rs.getInt("userTypeID");
 
-                User user = new User(username, password, username, userType, picture);
+                User user = new User(username, password, name, userType);
                 allUsers.add(user);
             }
 
