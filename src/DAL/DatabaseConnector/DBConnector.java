@@ -5,7 +5,9 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnector {
@@ -38,5 +40,15 @@ public class DBConnector {
      */
     public Connection getConnection() throws SQLServerException {
         return ds.getConnection();
+    }
+
+    public static void main(String[] args) throws Exception {
+        //Create instance of connector
+        DBConnector databaseConnector = new DBConnector();
+
+        //Use Try with resources, the parenthesis is the resource, to establish connection and then check if it works.
+        try (Connection connection = databaseConnector.getConnection()) {
+            System.out.println("Is it open? " + !connection.isClosed());
+        }
     }
 }

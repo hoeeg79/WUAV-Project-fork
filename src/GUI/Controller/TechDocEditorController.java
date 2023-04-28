@@ -12,6 +12,10 @@ public class TechDocEditorController extends BaseController{
 
     @Override
     public void setup() throws Exception {
+        fillFields();
+    }
+
+    private void fillFields() {
 
     }
 
