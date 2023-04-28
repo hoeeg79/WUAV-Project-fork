@@ -23,7 +23,7 @@
       <Label layoutX="81.0" layoutY="137.0" text="Username" />
       <Label layoutX="81.0" layoutY="209.0" text="Password" />
       <Label layoutX="81.0" layoutY="288.0" text="Confirm Password" />
-      <Button fx:id="saveUser" layoutX="191.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
+      <Button fx:id="btnSaveUser" layoutX="191.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
       <Button fx:id="deleteUser" layoutX="258.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete" />
       <Button fx:id="cancel" layoutX="918.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelWindow" text="Cancel" />
       <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="TechCheck" />

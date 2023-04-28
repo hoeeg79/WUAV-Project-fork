@@ -129,7 +129,6 @@ public class MainViewController extends BaseController implements Initializable 
         Parent root = loader.load();
 
         CreateUsersController controller = loader.getController();
-        controller.setUModel(super.getUModel());
         controller.setup();
 
         stage.setScene(new Scene(root));

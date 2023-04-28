@@ -13,28 +13,34 @@ public class CreateUsersController extends BaseController{
     public TextField txtUsernameUser;
     public TextField txtConfirmPwUser;
     public TextField txtPasswordUser;
-    public Button saveUser;
+    public Button btnSaveUser;
     public Button deleteUser;
     public Button cancel;
     public TableView<User> userList;
     public RadioButton techChecker;
     public RadioButton salesChecker;
     public RadioButton managerChecker;
-    private UsersModel userModel;
+    private boolean txtInUsernameField;
 
     @Override
     public void setup() throws Exception {
-        userModel = super.getUModel();
-        saveUser.setDisable(true);
+        super.setUModel(new UsersModel());
+//        btnSaveUser.setDisable(true);
 
-        txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-        txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-        txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-        txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-
-        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//        txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue != null) {
+//                txtInUsernameField = true;
+//            } else {
+//                txtInUsernameField = false;
+//            }
+//        });
+//        txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//        txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//        txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//
+//        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+//        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
     }
 
     public void handleSaveUser(ActionEvent actionEvent) {
@@ -71,9 +77,9 @@ public class CreateUsersController extends BaseController{
 
         try {
             if (hashedPassword1.equals(hashedPassword2)) {
-                User u = new User(username, password, name, , );
-                userModel.createUser(new User());
-                closeWindow(saveUser);
+                User u = new User(username, hashedPassword1, name,userType);
+                super.getUModel().createUser(u);
+                //closeWindow(saveUser);
             }
         } catch (Exception e) {
             displayError(e);
@@ -86,7 +92,7 @@ public class CreateUsersController extends BaseController{
     public void handleDeleteUser(ActionEvent actionEvent) {
         try {
             User user = userList.getSelectionModel().getSelectedItem();
-            userModel.deleteUser(user);
+            super.getUModel().deleteUser(user);
         } catch (Exception e) {
             displayError(e);
         }

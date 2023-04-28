@@ -30,7 +30,7 @@ public class UsersDAO {
         }*/
         int userType = user.getUserType();
 
-        String sql = "INSERT INTO User (username, password, name, usertype) VALUES (?,?,?,?);";
+        String sql = "INSERT INTO [User] (username, password, name, usertypeID) VALUES (?,?,?,?);";
 
         try (Connection conn = dbConnector.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -79,7 +79,7 @@ public class UsersDAO {
 
         try (Connection conn = dbConnector.getConnection()) {
 
-            String sql = "SELECT * FROM User_credentials;";
+            String sql = "SELECT * FROM [User];";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -89,9 +89,9 @@ public class UsersDAO {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-                int userType = rs.getInt("userType");
+                int userType = rs.getInt("userTypeID");
 
-                User user = new User(username, password, username, userType);
+                User user = new User(username, password, name, userType);
                 allUsers.add(user);
             }
 

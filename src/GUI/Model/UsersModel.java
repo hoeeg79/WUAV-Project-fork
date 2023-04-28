@@ -14,14 +14,14 @@ public class UsersModel {
     private ObservableList<User> userList;
 
 
-    public UsersModel(UsersManager usersManager) throws Exception {
-        this.usersManager = usersManager;
+    public UsersModel() throws Exception {
+        usersManager = new UsersManager();
 
         userList = FXCollections.observableArrayList();
         userList.addAll(usersManager.getUsers());
     }
-    public void createUser(User user) {
-        createUser(user);
+    public void createUser(User user) throws SQLException {
+        usersManager.createUser(user);
         userList.add(user);
     }
     public void deleteUser(User user) throws SQLException {
