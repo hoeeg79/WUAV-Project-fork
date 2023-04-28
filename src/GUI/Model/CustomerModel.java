@@ -4,11 +4,9 @@ import BE.Customer;
 import BLL.CustomerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import java.sql.SQLException;
 
@@ -62,5 +60,10 @@ public class CustomerModel {
 
     public void deleteCustomer(Customer customer) throws SQLException {
         customerManager.deleteCustomer(customer);
+
+    }
+
+    public void updateCustomer(Customer c) throws SQLException {
+        customerManager.updateCustomer(c);
     }
 }

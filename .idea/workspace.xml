@@ -7,6 +7,13 @@
     <list default="true" id="034a4a66-c9ee-4f5b-b429-5c4b5f8e9f5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" afterDir="false" />
+    <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BLL/CustomerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BLL/CustomerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/CustomerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/FacadeDAL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Model/CustomerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Model/CustomerModel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +96,6 @@
       <workItem from="1682586211639" duration="1147000" />
       <workItem from="1682610164784" duration="9679000" />
       <workItem from="1682662199651" duration="1979000" />
-      <workItem from="1682666014133" duration="3359000" />
     </task>
     <servers />
   </component>

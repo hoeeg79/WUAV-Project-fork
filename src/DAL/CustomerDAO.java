@@ -22,7 +22,7 @@ public class CustomerDAO {
         //Prepare variables from customer in parameter
         String name = customer.getName();
         String email = customer.getEmail();
-        int tlf = customer.getTlf();
+        String tlf = customer.getTlf();
         String picture = "";
         if (customer.getPicture() == null){
             picture = "defaultUser.jpg";
@@ -31,14 +31,14 @@ public class CustomerDAO {
         }
         int customerType = customer.getCustomerType();
 
-        String sql = "INSERT INTO Customer (name, email, tlf, image, customertypeid) VALUES (?,?,?,?,?);";
+        String sql = "INSERT INTO Customer (name, email, tlf, image, customertypeid, softdeleted) VALUES (?,?,?,?,?,0);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, name);
             stmt.setString(2, email);
-            stmt.setInt(3, tlf);
+            stmt.setString(3, tlf);
             stmt.setString(4, picture);
             stmt.setInt(5, customerType);
 
@@ -68,21 +68,22 @@ public class CustomerDAO {
         try(Connection conn = dbc.getConnection()){
             
             //SQL string, selects all customers from db
-            String sql = "SELECT * FROM Customer;";
+            String sql = "SELECT * FROM Customer WHERE softDeleted != 1;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             //Loop through rows from database result set
             while(rs.next()){
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
-                int tlf = rs.getInt("tlf");
+                String tlf = rs.getString("tlf");
                 String image = rs.getString("image");
                 int customertypeid = rs.getInt("customertypeid");
 
                 //Create customer and add to list created in the beginning
-                Customer customer = new Customer(name, email, tlf, image, customertypeid);
+                Customer customer = new Customer(id, name, email, tlf, image, customertypeid);
 
                 //Add the customer to the appropriate list based on their type
                 List<Customer> customersOfType = customersByType.get(customertypeid);
@@ -111,6 +112,25 @@ public class CustomerDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);
+        }
+    }
+
+    public void updateCustomer(Customer customer) throws SQLException{
+        try(Connection conn = dbc.getConnection()){
+
+            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, image=?, customertypeid=? WHERE id=?;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, customer.getName());
+            pstmt.setString(2, customer.getEmail());
+            pstmt.setString(3, customer.getTlf());
+            pstmt.setString(4, customer.getPicture());
+            pstmt.setInt(5, customer.getCustomerType());
+            pstmt.setInt(6,customer.getId());
+            
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            throw new SQLException("Could not update customer", e);
         }
     }
 }
