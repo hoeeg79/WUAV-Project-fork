@@ -23,21 +23,33 @@ public class CreateUsersController extends BaseController{
     private UsersModel userModel;
 
     public void handleSaveUser(ActionEvent actionEvent) {
+        saveUser.setDisable(true);
+
         String username = txtUsernameUser.getText();
         String name = txtNameUser.getText();
         String confirmPassword = txtConfirmPwUser.getText();
         String password = txtPasswordUser.getText();
         int userType = -1;
 
-        String salt = BCrypt.gensalt(10);
-        String hashedPassword1 = BCrypt.hashpw(password, salt);
-        String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
-
-        //idk
         if(techChecker.isSelected()) {
             userType = 2;
         } else if (managerChecker.isSelected()) {
             userType = 1;
+        } else if (salesChecker.isSelected()) {
+            userType = 3;
+        }
+
+        if (username.isEmpty() || name.isEmpty() || confirmPassword.isEmpty() || password.isEmpty() || userType == -1) {
+            saveUser.setDisable(true);
+        } else if (!password.equals(confirmPassword)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Password mismatch");
+            alert.setHeaderText(null);
+            alert.setContentText("The passwords do not match. Please make sure the password and confirm-password fields match.");
+            alert.showAndWait();
+            saveUser.setDisable(true);
+        } else {
+            saveUser.setDisable(false);
         }
 
     }
