@@ -5,6 +5,7 @@ import BLL.BCrypt;
 import GUI.Model.UsersModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 
@@ -20,27 +21,83 @@ public class CreateUsersController extends BaseController{
     public RadioButton techChecker;
     public RadioButton salesChecker;
     public RadioButton managerChecker;
+    public TableColumn userscln;
     private boolean txtInUsernameField;
+    private boolean txtInNameField;
+    private boolean txtInPasswordField;
+    private boolean txtInConfirmField;
+    private boolean checkerSalesField;
+    private boolean checkerManagerField;
+    private boolean checkerTechField;
+
 
     @Override
     public void setup() throws Exception {
         super.setUModel(new UsersModel());
-//        btnSaveUser.setDisable(true);
+        insertIntoTable();
+       // btnSaveUser.setDisable(true);
+        beGoneButton();
+        enableTheButtons();
+    }
 
-//        txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                txtInUsernameField = true;
-//            } else {
-//                txtInUsernameField = false;
-//            }
-//        });
-//        txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-//        txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-//        txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-//
-//        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-//        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
-//        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+    private void beGoneButton(){
+        txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtInUsernameField = true;
+            } else {
+                txtInUsernameField = false;
+            }
+        });
+        txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtInNameField = true;
+            } else {
+                txtInNameField = false;
+            }
+        });
+        txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtInPasswordField = true;
+            } else {
+                txtInPasswordField = false;
+            }
+        });
+        txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtInConfirmField = true;
+            } else {
+                txtInConfirmField = false;
+            }
+        });
+
+        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                checkerTechField = true;
+            } else {
+                checkerTechField = false;
+            }
+        });
+        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                checkerManagerField = true;
+            } else {
+                checkerManagerField = false;
+            }
+        });
+        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                checkerSalesField = true;
+            } else {
+                checkerSalesField = false;
+            }
+        });
+
+    }
+
+    private void enableTheButtons() {
+        if (checkerSalesField && checkerManagerField && checkerTechField && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
+            btnSaveUser.setDisable(false);
+        }
     }
 
     public void handleSaveUser(ActionEvent actionEvent) {
@@ -57,20 +114,7 @@ public class CreateUsersController extends BaseController{
         } else if (salesChecker.isSelected()) {
             userType = 3;
         }
-
-       /* if (username.isEmpty() || name.isEmpty() || confirmPassword.isEmpty() || password.isEmpty() || userType == -1) {
-            saveUser.setDisable(true);
-        } else if (!password.equals(confirmPassword)) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Password mismatch");
-            alert.setHeaderText(null);
-            alert.setContentText("The passwords do not match. Please make sure the password and confirm-password fields match.");
-            alert.showAndWait();
-            saveUser.setDisable(true);
-        } else {
-            saveUser.setDisable(false);
-        }*/
-
+        
         String salt = BCrypt.gensalt(10);
         String hashedPassword1 = BCrypt.hashpw(password, salt);
         String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
@@ -85,8 +129,6 @@ public class CreateUsersController extends BaseController{
             displayError(e);
             e.printStackTrace();
         }
-
-
     }
 
     public void handleDeleteUser(ActionEvent actionEvent) {
@@ -100,6 +142,12 @@ public class CreateUsersController extends BaseController{
 
     public void handleCancelWindow(ActionEvent actionEvent) {
         closeWindow(cancel);
+    }
+
+    private void insertIntoTable(){
+        userscln.setCellValueFactory(new PropertyValueFactory<>("Users"));
+        userList.getColumns().addAll();
+        userList.setItems(super.getUModel().getObservableUsers());
     }
 
 }
