@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
@@ -174,6 +175,7 @@ public class MainViewController extends BaseController implements Initializable 
                         } else if (customer != null && (customer.getPicture() != "" || customer.getPicture() != null)) {
                             File imageFile = new File(customer.getPicture());
                             Image image = new Image(imageFile.toURI().toString());
+
                             imageView.setImage(image);
                             setGraphic(imageView);
                             text.setText(customer.getName());
@@ -182,6 +184,7 @@ public class MainViewController extends BaseController implements Initializable 
                             Image image = new Image("defaultUserResize.png");
                             imageView.setImage(image);
                             setGraphic(imageView);
+                            setText(customer.getName());
                             text.setText(customer.getName());
                             text.toFront();
 //                            setBackground(new Background(new BackgroundImage(
