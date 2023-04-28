@@ -60,4 +60,8 @@ public class CustomerModel {
         customerManager.deleteCustomer(customer);
 
     }
+
+    public void updateCustomer(Customer c) throws SQLException {
+        customerManager.updateCustomer(c);
+    }
 }
