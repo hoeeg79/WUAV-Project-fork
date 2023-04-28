@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
+    <list default="true" id="034a4a66-c9ee-4f5b-b429-5c4b5f8e9f5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BE/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BE/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DAL/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/CustomerDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/View/MainView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/View/MainView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
