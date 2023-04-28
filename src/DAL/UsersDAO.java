@@ -85,13 +85,13 @@ public class UsersDAO {
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-
+                int id = rs.getInt("id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String name = rs.getString("name");
                 int userType = rs.getInt("userTypeID");
 
-                User user = new User(username, password, name, userType);
+                User user = new User(id, username, password, name, userType);
                 allUsers.add(user);
             }
 
