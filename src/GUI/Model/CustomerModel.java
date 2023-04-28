@@ -62,5 +62,6 @@ public class CustomerModel {
 
     public void deleteCustomer(Customer customer) throws SQLException {
         customerManager.deleteCustomer(customer);
+
     }
 }
