@@ -205,8 +205,8 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleDeleteCustomer(ActionEvent actionEvent) {
-        
+    private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+        super.getCModel().deleteCustomer(selectedCustomer);
     }
 
     @FXML

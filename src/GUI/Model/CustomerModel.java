@@ -17,8 +17,6 @@ public class CustomerModel {
     private ObservableList<Customer> privateCustomer;
     private ObservableList<Customer> governmentCustomer;
 
-
-
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();
     }
@@ -33,7 +31,6 @@ public class CustomerModel {
             privateCustomer.add(customer);
         }
     }
-
 
     public ObservableList<Customer> getBusinessCustomer() throws Exception {
         List<Customer> customers = new ArrayList<>();
