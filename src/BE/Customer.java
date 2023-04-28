@@ -4,12 +4,12 @@ public class Customer {
     private int id;
     private String name;
     private String email;
-    private int tlf;
+    private String tlf;
     private String picture;
     private int customerType;
 
 
-    public Customer(int id, String name, String email, int tlf, String picture, int customerType) {
+    public Customer(int id, String name, String email, String tlf, String picture, int customerType) {
 
         this.id = id;
         this.name = name;
@@ -19,7 +19,7 @@ public class Customer {
         this.customerType = customerType;
     }
 
-    public Customer(String name, String email, int tlf, String picture, int customerType) {
+    public Customer(String name, String email, String tlf, String picture, int customerType) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;
@@ -52,11 +52,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getTlf() {
+    public String getTlf() {
         return tlf;
     }
 
-    public void setTlf(int tlf) {
+    public void setTlf(String tlf) {
         this.tlf = tlf;
     }
 

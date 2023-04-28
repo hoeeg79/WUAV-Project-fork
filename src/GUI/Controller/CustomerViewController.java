@@ -46,6 +46,25 @@ public class CustomerViewController extends BaseController{
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         fillFields();
     }
+    @FXML
+    private void handleSave(ActionEvent actionEvent) {
+        btnEditCustomer.setDisable(false);
+        lockFieldsAndButtons();
+
+        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
+        try{
+            String name = tfCustomerName.getText();
+            String email = tfCustomerEmail.getText();
+            String phoneNumber = tfCustomerPhoneNumber.getText();
+            String pictureFP = tfPictureFilepath.getText();
+
+            
+
+        }catch (Exception e){
+            displayError(e);
+            e.printStackTrace();
+        }
+    }
 
     private void lockFieldsAndButtons() {
         tfCustomerEmail.setDisable(true);
@@ -66,13 +85,7 @@ public class CustomerViewController extends BaseController{
         cbCustomerTypes.getSelectionModel().select(customer.getCustomerType() - 1);
     }
 
-    @FXML
-    private void handleSave(ActionEvent actionEvent) {
-        btnEditCustomer.setDisable(false);
-        lockFieldsAndButtons();
 
-        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
-    }
 
     @FXML
     private void handleCancel(ActionEvent actionEvent) {

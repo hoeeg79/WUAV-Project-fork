@@ -80,7 +80,7 @@ public class MainViewController extends BaseController implements Initializable 
     public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
-        int tlf = Integer.parseInt(tfCustomerPhonenumber.getText());
+        String tlf = tfCustomerPhonenumber.getText();
         String image = tfCustomerImage.getText();
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
