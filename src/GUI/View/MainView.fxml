@@ -26,7 +26,7 @@
                   <TextField fx:id="tfCustomerName" />
                   <Label styleClass="menuText" text="Email" />
                   <TextField fx:id="tfCustomerEmail" />
-                  <Label styleClass="menuText" text="Phonenumber" />
+                  <Label styleClass="menuText" text="Phone number" />
                   <TextField fx:id="tfCustomerPhonenumber" />
                   <Label styleClass="menuText" text="Image" />
                   <HBox spacing="10.0">

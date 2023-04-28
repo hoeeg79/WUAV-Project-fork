@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c625d943-e396-46a7-b2e1-06221fabfbec" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BE/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BE/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BE/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BE/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/MainViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Model/CustomerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Model/CustomerModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/View/MainView.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/View/MainView.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/View/MainView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/View/MainView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/GUI/View/TechDocEditor.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/View/TechDocEditor.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -83,7 +77,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c625d943-e396-46a7-b2e1-06221fabfbec" name="Changes" comment="" />
+      <changelist id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="" />
       <created>1682493399618</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -92,6 +86,8 @@
       <workItem from="1682578262036" duration="510000" />
       <workItem from="1682579263693" duration="3004000" />
       <workItem from="1682586211639" duration="1147000" />
+      <workItem from="1682610164784" duration="9679000" />
+      <workItem from="1682662199651" duration="1979000" />
     </task>
     <servers />
   </component>

@@ -13,10 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -32,11 +29,11 @@ import java.util.ResourceBundle;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
-    private ListView lvPriv;
+    private ListView<Customer> lvPriv;
     @FXML
-    private ListView lvCorp;
+    private ListView<Customer> lvCorp;
     @FXML
-    private ListView lvGov;
+    private ListView<Customer> lvGov;
 
     @FXML
     private ComboBox cbCustomerTypes;
@@ -72,6 +69,7 @@ public class MainViewController extends BaseController implements Initializable 
         }
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+        openSelection();
     }
 
     public void handleCreateCustomersMenu(ActionEvent actionEvent) {
@@ -156,5 +154,36 @@ public class MainViewController extends BaseController implements Initializable 
         );
         File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
+    }
+
+    private void openSelection(){
+        lvCorp.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->{
+            setSceneSelectCompany(createCustomer, newValue);
+        }));
+        lvGov.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            setSceneSelectCompany(createCustomer, newValue);
+        }));
+        lvPriv.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            setSceneSelectCompany(createCustomer, newValue);
+        }));
+    }
+
+    private void setSceneSelectCompany(Button btn, Customer customer){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
+            Parent root = loader.load();
+
+            CustomerViewController controller = loader.getController();
+            controller.setCustomer(customer);
+            controller.setup();
+
+            Stage currentStage = (Stage) btn.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+            currentStage.show();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
+            alert.showAndWait();
+        }
     }
 }
