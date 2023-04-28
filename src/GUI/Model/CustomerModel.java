@@ -63,7 +63,7 @@ public class CustomerModel {
 
     }
 
-    public void updateCustomer(Customer c) throws Exception {
+    public void updateCustomer(Customer c) throws SQLException {
         customerManager.updateCustomer(c);
     }
 }

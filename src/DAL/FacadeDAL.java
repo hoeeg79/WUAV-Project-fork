@@ -40,7 +40,7 @@ public class FacadeDAL {
         return usersDAO.returnUsers();
     }
 
-    public void updateCustomer(Customer c) throws Exception{
+    public void updateCustomer(Customer c) throws SQLException{
         customerDAO.updateCustomer(c);
     }
 }

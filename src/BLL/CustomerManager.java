@@ -28,7 +28,7 @@ public class CustomerManager {
         facadeDAL.deleteCustomer(customer);
     }
 
-    public void updateCustomer(Customer c) throws Exception{
+    public void updateCustomer(Customer c) throws SQLException{
         facadeDAL.updateCustomer(c);
     }
 }

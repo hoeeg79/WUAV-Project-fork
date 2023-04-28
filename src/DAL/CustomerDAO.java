@@ -75,6 +75,7 @@ public class CustomerDAO {
 
             //Loop through rows from database result set
             while(rs.next()){
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String tlf = rs.getString("tlf");
@@ -82,7 +83,7 @@ public class CustomerDAO {
                 int customertypeid = rs.getInt("customertypeid");
 
                 //Create customer and add to list created in the beginning
-                Customer customer = new Customer(name, email, tlf, image, customertypeid);
+                Customer customer = new Customer(id, name, email, tlf, image, customertypeid);
 
                 //Add the customer to the appropriate list based on their type
                 List<Customer> customersOfType = customersByType.get(customertypeid);
@@ -117,7 +118,7 @@ public class CustomerDAO {
     public void updateCustomer(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
 
-            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, image=?, customertypeid=? WHERE ID=?;";
+            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, image=?, customertypeid=? WHERE id=?;";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, customer.getName());
@@ -125,7 +126,8 @@ public class CustomerDAO {
             pstmt.setString(3, customer.getTlf());
             pstmt.setString(4, customer.getPicture());
             pstmt.setInt(5, customer.getCustomerType());
-
+            pstmt.setInt(6,customer.getId());
+            
             pstmt.executeUpdate();
         }catch (SQLException e){
             throw new SQLException("Could not update customer", e);

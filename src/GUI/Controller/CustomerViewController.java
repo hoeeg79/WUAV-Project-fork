@@ -45,6 +45,7 @@ public class CustomerViewController extends BaseController{
         lockFieldsAndButtons();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         fillFields();
+        super.setCModel(new CustomerModel());
     }
     @FXML
     private void handleSave(ActionEvent actionEvent) {
