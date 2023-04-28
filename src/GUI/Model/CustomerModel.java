@@ -58,7 +58,13 @@ public class CustomerModel {
 
     public void deleteCustomer(Customer customer) throws SQLException {
         customerManager.deleteCustomer(customer);
-
+        if (customer.getCustomerType() == 1) {
+            businessCustomer.remove(customer);
+        } else if (customer.getCustomerType() == 2) {
+            governmentCustomer.remove(customer);
+        } else {
+            privateCustomer.remove(customer);
+        }
     }
 
     public void updateCustomer(Customer c) throws SQLException {
