@@ -22,15 +22,28 @@ public class CreateUsersController extends BaseController{
     public RadioButton managerChecker;
     private UsersModel userModel;
 
-    public void handleSaveUser(ActionEvent actionEvent) {
+    @Override
+    public void setup() throws Exception {
+        userModel = super.getUModel();
         saveUser.setDisable(true);
 
+        txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+        txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+        txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+        txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+
+        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> handleSaveUser());
+    }
+
+    public void handleSaveUser(ActionEvent actionEvent) {
         String username = txtUsernameUser.getText();
         String name = txtNameUser.getText();
-        String confirmPassword = txtConfirmPwUser.getText();
         String password = txtPasswordUser.getText();
-        int userType = -1;
+        String confirmPassword = txtConfirmPwUser.getText();
 
+        int userType = -1;
         if(techChecker.isSelected()) {
             userType = 2;
         } else if (managerChecker.isSelected()) {
@@ -39,7 +52,7 @@ public class CreateUsersController extends BaseController{
             userType = 3;
         }
 
-        if (username.isEmpty() || name.isEmpty() || confirmPassword.isEmpty() || password.isEmpty() || userType == -1) {
+       /* if (username.isEmpty() || name.isEmpty() || confirmPassword.isEmpty() || password.isEmpty() || userType == -1) {
             saveUser.setDisable(true);
         } else if (!password.equals(confirmPassword)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -50,7 +63,21 @@ public class CreateUsersController extends BaseController{
             saveUser.setDisable(true);
         } else {
             saveUser.setDisable(false);
+        }*/
+
+        String salt = BCrypt.gensalt(10);
+        String hashedPassword1 = BCrypt.hashpw(password, salt);
+        String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
+        try {
+            if (hashedPassword1.equals(hashedPassword2)) {
+                userModel.createUser();
+                closeWindow(saveUser);
+            }
+        } catch (Exception e) {
+            displayError(e);
+            e.printStackTrace();
         }
+
 
     }
 
@@ -66,13 +93,5 @@ public class CreateUsersController extends BaseController{
     public void handleCancelWindow(ActionEvent actionEvent) {
         closeWindow(cancel);
     }
-
-    @Override
-    public void setup() throws Exception {
-        userModel = super.getUModel();
-    }
-
-
-
 
 }

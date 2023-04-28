@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/Databasesample.settings" beforeDir="false" afterPath="$PROJECT_DIR$/config/Databasesample.settings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CreateUsersController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +89,7 @@
       <workItem from="1682586211639" duration="1147000" />
       <workItem from="1682610164784" duration="9679000" />
       <workItem from="1682662199651" duration="1979000" />
-      <workItem from="1682666014133" duration="1197000" />
+      <workItem from="1682666014133" duration="3027000" />
     </task>
     <servers />
   </component>
