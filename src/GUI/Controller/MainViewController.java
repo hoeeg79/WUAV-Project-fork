@@ -65,7 +65,7 @@ public class MainViewController extends BaseController implements Initializable 
         try {
             loadLists(super.getCModel());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
@@ -80,7 +80,7 @@ public class MainViewController extends BaseController implements Initializable 
     public void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
-        int tlf = Integer.parseInt(tfCustomerPhonenumber.getText());
+        String tlf = tfCustomerPhonenumber.getText();
         String image = tfCustomerImage.getText();
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
@@ -185,5 +185,11 @@ public class MainViewController extends BaseController implements Initializable 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
         }
+    }
+
+    public void handleDeleteCustomer(ActionEvent actionEvent) {
+    }
+
+    public void handleOpenCustomer(ActionEvent actionEvent) {
     }
 }

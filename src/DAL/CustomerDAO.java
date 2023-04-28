@@ -22,7 +22,7 @@ public class CustomerDAO {
         //Prepare variables from customer in parameter
         String name = customer.getName();
         String email = customer.getEmail();
-        int tlf = customer.getTlf();
+        String tlf = customer.getTlf();
         String picture = "";
         if (customer.getPicture() == null){
             picture = "defaultUser.jpg";
@@ -38,7 +38,7 @@ public class CustomerDAO {
 
             stmt.setString(1, name);
             stmt.setString(2, email);
-            stmt.setInt(3, tlf);
+            stmt.setString(3, tlf);
             stmt.setString(4, picture);
             stmt.setInt(5, customerType);
 
@@ -77,7 +77,7 @@ public class CustomerDAO {
             while(rs.next()){
                 String name = rs.getString("name");
                 String email = rs.getString("email");
-                int tlf = rs.getInt("tlf");
+                String tlf = rs.getString("tlf");
                 String image = rs.getString("image");
                 int customertypeid = rs.getInt("customertypeid");
 
