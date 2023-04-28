@@ -8,10 +8,9 @@
 
 .customerList .list-cell
 {
-
+    -fx-font-size: 20px;
     -fx-background-position: center;
     -fx-background-repeat: stretch;
-    -fx-background-radius: 10;
     -fx-border-width: 1;
-    -fx-pref-width: 180;
+    -fx-pref-width: 160;
 }

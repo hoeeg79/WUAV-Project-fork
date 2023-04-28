@@ -10,14 +10,18 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -29,6 +33,9 @@ import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import static javafx.scene.paint.Color.WHITE;
+import static javafx.scene.text.TextAlignment.CENTER;
 
 
 public class MainViewController extends BaseController implements Initializable {
@@ -95,7 +102,6 @@ public class MainViewController extends BaseController implements Initializable 
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
         String image = tfCustomerImage.getText();
-        if (image == null) image = "resources/defaultUserResize.png";
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
         Customer customer = new Customer(name, email, tlf, image, customerType);
@@ -165,36 +171,26 @@ public class MainViewController extends BaseController implements Initializable 
                     @Override
                     protected void updateItem(Customer customer, boolean empty) {
                         super.updateItem(customer, empty);
-
                         ImageView imageView = new ImageView();
                         Text text = new Text();
-                        getChildren().add(text);
+                        text.setTextAlignment(CENTER);
+                        text.setTranslateY(50);
+                        StackPane stackPane = new StackPane(imageView, text);
+                        setGraphic(stackPane);
                         if (customer == null || empty) {
-                            setText(null);
+                            text.setText(null);
                             setGraphic(null);
-                            setBackground(null);
-                        } else if (customer != null && (!customer.getPicture().isEmpty() || customer.getPicture() != null)) {
+                        } else if (!customer.getPicture().isEmpty()) {
                             File imageFile = new File(customer.getPicture());
                             Image image = new Image(imageFile.toURI().toString());
-
                             imageView.setImage(image);
-                            setGraphic(imageView);
                             text.setText(customer.getName());
                             text.toFront();
                         } else {
-                            Image image = new Image("defaultUserResize.png");
+                            Image image = new Image("defaultUserResize-noBG.png");
                             imageView.setImage(image);
-                            setGraphic(imageView);
-                            setText(customer.getName());
                             text.setText(customer.getName());
                             text.toFront();
-//                            setBackground(new Background(new BackgroundImage(
-//                                    new Image("defaultUserResize.png"),
-//                                    BackgroundRepeat.NO_REPEAT,
-//                                    BackgroundRepeat.NO_REPEAT,
-//                                    BackgroundPosition.CENTER,
-//                                    BackgroundSize.DEFAULT
-//                            )));
                         }
                     }
                 };
@@ -207,7 +203,7 @@ public class MainViewController extends BaseController implements Initializable 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image File");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*jpeg", "*.gif"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
