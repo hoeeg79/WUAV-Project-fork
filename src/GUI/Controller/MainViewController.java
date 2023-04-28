@@ -165,18 +165,17 @@ public class MainViewController extends BaseController implements Initializable 
                     @Override
                     protected void updateItem(Customer customer, boolean empty) {
                         super.updateItem(customer, empty);
-
                         ImageView imageView = new ImageView();
                         Text text = new Text();
                         getChildren().add(text);
                         if (customer == null || empty) {
                             setText(null);
+                            text.setText(null);
                             setGraphic(null);
                             setBackground(null);
-                        } else if (customer != null && (!customer.getPicture().isEmpty() || customer.getPicture() != null)) {
+                        } else if (!customer.getPicture().isEmpty()) {
                             File imageFile = new File(customer.getPicture());
                             Image image = new Image(imageFile.toURI().toString());
-
                             imageView.setImage(image);
                             setGraphic(imageView);
                             text.setText(customer.getName());
@@ -185,16 +184,8 @@ public class MainViewController extends BaseController implements Initializable 
                             Image image = new Image("defaultUserResize.png");
                             imageView.setImage(image);
                             setGraphic(imageView);
-                            setText(customer.getName());
                             text.setText(customer.getName());
                             text.toFront();
-//                            setBackground(new Background(new BackgroundImage(
-//                                    new Image("defaultUserResize.png"),
-//                                    BackgroundRepeat.NO_REPEAT,
-//                                    BackgroundRepeat.NO_REPEAT,
-//                                    BackgroundPosition.CENTER,
-//                                    BackgroundSize.DEFAULT
-//                            )));
                         }
                     }
                 };
