@@ -1,6 +1,5 @@
 package GUI.Controller;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -17,7 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,10 +25,8 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -144,32 +142,50 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void loadLists(CustomerModel model) throws Exception {
-        prepPrivate();
         lvPriv.setItems(model.getPrivateCustomer());
-
+        prepList(lvPriv);
         lvCorp.setItems(model.getBusinessCustomer());
+        prepList(lvCorp);
         lvGov.setItems(model.getGovernmentCustomer());
+        prepList(lvGov);
     }
 
-    private void prepPrivate() {
-        lvPriv.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
+    private void prepList(ListView listView) {
+        listView.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
             @Override
-            public ListCell call(ListView<Customer> param) {
-                return new ListCell() {
-                    ImageView imageView = new ImageView();
-
+            public ListCell<Customer> call(ListView<Customer> listView) {
+                return new ListCell<Customer>() {
                     @Override
-                    public void updateItem(Customer customer, boolean empty) {
+                    protected void updateItem(Customer customer, boolean empty) {
                         super.updateItem(customer, empty);
-                        if (customer != null && customer.getPicture() == null) {
-                            setText(customer.getName());
-                            Image image = new Image("resources/defaultUser.jpg");
+
+                        ImageView imageView = new ImageView();
+                        Text text = new Text();
+                        getChildren().add(text);
+                        if (customer == null || empty) {
+                            setText(null);
+                            setGraphic(null);
+                            setBackground(null);
+                        } else if (customer != null && (customer.getPicture() != "" || customer.getPicture() != null)) {
+                            File imageFile = new File(customer.getPicture());
+                            Image image = new Image(imageFile.toURI().toString());
                             imageView.setImage(image);
                             setGraphic(imageView);
-                        } else if (customer != null && customer.getPicture() != null) {
-                            setText(customer.getName());
-                            Image image = new Image(customer.getPicture());
+                            text.setText(customer.getName());
+                            text.toFront();
+                        } else {
+                            Image image = new Image("defaultUserResize.png");
                             imageView.setImage(image);
+                            setGraphic(imageView);
+                            text.setText(customer.getName());
+                            text.toFront();
+//                            setBackground(new Background(new BackgroundImage(
+//                                    new Image("defaultUserResize.png"),
+//                                    BackgroundRepeat.NO_REPEAT,
+//                                    BackgroundRepeat.NO_REPEAT,
+//                                    BackgroundPosition.CENTER,
+//                                    BackgroundSize.DEFAULT
+//                            )));
                         }
                     }
                 };
