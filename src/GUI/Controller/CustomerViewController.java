@@ -48,18 +48,23 @@ public class CustomerViewController extends BaseController{
     }
     @FXML
     private void handleSave(ActionEvent actionEvent) {
-        btnEditCustomer.setDisable(false);
-        lockFieldsAndButtons();
-
-        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
         try{
+            btnEditCustomer.setDisable(false);
+            lockFieldsAndButtons();
+
             String name = tfCustomerName.getText();
             String email = tfCustomerEmail.getText();
             String phoneNumber = tfCustomerPhoneNumber.getText();
             String pictureFP = tfPictureFilepath.getText();
+            int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
-            
+            customer.setName(name);
+            customer.setEmail(email);
+            customer.setTlf(phoneNumber);
+            customer.setPicture(pictureFP);
+            customer.setCustomerType(customerType);
 
+            super.getCModel().updateCustomer(customer);
         }catch (Exception e){
             displayError(e);
             e.printStackTrace();

@@ -39,4 +39,8 @@ public class FacadeDAL {
     public List<User> getUsers() throws SQLException {
         return usersDAO.returnUsers();
     }
+
+    public void updateCustomer(Customer c) throws Exception{
+        customerDAO.updateCustomer(c);
+    }
 }

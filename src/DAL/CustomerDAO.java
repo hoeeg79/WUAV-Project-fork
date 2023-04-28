@@ -113,4 +113,22 @@ public class CustomerDAO {
             throw new SQLException(e);
         }
     }
+
+    public void updateCustomer(Customer customer) throws SQLException{
+        try(Connection conn = dbc.getConnection()){
+
+            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, image=?, customertypeid=? WHERE ID=?;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, customer.getName());
+            pstmt.setString(2, customer.getEmail());
+            pstmt.setString(3, customer.getTlf());
+            pstmt.setString(4, customer.getPicture());
+            pstmt.setInt(5, customer.getCustomerType());
+
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            throw new SQLException("Could not update customer", e);
+        }
+    }
 }
