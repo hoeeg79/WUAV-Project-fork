@@ -95,6 +95,7 @@ public class MainViewController extends BaseController implements Initializable 
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
         String image = tfCustomerImage.getText();
+        if (image == null) image = "resources/defaultUserResize.png";
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
         Customer customer = new Customer(name, email, tlf, image, customerType);
@@ -172,7 +173,7 @@ public class MainViewController extends BaseController implements Initializable 
                             setText(null);
                             setGraphic(null);
                             setBackground(null);
-                        } else if (customer != null && (customer.getPicture() != "" || customer.getPicture() != null)) {
+                        } else if (customer != null && (!customer.getPicture().isEmpty() || customer.getPicture() != null)) {
                             File imageFile = new File(customer.getPicture());
                             Image image = new Image(imageFile.toURI().toString());
 
