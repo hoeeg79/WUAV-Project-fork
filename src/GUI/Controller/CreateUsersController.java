@@ -35,9 +35,8 @@ public class CreateUsersController extends BaseController{
     public void setup() throws Exception {
         super.setUModel(new UsersModel());
         insertIntoTable();
-       // btnSaveUser.setDisable(true);
+        btnSaveUser.setDisable(true);
         beGoneButton();
-        enableTheButtons();
     }
 
     private void beGoneButton(){
@@ -47,56 +46,73 @@ public class CreateUsersController extends BaseController{
             } else {
                 txtInUsernameField = false;
             }
+            enableTheButtons();
         });
+
         txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtInNameField = true;
             } else {
                 txtInNameField = false;
             }
+            enableTheButtons();
         });
+
         txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtInPasswordField = true;
             } else {
                 txtInPasswordField = false;
             }
+            enableTheButtons();
         });
+
         txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtInConfirmField = true;
             } else {
                 txtInConfirmField = false;
             }
+            enableTheButtons();
         });
 
         techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+            if (newValue) {
                 checkerTechField = true;
+                managerChecker.setSelected(false);
+                salesChecker.setSelected(false);
             } else {
                 checkerTechField = false;
             }
+            enableTheButtons();
         });
         managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+            if (newValue) {
                 checkerManagerField = true;
+                techChecker.setSelected(false);
+                salesChecker.setSelected(false);
             } else {
                 checkerManagerField = false;
             }
+            enableTheButtons();
         });
         salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                checkerSalesField = true;
+            if (newValue) {
+                salesChecker.setSelected(true);
+                managerChecker.setSelected(false);
+                techChecker.setSelected(false);
             } else {
                 checkerSalesField = false;
             }
+            enableTheButtons();
         });
-
     }
 
     private void enableTheButtons() {
-        if (checkerSalesField && checkerManagerField && checkerTechField && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
+        if ((checkerSalesField || checkerManagerField || checkerTechField) && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
             btnSaveUser.setDisable(false);
+        } else {
+            btnSaveUser.setDisable(true);
         }
     }
 
@@ -145,7 +161,7 @@ public class CreateUsersController extends BaseController{
     }
 
     private void insertIntoTable(){
-        userscln.setCellValueFactory(new PropertyValueFactory<>("Users"));
+        userscln.setCellValueFactory(new PropertyValueFactory<>("name"));
         userList.getColumns().addAll();
         userList.setItems(super.getUModel().getObservableUsers());
     }
