@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller/CustomerViewController.java" afterDir="false" />
-    </list>
+    <list default="true" id="ca34cf1f-7bb8-4eea-a037-bd85db8577d3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +84,7 @@
       <workItem from="1682578262036" duration="510000" />
       <workItem from="1682579263693" duration="3004000" />
       <workItem from="1682586211639" duration="1147000" />
-      <workItem from="1682610164784" duration="9372000" />
+      <workItem from="1682610164784" duration="9679000" />
     </task>
     <servers />
   </component>
