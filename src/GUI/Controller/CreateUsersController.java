@@ -68,9 +68,11 @@ public class CreateUsersController extends BaseController{
         String salt = BCrypt.gensalt(10);
         String hashedPassword1 = BCrypt.hashpw(password, salt);
         String hashedPassword2 = BCrypt.hashpw(confirmPassword, salt);
+
         try {
             if (hashedPassword1.equals(hashedPassword2)) {
-                userModel.createUser();
+                User u = new User(username, password, name, , );
+                userModel.createUser(new User());
                 closeWindow(saveUser);
             }
         } catch (Exception e) {
