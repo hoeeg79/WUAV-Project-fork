@@ -17,6 +17,9 @@ public class CustomerDAO {
         dbc = new DBConnector();
     }
 
+    /**
+     * A method that uses an SQL string to create a new user in our database.
+     */
     public Customer createCustomer(Customer customer) throws SQLException {
 
         //Prepare variables from customer in parameter
@@ -60,6 +63,10 @@ public class CustomerDAO {
     }
 
 
+    /**
+     * A method that retrieves all active customers from our database, and organize them by type.
+     * Returns a map where the keys are customer types, and values are lists of customers for that type.
+     */
     public Map<Integer, List<Customer>> returnCustomersByType() throws Exception {
         //Create a map to store lists of customers by type
         Map<Integer, List<Customer>> customersByType = new HashMap<>();
@@ -101,6 +108,10 @@ public class CustomerDAO {
         return customersByType;
     }
 
+    /**
+     * A method that uses an SQL string to update a user from our database, changing the bit value from 0 to 1.
+     * Making the user not show up in our view anymore.
+     */
     public void deleteCustomer(Customer customer) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
 
@@ -115,6 +126,9 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * A method that uses an SQL string to update the specified data of our specified user.
+     */
     public void updateCustomer(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
 
