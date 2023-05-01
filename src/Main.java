@@ -1,4 +1,5 @@
 import GUI.Controller.CreateUsersController;
+import GUI.Controller.LoginController;
 import GUI.Controller.MainViewController;
 import GUI.Model.CustomerModel;
 import javafx.application.Application;
@@ -12,13 +13,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI/View/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI/View/LoginView.fxml"));
         Parent root = loader.load();
-
-        MainViewController controller = loader.getController();
-        controller.setCModel(new CustomerModel());
-        controller.setup();
-
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Main View");
