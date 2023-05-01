@@ -12,7 +12,7 @@ public class CustomerSearch {
 
         for(Customer customer: search){
 
-            if(compareName(searchQuery, customer) || compareEmail(searchQuery, customer) || compareTlf(searchQuery, customer)){
+            if(compareName(searchQuery, customer) || compareTlf(searchQuery, customer)){
                 matchingCustomers.add(customer);
         }
     }
@@ -21,10 +21,6 @@ public class CustomerSearch {
 
     private boolean compareName(String searchQuery, Customer customer){
         return customer.getName().toLowerCase().contains(searchQuery.toLowerCase());
-    }
-
-    private boolean compareEmail(String searchQuery, Customer customer){
-        return customer.getEmail().toLowerCase().contains(searchQuery.toLowerCase());
     }
 
     private boolean compareTlf(String searchQuery, Customer customer){

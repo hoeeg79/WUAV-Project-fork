@@ -84,6 +84,7 @@ public class MainViewController extends BaseController implements Initializable 
         try {
             loadLists(super.getCModel());
             searchBar();
+
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -168,9 +169,9 @@ public class MainViewController extends BaseController implements Initializable 
             try{
                 super.getCModel().customerSearch(newValue);
             } catch (Exception e){
+                e.printStackTrace();
                 displayError(e);
             }
-
         }));
     }
 
