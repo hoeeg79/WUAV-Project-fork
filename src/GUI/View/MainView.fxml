@@ -61,13 +61,11 @@
       <Label layoutX="353.0" layoutY="411.0" text="Corporate Customers" />
       <Label layoutX="353.0" layoutY="604.0" text="Government Customers" />
       <Button fx:id="btnCreateUsers" layoutX="1321.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" />
-
-      <ListView fx:id="lvPriv" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="140.0" prefWidth="1024.0" styleClass="customerList" />
-      <ListView fx:id="lvCorp" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="140.0" prefWidth="1024.0" styleClass="customerList" />
-      <ListView fx:id="lvGov" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="140.0" prefWidth="1024.0" styleClass="customerList" />
-      <Button fx:id="btnDeleteCustomer" layoutX="114.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" text="Delete Customer" AnchorPane.bottomAnchor="468.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="407.0" />
-      <Button fx:id="btnOpenCustomer" layoutX="116.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleOpenCustomer" text="Open Customer" AnchorPane.leftAnchor="116.0" AnchorPane.topAnchor="450.0" />
-
+      <ListView fx:id="lvPriv" layoutX="356.0" layoutY="239.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <ListView fx:id="lvCorp" layoutX="355.0" layoutY="431.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <ListView fx:id="lvGov" layoutX="357.0" layoutY="621.0" nodeOrientation="LEFT_TO_RIGHT" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="1024.0" styleClass="customerList" />
+      <Button fx:id="btnDeleteCustomer" layoutX="114.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="26.0" prefWidth="111.0" text="Delete Customer" />
+      <Button fx:id="btnOpenCustomer" layoutX="116.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleOpenCustomer" text="Open Customer" />
 
    </children>
 </AnchorPane>
