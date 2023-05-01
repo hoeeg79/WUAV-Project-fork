@@ -1,5 +1,6 @@
 package DAL;
 
+import BE.Customer;
 import BE.User;
 import DAL.DatabaseConnector.DBConnector;
 
@@ -100,4 +101,23 @@ public class UsersDAO {
         }
         return allUsers;
     }
+
+    public void updateUser(User user) throws SQLException{
+        try(Connection conn = dbConnector.getConnection()){
+
+            String sql = "UPDATE [User] SET password=?, name=?, usertypeID=? WHERE id=?;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, user.getPassword());
+            pstmt.setString(2, user.getName());
+            pstmt.setInt(3, user.getUserType());
+            pstmt.setInt(4, user.getId());
+
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            throw new SQLException("Could not update user", e);
+        }
+    }
+
+
 }

@@ -43,4 +43,8 @@ public class FacadeDAL {
     public void updateCustomer(Customer c) throws SQLException{
         customerDAO.updateCustomer(c);
     }
+
+    public void updateUser(User user) throws SQLException {
+        usersDAO.updateUser(user);
+    }
 }
