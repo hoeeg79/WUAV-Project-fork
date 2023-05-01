@@ -11,18 +11,30 @@ import java.util.Map;
 public class UsersManager {
     private FacadeDAL facadeDAL;
 
+    /**
+     * Constructor for the UsersManager class. It creates a new instance of FacadeDAL.
+     */
     public UsersManager() throws Exception {
         facadeDAL = new FacadeDAL();
     }
 
+    /**
+     * A method that takes in a user object and users facadeDAL to create a new user in the database
+     */
     public User createUser(User user) throws SQLException {
         return facadeDAL.createUser(user);
     }
 
+    /**
+     * A method that uses facadeDAL to retrieve all users from our database, and return them as a list.
+     */
     public List<User> getUsers() throws Exception {
         return facadeDAL.getUsers();
     }
 
+    /**
+     * A method that takes in a user object and users facadeDAL to delete a user in the database
+     */
     public void deleteUser(User user) throws SQLException {
         facadeDAL.deleteUser(user);
     }
