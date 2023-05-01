@@ -1,5 +1,6 @@
 package GUI.Model;
 
+import BE.Customer;
 import BE.User;
 import BLL.UsersManager;
 import javafx.collections.FXCollections;
@@ -31,5 +32,11 @@ public class UsersModel {
     public ObservableList<User> getObservableUsers() {
         return userList;
     }
+
+    public void updateUser(User user) throws SQLException {
+        usersManager.updateUser(user);
+    }
+
 }
+
 

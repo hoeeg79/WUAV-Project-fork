@@ -57,4 +57,9 @@ public class FacadeDAL {
     public User login(String username) throws SQLServerException {
         return loginDAO.login(username);
     }
+
+    public void updateUser(User user) throws SQLException {
+        usersDAO.updateUser(user);
+
+    }
 }

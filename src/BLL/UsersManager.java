@@ -26,4 +26,9 @@ public class UsersManager {
     public void deleteUser(User user) throws SQLException {
         facadeDAL.deleteUser(user);
     }
+
+    public void updateUser(User user) throws SQLException {
+        facadeDAL.updateUser(user);
+    }
+
 }
