@@ -1,6 +1,7 @@
 package GUI.Model;
 
 import BE.TechDoc;
+import BE.User;
 import BLL.TechDocManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,5 +19,9 @@ public class TechDocModel {
     public void createTechDoc(TechDoc techDoc) throws SQLException {
         TechDoc newDoc = techDocManager.createTechDoc(techDoc);
         techDocList.add(newDoc);
+    }
+
+    public void addTech(TechDoc techDoc, User user) throws SQLException {
+        techDocManager.addTech(techDoc, user);
     }
 }

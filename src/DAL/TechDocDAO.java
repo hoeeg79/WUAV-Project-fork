@@ -2,7 +2,9 @@ package DAL;
 
 import BE.Customer;
 import BE.TechDoc;
+import BE.User;
 import DAL.DatabaseConnector.DBConnector;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 
@@ -44,6 +46,21 @@ public class TechDocDAO {
             return returnDoc;
 
         } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void addTech(TechDoc techDoc, User user) throws SQLException {
+        String sql = "INSERT INTO TechDoc VALUES(?,?);";
+
+        try(Connection conn = dbc.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e){
             throw new SQLException(e);
         }
     }

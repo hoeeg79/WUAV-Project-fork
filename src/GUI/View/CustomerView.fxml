@@ -74,5 +74,24 @@
             <Image url="@/Photatoes/logo.png" />
          </image>
       </ImageView>
+      <Pane fx:id="addTechMenu" layoutX="610.0" prefWidth="624.0" stylesheets="@CustomerView.css" visible="false">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="791.0" prefWidth="610.0" spacing="20.0">
+               <children>
+                  <Label text="Technicians" textFill="WHITE" />
+                  <ListView fx:id="lvTechs" maxHeight="300.0" maxWidth="500.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleAddTechMenu" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#handleCancelAddTechMenu" text="Cancel" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="100.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

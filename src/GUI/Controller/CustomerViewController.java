@@ -2,20 +2,32 @@ package GUI.Controller;
 
 import BE.Customer;
 import BE.TechDoc;
+import BE.User;
 import GUI.Model.CustomerModel;
+import GUI.Model.UsersModel;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CustomerViewController extends BaseController{
+    @FXML
+    private Pane addTechMenu;
+    @FXML
+    private ListView lvTechs;
     @FXML
     private Button btnAddTech;
     @FXML
@@ -45,14 +57,20 @@ public class CustomerViewController extends BaseController{
     @FXML
     private TextField tfCustomerPhoneNumber;
     private Customer customer;
+    private User user;
 
     @Override
     public void setup() throws Exception {
         lockFieldsAndButtons();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         fillFields();
+        fillTechs();
         super.setCModel(new CustomerModel());
     }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @FXML
     private void handleSave(ActionEvent actionEvent) {
         try{
@@ -156,14 +174,11 @@ public class CustomerViewController extends BaseController{
         this.customer = customer;
     }
 
-//    private void openSelection() {
-//        lvTechDocs.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-//            openTechDocEditor(btnCreateCustomer, newValue);
-//        }));
-//    }
-
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
+            if (techDoc == null) {
+                addTech(techDoc, user);
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/TechDocEditor.fxml"));
             Parent root = loader.load();
 
@@ -185,6 +200,15 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    private void addTech(TechDoc techDoc, User user) {
+        try {
+            super.getTModel().addTech(techDoc, user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            displayError(e);
+        }
+    }
+
     @FXML
     private void handleCreateNew(ActionEvent actionEvent) {
         openTechDocEditor(btnCreateNewTech, null);
@@ -196,6 +220,45 @@ public class CustomerViewController extends BaseController{
         openTechDocEditor(btnEditTechDoc, techDoc);
     }
 
-    public void handleAddTech(ActionEvent actionEvent) {
+    private void techMenu(){
+        if (addTechMenu.isVisible()) {
+            TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
+            slideOut.setToX(btnAddTech.getScene().getWidth());
+            slideOut.setOnFinished(e -> addTechMenu.setVisible(false));
+            slideOut.play();
+        } else {
+            addTechMenu.setTranslateX(btnAddTech.getScene().getWidth());
+            addTechMenu.toFront();
+            addTechMenu.setVisible(true);
+
+            TranslateTransition slideIn = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
+            slideIn.setToX(btnAddTech.getScene().getWidth() - addTechMenu.getWidth());
+            slideIn.play();
+        }
+    }
+
+    @FXML
+    private void handleAddTech(ActionEvent actionEvent) {
+        techMenu();
+    }
+
+    private void fillTechs(){
+        ObservableList<User> allUserList = super.getUModel().getObservableUsers();
+        ObservableList<User> techList = FXCollections.observableArrayList();
+        for (int i = 0; i < allUserList.size()-1; i++) {
+            if (allUserList.get(i).getUserType() == 2){
+                techList.add(allUserList.get(i));
+            }
+        }
+        lvTechs.setItems(techList);
+    }
+
+    @FXML
+    private void handleAddTechMenu(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void handleCancelAddTechMenu(ActionEvent actionEvent) {
+        techMenu();
     }
 }
