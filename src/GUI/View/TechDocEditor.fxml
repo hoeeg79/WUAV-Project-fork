@@ -17,7 +17,7 @@
             <VBox alignment="BOTTOM_CENTER" prefHeight="400.0" prefWidth="0.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button mnemonicParsing="false" text="PDF" />
-                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Save" />
+                  <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
                   <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Finalize" />
                   <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close" />
                   <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" text="Draw">
@@ -44,11 +44,11 @@
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label text="Title" />
-                  <TextField />
+                  <TextField fx:id="tfTitle" promptText="Name of document" />
                   <Label layoutX="10.0" layoutY="10.0" text="Setup Description" />
-                  <TextArea prefHeight="198.0" prefWidth="325.0" />
+                  <TextArea fx:id="taSetupDescription" prefHeight="198.0" prefWidth="325.0" />
                   <Label layoutX="10.0" layoutY="52.0" text="Device/Logon info" />
-                  <TextArea layoutX="10.0" layoutY="69.0" prefHeight="200.0" prefWidth="351.0" />
+                  <TextArea fx:id="taDeviceInfo" layoutX="10.0" layoutY="69.0" prefHeight="200.0" prefWidth="351.0" />
                </children></VBox>
          </children>
       </HBox>

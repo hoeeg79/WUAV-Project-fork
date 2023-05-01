@@ -17,6 +17,10 @@ import java.io.File;
 
 public class CustomerViewController extends BaseController{
     @FXML
+    private Button btnCreateNewTech;
+    @FXML
+    private Button btnEditTechDoc;
+    @FXML
     private ListView<TechDoc> lvTechDocs;
     @FXML
     private Button btnHome;
@@ -72,6 +76,13 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    @FXML
+    private void handleCancel(ActionEvent actionEvent) {
+        btnEditCustomer.setDisable(false);
+        fillFields();
+        lockFieldsAndButtons();
+    }
+
     private void lockFieldsAndButtons() {
         tfCustomerEmail.setDisable(true);
         tfCustomerPhoneNumber.setDisable(true);
@@ -92,13 +103,6 @@ public class CustomerViewController extends BaseController{
     }
 
 
-
-    @FXML
-    private void handleCancel(ActionEvent actionEvent) {
-        btnEditCustomer.setDisable(false);
-        fillFields();
-        lockFieldsAndButtons();
-    }
 
     @FXML
     private void handleEdit(ActionEvent actionEvent) {
@@ -175,5 +179,16 @@ public class CustomerViewController extends BaseController{
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void handleCreateNew(ActionEvent actionEvent) {
+        openTechDocEditor(btnCreateNewTech, null);
+    }
+
+    @FXML
+    private void handleEditTechDoc(ActionEvent actionEvent) {
+        TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+        openTechDocEditor(btnEditTechDoc, techDoc);
     }
 }

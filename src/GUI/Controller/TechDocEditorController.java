@@ -9,8 +9,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 public class TechDocEditorController extends BaseController{
+    @FXML
+    private TextArea taDeviceInfo;
+    @FXML
+    private TextArea taSetupDescription;
+    @FXML
+    private TextField tfTitle;
     @FXML
     private Button btnClose;
     private TechDoc techDoc;
@@ -18,6 +25,10 @@ public class TechDocEditorController extends BaseController{
 
     @Override
     public void setup() throws Exception {
+        fillFields();
+    }
+
+    private void fillFields() {
 
     }
 
@@ -33,6 +44,10 @@ public class TechDocEditorController extends BaseController{
         Stage currentStage = (Stage) btnClose.getScene().getWindow();
         currentStage.setScene(new Scene(root));
         currentStage.show();
+    }
+
+    @FXML
+    private void handleSave(ActionEvent actionEvent) {
     }
 
     public void setTechDoc(TechDoc techDoc) {

@@ -58,8 +58,8 @@
                         <ListView fx:id="lvTechDocs" prefHeight="532.0" prefWidth="404.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Create New" />
-                              <Button mnemonicParsing="false" text="Edit" />
+                              <Button fx:id="btnCreateNewTech" mnemonicParsing="false" text="Create New" onAction="#handleCreateNew" />
+                              <Button fx:id="btnEditTechDoc" mnemonicParsing="false" text="Edit" onAction="#handleEditTechDoc" />
                            </children>
                         </HBox>
                      </children>
