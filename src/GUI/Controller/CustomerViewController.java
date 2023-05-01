@@ -17,6 +17,8 @@ import java.io.File;
 
 public class CustomerViewController extends BaseController{
     @FXML
+    private Button btnAddTech;
+    @FXML
     private Button btnCreateNewTech;
     @FXML
     private Button btnEditTechDoc;
@@ -192,5 +194,8 @@ public class CustomerViewController extends BaseController{
     private void handleEditTechDoc(ActionEvent actionEvent) {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
         openTechDocEditor(btnEditTechDoc, techDoc);
+    }
+
+    public void handleAddTech(ActionEvent actionEvent) {
     }
 }
