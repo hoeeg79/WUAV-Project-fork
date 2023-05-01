@@ -176,7 +176,7 @@ public class CreateUsersController extends BaseController{
 
     private boolean checkThatHoe(){
         for (User user : userList.getItems()) {
-            if (txtUsernameUser.equals(user.getUsername())){
+            if (txtUsernameUser.getText().equals(user.getUsername())){
                 return true;
             }
         }
