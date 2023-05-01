@@ -158,17 +158,18 @@ public class CustomerViewController extends BaseController{
 
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/TechDocEditor.fxml"));
             Parent root = loader.load();
 
             TechDocEditorController controller = loader.getController();
-            controller.setTechDoc(techDoc);
-            controller.setup();
+            if (techDoc != null) {
+                controller.setTechDoc(techDoc);
+            }
+            controller.setCustomer(customer);
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
             currentStage.show();
-            //Skal vi åbne et nyt vindue, og lade det andet være brugbart samtidigt?
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
