@@ -3,6 +3,7 @@ package DAL;
 import BE.Customer;
 import BE.TechDoc;
 import BE.User;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,11 +13,13 @@ public class FacadeDAL {
     private CustomerDAO customerDAO;
     private UsersDAO usersDAO;
     private TechDocDAO techDocDAO;
+    private LoginDAO loginDAO;
 
     public FacadeDAL() throws Exception {
         customerDAO = new CustomerDAO();
         usersDAO = new UsersDAO();
         techDocDAO = new TechDocDAO();
+        loginDAO = new LoginDAO();
     }
 
     public Customer createCustomer(Customer customer) throws SQLException {
@@ -49,5 +52,9 @@ public class FacadeDAL {
 
     public TechDoc createTechDoc(TechDoc techDoc) throws SQLException {
         return techDocDAO.createTechDoc(techDoc);
+    }
+
+    public User login(String username) throws SQLServerException {
+        return loginDAO.login(username);
     }
 }

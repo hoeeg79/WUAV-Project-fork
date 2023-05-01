@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.User;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -73,6 +74,7 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private Pane createCustomerMenu;
     private Customer selectedCustomer;
+    private User user;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,6 +91,10 @@ public class MainViewController extends BaseController implements Initializable 
         clearCustomerMenu();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         changeSelectedCustomer();
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     @FXML
