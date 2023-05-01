@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.Customer;
 import BE.TechDoc;
+import GUI.Model.TechDocModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,9 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.sql.SQLException;
+
 public class TechDocEditorController extends BaseController{
     @FXML
     private TextArea taDeviceInfo;
@@ -22,14 +26,11 @@ public class TechDocEditorController extends BaseController{
     private Button btnClose;
     private TechDoc techDoc;
     private Customer customer;
+    private boolean isEdit;
 
     @Override
     public void setup() throws Exception {
-        fillFields();
-    }
-
-    private void fillFields() {
-
+        super.setTModel(new TechDocModel());
     }
 
     @FXML
@@ -47,11 +48,34 @@ public class TechDocEditorController extends BaseController{
     }
 
     @FXML
-    private void handleSave(ActionEvent actionEvent) {
+    private void handleSave(ActionEvent actionEvent) throws SQLException {
+        if (isEdit) {
+            doEditOfDoc();
+        } else {
+            saveNewDoc();
+        }
     }
 
-    public void setTechDoc(TechDoc techDoc) {
+    private void saveNewDoc() throws SQLException {
+        TechDoc newDoc = new TechDoc(tfTitle.getText());
+        newDoc.setSetupDescription(taSetupDescription.getText());
+        newDoc.setDeviceLoginInfo(taDeviceInfo.getText());
+        getTModel().createTechDoc(newDoc);
+    }
+
+    private void doEditOfDoc() {
+    }
+
+    public void setIsEdit(TechDoc techDoc) {
         this.techDoc = techDoc;
+        isEdit = true;
+        fillFields();
+    }
+
+    private void fillFields() {
+        taSetupDescription.setText(techDoc.getSetupDescription());
+        taDeviceInfo.setText(techDoc.getDeviceLoginInfo());
+        tfTitle.setText(techDoc.getSetupName());
     }
 
     public void setCustomer(Customer customer) {

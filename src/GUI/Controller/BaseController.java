@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BLL.CustomerManager;
 import GUI.Model.CustomerModel;
+import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ public abstract class BaseController {
     private CustomerModel CModel;
 
     private UsersModel UModel;
+    private TechDocModel TModel;
 
     public abstract void setup() throws Exception;
 
@@ -29,6 +31,14 @@ public abstract class BaseController {
 
     public UsersModel getUModel() {
         return UModel;
+    }
+
+    public TechDocModel getTModel() {
+        return TModel;
+    }
+
+    public void setTModel(TechDocModel TModel) {
+        this.TModel = TModel;
     }
 
     public void displayError(Throwable t) {

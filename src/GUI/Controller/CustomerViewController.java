@@ -154,11 +154,11 @@ public class CustomerViewController extends BaseController{
         this.customer = customer;
     }
 
-    private void openSelection() {
-        lvTechDocs.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            openTechDocEditor(btnCreateCustomer, newValue);
-        }));
-    }
+//    private void openSelection() {
+//        lvTechDocs.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+//            openTechDocEditor(btnCreateCustomer, newValue);
+//        }));
+//    }
 
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
@@ -167,16 +167,18 @@ public class CustomerViewController extends BaseController{
 
             TechDocEditorController controller = loader.getController();
             if (techDoc != null) {
-                controller.setTechDoc(techDoc);
+                controller.setIsEdit(techDoc);
             }
             controller.setCustomer(customer);
+            controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
             currentStage.show();
 
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load TechDocEditor.fxml");
             alert.showAndWait();
         }
     }

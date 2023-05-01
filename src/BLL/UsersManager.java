@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UsersManager {
-    private FacadeDAL facadeDAL;
+    private final FacadeDAL facadeDAL;
 
     public UsersManager() throws Exception {
         facadeDAL = new FacadeDAL();
