@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
+<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -58,8 +58,9 @@
                         <ListView fx:id="lvTechDocs" prefHeight="532.0" prefWidth="404.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="btnCreateNewTech" mnemonicParsing="false" text="Create New" onAction="#handleCreateNew" />
-                              <Button fx:id="btnEditTechDoc" mnemonicParsing="false" text="Edit" onAction="#handleEditTechDoc" />
+                              <Button fx:id="btnCreateNewTech" mnemonicParsing="false" onAction="#handleCreateNew" text="Create New" />
+                              <Button fx:id="btnEditTechDoc" mnemonicParsing="false" onAction="#handleEditTechDoc" text="Edit" />
+                              <Button fx:id="btnAddTech" mnemonicParsing="false" onAction="#handleAddTech" text="Add Tech" />
                            </children>
                         </HBox>
                      </children>
@@ -73,5 +74,24 @@
             <Image url="@/Photatoes/logo.png" />
          </image>
       </ImageView>
+      <Pane fx:id="addTechMenu" layoutX="610.0" prefWidth="624.0" stylesheets="@CustomerView.css" visible="false">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="791.0" prefWidth="610.0" spacing="20.0">
+               <children>
+                  <Label text="Technicians" textFill="WHITE" />
+                  <ListView fx:id="lvTechs" maxHeight="300.0" maxWidth="500.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleAddTechMenu" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#handleCancelAddTechMenu" text="Cancel" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="100.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

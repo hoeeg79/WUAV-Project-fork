@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
+import GUI.Model.UsersModel;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -259,6 +260,8 @@ public class MainViewController extends BaseController implements Initializable 
 
             CustomerViewController controller = loader.getController();
             controller.setCustomer(customer);
+            controller.setUModel(new UsersModel());
+            controller.setUser(user);
             controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
@@ -268,6 +271,7 @@ public class MainViewController extends BaseController implements Initializable 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load CustomerView.fxml");
             alert.showAndWait();
+            e.printStackTrace();
         }
     }
 

@@ -5,6 +5,7 @@ import GUI.Model.CustomerModel;
 import GUI.Model.LoginModel;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,10 +18,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
-    public TextField tfUsername;
-    public PasswordField tfPassword;
-    public Button btnLogin;
-    public Label lblWarning;
+    @FXML
+    private TextField tfUsername;
+    @FXML
+    private PasswordField tfPassword;
+    @FXML
+    private Button btnLogin;
+    @FXML
+    private Label lblWarning;
     private LoginModel loginModel = new LoginModel();
 
     public LoginController() throws Exception {
