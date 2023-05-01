@@ -61,6 +61,8 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private TextField tfCustomerImage;
     @FXML
+    private TextField tfSearchBar;
+    @FXML
     private Button btnCustomerImage;
     @FXML
     private Button btnCancelCustomer;
@@ -68,8 +70,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnCreateCustomersMenu;
     @FXML
     private Button btnCreateCustomer;
-    @FXML
-    private TextField searchBar;
     @FXML
     private Pane createCustomerMenu;
     private Customer selectedCustomer;
@@ -83,6 +83,7 @@ public class MainViewController extends BaseController implements Initializable 
     public void setup() throws Exception {
         try {
             loadLists(super.getCModel());
+            searchBar();
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -161,6 +162,16 @@ public class MainViewController extends BaseController implements Initializable 
         prepList(lvCorp);
         lvGov.setItems(model.getGovernmentCustomer());
         prepList(lvGov);
+    }
+    private void searchBar() throws Exception{
+        tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
+            try{
+                super.getCModel().customerSearch(newValue);
+            } catch (Exception e){
+                displayError(e);
+            }
+
+        }));
     }
 
     private void prepList(ListView listView) {

@@ -17,6 +17,7 @@ public class CustomerModel {
     private ObservableList<Customer> privateCustomer;
     private ObservableList<Customer> governmentCustomer;
 
+
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();
     }
@@ -69,5 +70,27 @@ public class CustomerModel {
 
     public void updateCustomer(Customer c) throws SQLException {
         customerManager.updateCustomer(c);
+    }
+
+    public void customerSearch(String searchQuery) throws Exception {
+        businessSearch(searchQuery);
+        governmentSearch(searchQuery);
+        privateSearch(searchQuery);
+
+    }
+    private void businessSearch(String searchQuery) throws Exception{
+        List<Customer> searchResult = customerManager.searchCustomer(businessCustomer, searchQuery);
+        businessCustomer.clear();
+        businessCustomer.addAll(searchResult);
+    }
+    private void governmentSearch(String searchQuery) throws Exception{
+        List<Customer> searchResult = customerManager.searchCustomer(governmentCustomer, searchQuery);
+        governmentCustomer.clear();
+        governmentCustomer.addAll(searchResult);
+    }
+    private void privateSearch(String searchQuery) throws Exception{
+        List<Customer> searchResult = customerManager.searchCustomer(privateCustomer, searchQuery);
+        privateCustomer.clear();
+        privateCustomer.addAll(searchResult);
     }
 }

@@ -1,6 +1,7 @@
 package BLL;
 
 import BE.Customer;
+import BLL.util.CustomerSearch;
 import DAL.CustomerDAO;
 import DAL.FacadeDAL;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 
 public class CustomerManager {
     private FacadeDAL facadeDAL;
+    private CustomerSearch customerSearch = new CustomerSearch();
 
     public CustomerManager() throws Exception {
         facadeDAL = new FacadeDAL();
@@ -30,5 +32,9 @@ public class CustomerManager {
 
     public void updateCustomer(Customer c) throws SQLException{
         facadeDAL.updateCustomer(c);
+    }
+    public List<Customer> searchCustomer(List<Customer> customers, String searchQuery) throws Exception{
+        List<Customer> searchRestult = customerSearch.searchCustomers(customers, searchQuery);
+        return searchRestult;
     }
 }
