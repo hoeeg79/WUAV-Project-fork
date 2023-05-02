@@ -4,9 +4,10 @@ import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import DAL.DatabaseConnector.DBConnector;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TechDocDAO {
     private final DBConnector dbc;
@@ -20,8 +21,9 @@ public class TechDocDAO {
         String title = techDoc.getSetupName();
         String setupDescription = techDoc.getSetupDescription();
         String deviceInfo = techDoc.getDeviceLoginInfo();
+        int customerID = techDoc.getCustomerID();
 
-        String sql = "INSERT INTO TechDoc (setupname, setupDescription, deviceLoginInfo) VALUES (?,?,?);";
+        String sql = "INSERT INTO TechDoc (setupname, setupDescription, deviceLoginInfo, CustomerID) VALUES (?,?,?,?);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -29,6 +31,7 @@ public class TechDocDAO {
             stmt.setString(1, title);
             stmt.setString(2, setupDescription);
             stmt.setString(3, deviceInfo);
+            stmt.setInt(4, customerID);
 
             stmt.executeUpdate();
 
@@ -40,7 +43,7 @@ public class TechDocDAO {
                 id = rs.getInt(1);
             }
 
-            TechDoc returnDoc = new TechDoc(id, title);
+            TechDoc returnDoc = new TechDoc(id, title, customerID);
             returnDoc.setSetupDescription(setupDescription);
             returnDoc.setDeviceLoginInfo(deviceInfo);
             return returnDoc;
@@ -63,5 +66,34 @@ public class TechDocDAO {
         } catch (SQLException e){
             throw new SQLException(e);
         }
+    }
+
+    public List<TechDoc> getTechDocs(Customer customer)throws SQLException {
+        ArrayList<TechDoc> techDocs = new ArrayList<>();
+
+        try (Connection conn = dbc.getConnection()) {
+
+            int customerID = customer.getId();
+            String sql = "SELECT * FROM TechDoc WHERE CustomerID=" + customerID + ";";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String setupName = rs.getString("setupname");
+                String setupDescription = rs.getString("setupDescription");
+                String deviceLoginInfo = rs.getString("deviceLoginInfo");
+
+                TechDoc techDoc = new TechDoc(id,setupName,customerID);
+                techDoc.setSetupDescription(setupDescription);
+                techDoc.setDeviceLoginInfo(deviceLoginInfo);
+                techDocs.add(techDoc);
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return techDocs;
     }
 }

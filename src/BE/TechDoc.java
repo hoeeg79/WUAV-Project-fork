@@ -8,14 +8,17 @@ public class TechDoc {
     private String filepathPicture;
     private String extraInfo;
     private String deviceLoginInfo;
+    private int customerID;
 
-    public TechDoc(int id, String setupName) {
+    public TechDoc(int id, String setupName, int customerID) {
         this.id = id;
         this.setupName = setupName;
+        this.customerID = customerID;
     }
 
-    public TechDoc(String setupName) {
+    public TechDoc(String setupName, int customerID) {
         this.setupName = setupName;
+        this.customerID = customerID;
     }
 
     public int getId() {
@@ -64,5 +67,18 @@ public class TechDoc {
 
     public void setDeviceLoginInfo(String deviceLoginInfo) {
         this.deviceLoginInfo = deviceLoginInfo;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    @Override
+    public String toString() {
+        return setupName;
     }
 }

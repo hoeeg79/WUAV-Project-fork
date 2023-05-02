@@ -4,6 +4,7 @@ import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import GUI.Model.TechDocModel;
+import GUI.Model.UsersModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,8 @@ public class TechDocEditorController extends BaseController{
 
         CustomerViewController controller = loader.getController();
         controller.setCustomer(customer);
+        controller.setUModel(new UsersModel());
+        controller.setUser(user);
         controller.setup();
 
         Stage currentStage = (Stage) btnClose.getScene().getWindow();
@@ -60,7 +63,7 @@ public class TechDocEditorController extends BaseController{
     }
 
     private void saveNewDoc() throws SQLException {
-        TechDoc newDoc = new TechDoc(tfTitle.getText());
+        TechDoc newDoc = new TechDoc(tfTitle.getText(), customer.getId());
         newDoc.setSetupDescription(taSetupDescription.getText());
         newDoc.setDeviceLoginInfo(taDeviceInfo.getText());
         techDoc = getTModel().createTechDoc(newDoc);

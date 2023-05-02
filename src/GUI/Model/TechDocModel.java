@@ -1,5 +1,6 @@
 package GUI.Model;
 
+import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import BLL.TechDocManager;
@@ -24,5 +25,10 @@ public class TechDocModel {
 
     public void addTech(TechDoc techDoc, User user) throws SQLException {
         techDocManager.addTech(techDoc, user);
+    }
+
+    public ObservableList<TechDoc> getTechDocs(Customer customer) throws SQLException {
+        techDocList.addAll(techDocManager.getTechDocs(customer));
+        return techDocList;
     }
 }

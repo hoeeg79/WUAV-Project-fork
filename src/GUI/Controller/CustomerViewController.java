@@ -28,7 +28,7 @@ public class CustomerViewController extends BaseController{
     @FXML
     private Pane addTechMenu;
     @FXML
-    private ListView lvTechs;
+    private ListView<User> lvTechs;
     @FXML
     private Button btnAddTech;
     @FXML
@@ -68,6 +68,7 @@ public class CustomerViewController extends BaseController{
         fillTechs();
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
+        lvTechDocs.setItems(super.getTModel().getTechDocs(customer));
     }
     public void setUser(User user) {
         this.user = user;
@@ -188,9 +189,6 @@ public class CustomerViewController extends BaseController{
             controller.setCustomer(customer);
             controller.setUser(user);
             controller.setup();
-//            if (techDoc == null) {
-//                addTech(techDoc, user);
-//            }
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -200,15 +198,6 @@ public class CustomerViewController extends BaseController{
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Could not load TechDocEditor.fxml");
             alert.showAndWait();
-        }
-    }
-
-    private void addTech(TechDoc techDoc, User user) {
-        try {
-            super.getTModel().addTech(techDoc, user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            displayError(e);
         }
     }
 
