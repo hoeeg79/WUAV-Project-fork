@@ -68,8 +68,9 @@ public class CustomerViewController extends BaseController{
         fillTechs();
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
-        lvTechDocs.setItems(super.getTModel().getTechDocs(customer));
+        lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
     }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -161,6 +162,7 @@ public class CustomerViewController extends BaseController{
 
             MainViewController controller = loader.getController();
             controller.setCModel(new CustomerModel());
+            controller.setUser(user);
             controller.setup();
 
             Stage currentStage = (Stage) btnHome.getScene().getWindow();

@@ -13,9 +13,9 @@
       <VBox alignment="CENTER" layoutX="88.0" layoutY="29.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Username" />
-            <TextField fx:id="tfUsername" maxWidth="150.0" />
+            <TextField fx:id="tfUsername" maxWidth="150.0" onKeyPressed="#handleUsernameCheckKey" />
             <Label text="Password" />
-            <PasswordField fx:id="tfPassword" maxWidth="150.0" />
+            <PasswordField fx:id="tfPassword" maxWidth="150.0" onKeyPressed="#handlePasswordCheckKey" />
             <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
             <Label fx:id="lblWarning" alignment="CENTER" prefWidth="200.0" />
          </children>

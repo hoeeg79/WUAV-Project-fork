@@ -22,7 +22,11 @@ public class TechDocManager {
     public void addTech(TechDoc techDoc, User user) throws SQLException {
         facadeDAL.addTech(techDoc, user);
     }
-    public List<TechDoc> getTechDocs(Customer customer) throws SQLException {
-        return facadeDAL.getTechDocs(customer);
+    public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
+        return facadeDAL.getTechDocs(customer, user);
+    }
+
+    public void updateTechDoc(TechDoc techDoc) throws SQLException {
+        facadeDAL.updateTechDoc(techDoc);
     }
 }

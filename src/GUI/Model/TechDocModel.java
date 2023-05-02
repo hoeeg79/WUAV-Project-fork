@@ -27,8 +27,12 @@ public class TechDocModel {
         techDocManager.addTech(techDoc, user);
     }
 
-    public ObservableList<TechDoc> getTechDocs(Customer customer) throws SQLException {
-        techDocList.addAll(techDocManager.getTechDocs(customer));
+    public ObservableList<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
+        techDocList.addAll(techDocManager.getTechDocs(customer, user));
         return techDocList;
+    }
+
+    public void updateTechDoc(TechDoc techDoc) throws SQLException {
+        techDocManager.updateTechDoc(techDoc);
     }
 }

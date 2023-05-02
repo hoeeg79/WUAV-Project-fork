@@ -66,7 +66,11 @@ public class FacadeDAL {
         usersDAO.updateUser(user);
     }
 
-    public List<TechDoc> getTechDocs(Customer customer) throws SQLException {
-        return techDocDAO.getTechDocs(customer);
+    public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
+        return techDocDAO.getTechDocs(customer, user);
+    }
+
+    public void updateTechDoc(TechDoc techDoc) throws SQLException {
+        techDocDAO.updateTechDoc(techDoc);
     }
 }

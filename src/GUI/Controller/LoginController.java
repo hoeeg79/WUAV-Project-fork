@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -55,7 +57,28 @@ public class LoginController {
         }
     }
 
-    public void handleLogin(ActionEvent actionEvent) throws Exception {
+    @FXML
+    private void handleLogin(ActionEvent actionEvent) throws Exception {
         login();
+    }
+    private void checkIfEnter(KeyEvent event) {
+        try {
+            if (event.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        } catch (Exception e) {
+            //displayError(e);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handlePasswordCheckKey(KeyEvent keyEvent) {
+        checkIfEnter(keyEvent);
+    }
+
+    @FXML
+    private void handleUsernameCheckKey(KeyEvent keyEvent) {
+        checkIfEnter(keyEvent);
     }
 }

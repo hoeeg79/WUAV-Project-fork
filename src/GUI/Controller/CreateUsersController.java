@@ -15,35 +15,35 @@ import java.sql.SQLException;
 
 public class CreateUsersController extends BaseController{
     @FXML
-    public TextField txtNameUser;
+    private TextField txtNameUser;
     @FXML
-    public TextField txtUsernameUser;
+    private TextField txtUsernameUser;
     @FXML
-    public TextField txtConfirmPwUser;
+    private PasswordField txtConfirmPwUser;
     @FXML
-    public TextField txtPasswordUser;
+    private PasswordField txtPasswordUser;
     @FXML
-    public Button btnSaveUser;
+    private Button btnSaveUser;
     @FXML
-    public Button deleteUser;
+    private Button deleteUser;
     @FXML
-    public Button cancel;
+    private Button btnClose;
     @FXML
-    public TableView<User> userList;
+    private TableView<User> userList;
     @FXML
-    public RadioButton techChecker;
+    private RadioButton techChecker;
     @FXML
-    public RadioButton salesChecker;
+    private RadioButton salesChecker;
     @FXML
-    public RadioButton managerChecker;
+    private RadioButton managerChecker;
     @FXML
-    public TableColumn userscln;
+    private TableColumn userscln;
     @FXML
-    public Button btnEditUsers;
+    private Button btnEditUsers;
     @FXML
-    public Label passwordLabel;
+    private Label passwordLabel;
     @FXML
-    public Label confirmPasswordLabel;
+    private Label confirmPasswordLabel;
     private boolean txtInUsernameField;
     private boolean txtInNameField;
     private boolean txtInPasswordField;
@@ -251,7 +251,7 @@ public class CreateUsersController extends BaseController{
     }
 
     public void handleCancelWindow(ActionEvent actionEvent) {
-        closeWindow(cancel);
+        closeWindow(btnClose);
     }
 
     private void insertIntoTable(){

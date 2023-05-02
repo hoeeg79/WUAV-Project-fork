@@ -69,13 +69,17 @@ public class TechDocEditorController extends BaseController{
         techDoc = getTModel().createTechDoc(newDoc);
     }
 
-    private void doEditOfDoc() {
+    private void doEditOfDoc() throws SQLException {
+        techDoc.setSetupDescription(taSetupDescription.getText());
+        techDoc.setDeviceLoginInfo(taDeviceInfo.getText());
+        getTModel().updateTechDoc(techDoc);
     }
 
     public void setIsEdit(TechDoc techDoc) {
         this.techDoc = techDoc;
         isEdit = true;
         fillFields();
+        tfTitle.setDisable(true);
     }
 
     private void fillFields() {

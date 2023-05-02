@@ -68,13 +68,15 @@ public class TechDocDAO {
         }
     }
 
-    public List<TechDoc> getTechDocs(Customer customer)throws SQLException {
+    public List<TechDoc> getTechDocs(Customer customer, User user)throws SQLException {
         ArrayList<TechDoc> techDocs = new ArrayList<>();
 
         try (Connection conn = dbc.getConnection()) {
-
+            System.out.println(user.getId());
+            System.out.println(customer.getId());
             int customerID = customer.getId();
-            String sql = "SELECT * FROM TechDoc WHERE CustomerID=" + customerID + ";";
+            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
+                    "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = "+ user.getId() +")";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -95,5 +97,21 @@ public class TechDocDAO {
             throw new SQLException(e);
         }
         return techDocs;
+    }
+
+    public void updateTechDoc(TechDoc techDoc) throws SQLException {
+        String sql = "  UPDATE TechDoc SET setupDescription = ?, deviceLoginInfo = ? WHERE id = ?;";
+
+        try(Connection conn = dbc.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, techDoc.getSetupDescription());
+            stmt.setString(2, techDoc.getDeviceLoginInfo());
+            stmt.setInt(3,techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            throw new SQLException(e);
+        }
     }
 }
