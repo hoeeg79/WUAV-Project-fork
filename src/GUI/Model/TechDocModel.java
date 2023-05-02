@@ -16,9 +16,10 @@ public class TechDocModel {
         techDocList = FXCollections.observableArrayList();
     }
 
-    public void createTechDoc(TechDoc techDoc) throws SQLException {
+    public TechDoc createTechDoc(TechDoc techDoc) throws SQLException {
         TechDoc newDoc = techDocManager.createTechDoc(techDoc);
         techDocList.add(newDoc);
+        return newDoc;
     }
 
     public void addTech(TechDoc techDoc, User user) throws SQLException {

@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.Customer;
 import BE.TechDoc;
+import BE.User;
 import GUI.Model.TechDocModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +27,7 @@ public class TechDocEditorController extends BaseController{
     private Button btnClose;
     private TechDoc techDoc;
     private Customer customer;
+    private User user;
     private boolean isEdit;
 
     @Override
@@ -53,6 +55,7 @@ public class TechDocEditorController extends BaseController{
             doEditOfDoc();
         } else {
             saveNewDoc();
+            addTech(techDoc, user);
         }
     }
 
@@ -60,7 +63,7 @@ public class TechDocEditorController extends BaseController{
         TechDoc newDoc = new TechDoc(tfTitle.getText());
         newDoc.setSetupDescription(taSetupDescription.getText());
         newDoc.setDeviceLoginInfo(taDeviceInfo.getText());
-        getTModel().createTechDoc(newDoc);
+        techDoc = getTModel().createTechDoc(newDoc);
     }
 
     private void doEditOfDoc() {
@@ -80,5 +83,18 @@ public class TechDocEditorController extends BaseController{
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private void addTech(TechDoc techDoc, User user) {
+        try {
+            super.getTModel().addTech(techDoc, user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            displayError(e);
+        }
     }
 }

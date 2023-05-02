@@ -4,6 +4,7 @@ import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import GUI.Model.CustomerModel;
+import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
@@ -66,6 +67,7 @@ public class CustomerViewController extends BaseController{
         fillFields();
         fillTechs();
         super.setCModel(new CustomerModel());
+        super.setTModel(new TechDocModel());
     }
     public void setUser(User user) {
         this.user = user;
@@ -176,9 +178,6 @@ public class CustomerViewController extends BaseController{
 
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
-            if (techDoc == null) {
-                addTech(techDoc, user);
-            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/TechDocEditor.fxml"));
             Parent root = loader.load();
 
@@ -187,7 +186,11 @@ public class CustomerViewController extends BaseController{
                 controller.setIsEdit(techDoc);
             }
             controller.setCustomer(customer);
+            controller.setUser(user);
             controller.setup();
+//            if (techDoc == null) {
+//                addTech(techDoc, user);
+//            }
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.setScene(new Scene(root));
