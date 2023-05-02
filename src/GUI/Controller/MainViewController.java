@@ -308,6 +308,11 @@ public class MainViewController extends BaseController implements Initializable 
             btnCreateCustomersMenu.setVisible(false);
             btnDeleteCustomer.setVisible(false);
             btnCreateUsers.setVisible(false);
+        } else if (user.getUserType() == 1) {
+            btnCreateCustomersMenu.setVisible(false);
+            btnDeleteCustomer.setVisible(false);
+        } else {
+            btnCreateUsers.setVisible(false);
         }
     }
 }
