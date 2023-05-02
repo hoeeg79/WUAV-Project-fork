@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -18,6 +19,8 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
 public class TechDocEditorController extends BaseController{
+    @FXML
+    private Label lblSaveStatus;
     @FXML
     private TextArea taDeviceInfo;
     @FXML
@@ -60,6 +63,7 @@ public class TechDocEditorController extends BaseController{
             saveNewDoc();
             addTech(techDoc, user);
         }
+        lblSaveStatus.setText("Saved successfully");
     }
 
     private void saveNewDoc() throws SQLException {

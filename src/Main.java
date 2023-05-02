@@ -17,7 +17,7 @@ public class Main extends Application {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Main View");
+        primaryStage.setTitle("WUAV Documentation System");
         primaryStage.show();
     }
 }

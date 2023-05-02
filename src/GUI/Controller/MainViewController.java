@@ -42,6 +42,8 @@ import static javafx.scene.text.TextAlignment.CENTER;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
+    private Button btnLogOut;
+    @FXML
     private Button btnOpenCustomer;
     @FXML
     private Button btnDeleteCustomer;
@@ -283,5 +285,19 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
         setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
+    }
+
+    @FXML
+    private void handleLogOut(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) btnLogOut.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/LoginView.fxml"));
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("WUAV Documentation System");
+            stage.show();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 }

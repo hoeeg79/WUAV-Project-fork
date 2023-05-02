@@ -68,12 +68,46 @@ public class TechDocDAO {
         }
     }
 
-    public List<TechDoc> getTechDocs(Customer customer, User user)throws SQLException {
+    public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
+        if (user.getUserType() == 2) {
+            return getSpecificTechDocs(customer,user);
+        } else {
+            return getAllTechDocs(customer);
+        }
+    }
+
+    private List<TechDoc> getAllTechDocs(Customer customer) throws SQLException {
         ArrayList<TechDoc> techDocs = new ArrayList<>();
 
         try (Connection conn = dbc.getConnection()) {
-            System.out.println(user.getId());
-            System.out.println(customer.getId());
+            int customerID = customer.getId();
+            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String setupName = rs.getString("setupname");
+                String setupDescription = rs.getString("setupDescription");
+                String deviceLoginInfo = rs.getString("deviceLoginInfo");
+
+                TechDoc techDoc = new TechDoc(id,setupName,customerID);
+                techDoc.setSetupDescription(setupDescription);
+                techDoc.setDeviceLoginInfo(deviceLoginInfo);
+                techDocs.add(techDoc);
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return techDocs;
+    }
+
+    private List<TechDoc> getSpecificTechDocs(Customer customer, User user) throws SQLException {
+        ArrayList<TechDoc> techDocs = new ArrayList<>();
+
+        try (Connection conn = dbc.getConnection()) {
             int customerID = customer.getId();
             String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
                     "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = "+ user.getId() +")";
