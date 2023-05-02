@@ -42,6 +42,8 @@ import static javafx.scene.text.TextAlignment.CENTER;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
+    private Button btnCreateUsers;
+    @FXML
     private Button btnLogOut;
     @FXML
     private Button btnOpenCustomer;
@@ -89,13 +91,13 @@ public class MainViewController extends BaseController implements Initializable 
         try {
             loadLists(super.getCModel());
             searchBar();
-
+            clearCustomerMenu();
+            cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+            changeSelectedCustomer();
+            checkUserType();
         } catch (Exception e) {
-            throw new Exception(e);
+            displayError(e);
         }
-        clearCustomerMenu();
-        cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
-        changeSelectedCustomer();
     }
 
     public void setUser(User user){
@@ -173,6 +175,7 @@ public class MainViewController extends BaseController implements Initializable 
         lvGov.setItems(model.getGovernmentCustomer());
         prepList(lvGov);
     }
+
     private void searchBar() throws Exception{
         tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             try{
@@ -183,7 +186,6 @@ public class MainViewController extends BaseController implements Initializable 
             }
         }));
     }
-
     private void prepList(ListView listView) {
         listView.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
             @Override
@@ -298,6 +300,14 @@ public class MainViewController extends BaseController implements Initializable 
             stage.show();
         } catch (Exception e) {
             displayError(e);
+        }
+    }
+
+    private void checkUserType() {
+        if (user.getUserType() == 2) {
+            btnCreateCustomersMenu.setVisible(false);
+            btnDeleteCustomer.setVisible(false);
+            btnCreateUsers.setVisible(false);
         }
     }
 }

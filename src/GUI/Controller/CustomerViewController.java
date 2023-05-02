@@ -64,6 +64,7 @@ public class CustomerViewController extends BaseController{
     public void setup() throws Exception {
         lockFieldsAndButtons();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+        checkIfTech();
         fillFields();
         fillTechs();
         super.setCModel(new CustomerModel());
@@ -254,5 +255,14 @@ public class CustomerViewController extends BaseController{
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
         techMenu();
+    }
+
+    private void checkIfTech() {
+        if (user.getUserType() == 2) {
+            btnEditCustomer.setVisible(false);
+            btnAddTech.setVisible(false);
+            btnCancelCustomer.setVisible(false);
+            btnCreateCustomer.setVisible(false);
+        }
     }
 }
