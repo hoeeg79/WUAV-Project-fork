@@ -22,8 +22,9 @@ public class TechDocDAO {
         String setupDescription = techDoc.getSetupDescription();
         String deviceInfo = techDoc.getDeviceLoginInfo();
         int customerID = techDoc.getCustomerID();
+        String extraInfo = techDoc.getExtraInfo();
 
-        String sql = "INSERT INTO TechDoc (setupname, setupDescription, deviceLoginInfo, CustomerID) VALUES (?,?,?,?);";
+        String sql = "INSERT INTO TechDoc (setupname, setupDescription, deviceLoginInfo, CustomerID, extraInfo) VALUES (?,?,?,?,?);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -32,6 +33,7 @@ public class TechDocDAO {
             stmt.setString(2, setupDescription);
             stmt.setString(3, deviceInfo);
             stmt.setInt(4, customerID);
+            stmt.setString(5, extraInfo);
 
             stmt.executeUpdate();
 
@@ -46,6 +48,7 @@ public class TechDocDAO {
             TechDoc returnDoc = new TechDoc(id, title, customerID);
             returnDoc.setSetupDescription(setupDescription);
             returnDoc.setDeviceLoginInfo(deviceInfo);
+            returnDoc.setExtraInfo(extraInfo);
             return returnDoc;
 
         } catch (SQLException e) {
@@ -120,10 +123,12 @@ public class TechDocDAO {
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
                 String deviceLoginInfo = rs.getString("deviceLoginInfo");
+                String extraInfo = rs.getString("extraInfo");
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setDeviceLoginInfo(deviceLoginInfo);
+                techDoc.setExtraInfo(extraInfo);
                 techDocs.add(techDoc);
             }
 
@@ -134,14 +139,15 @@ public class TechDocDAO {
     }
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
-        String sql = "  UPDATE TechDoc SET setupDescription = ?, deviceLoginInfo = ? WHERE id = ?;";
+        String sql = "  UPDATE TechDoc SET setupDescription = ?, deviceLoginInfo = ?, extraInfo = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, techDoc.getSetupDescription());
             stmt.setString(2, techDoc.getDeviceLoginInfo());
-            stmt.setInt(3,techDoc.getId());
+            stmt.setString(3, techDoc.getExtraInfo());
+            stmt.setInt(4,techDoc.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e){

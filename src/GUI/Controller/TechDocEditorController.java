@@ -5,6 +5,7 @@ import BE.TechDoc;
 import BE.User;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +18,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController{
+    @FXML
+    private TextArea taExtraInfo;
     @FXML
     private Label lblSaveStatus;
     @FXML
@@ -63,19 +68,22 @@ public class TechDocEditorController extends BaseController{
             saveNewDoc();
             addTech(techDoc, user);
         }
-        lblSaveStatus.setText("Saved successfully");
+        lblSaveStatus.setText("Saved successfully!");
+        clearSavedLabelText();
     }
 
     private void saveNewDoc() throws SQLException {
         TechDoc newDoc = new TechDoc(tfTitle.getText(), customer.getId());
         newDoc.setSetupDescription(taSetupDescription.getText());
         newDoc.setDeviceLoginInfo(taDeviceInfo.getText());
+        newDoc.setExtraInfo(taExtraInfo.getText());
         techDoc = getTModel().createTechDoc(newDoc);
     }
 
     private void doEditOfDoc() throws SQLException {
         techDoc.setSetupDescription(taSetupDescription.getText());
         techDoc.setDeviceLoginInfo(taDeviceInfo.getText());
+        techDoc.setExtraInfo(taExtraInfo.getText());
         getTModel().updateTechDoc(techDoc);
     }
 
@@ -90,6 +98,7 @@ public class TechDocEditorController extends BaseController{
         taSetupDescription.setText(techDoc.getSetupDescription());
         taDeviceInfo.setText(techDoc.getDeviceLoginInfo());
         tfTitle.setText(techDoc.getSetupName());
+        taExtraInfo.setText(techDoc.getExtraInfo());
     }
 
     public void setCustomer(Customer customer) {
@@ -107,5 +116,16 @@ public class TechDocEditorController extends BaseController{
             e.printStackTrace();
             displayError(e);
         }
+    }
+    private void clearSavedLabelText(){
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask(){
+            @Override
+            public void run() {
+                Platform.runLater(() -> lblSaveStatus.setText(""));
+            }
+        };
+        timer.schedule(task, 5000);
     }
 }
