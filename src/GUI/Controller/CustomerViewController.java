@@ -241,7 +241,7 @@ public class CustomerViewController extends BaseController{
         ObservableList<User> allUserList = super.getUModel().getObservableUsers();
         ObservableList<User> techList = FXCollections.observableArrayList();
         for (int i = 0; i < allUserList.size()-1; i++) {
-            if (allUserList.get(i).getUserType() == 2){
+            if (allUserList.get(i).getUserType().getId() == 2){
                 techList.add(allUserList.get(i));
             }
         }
@@ -258,12 +258,12 @@ public class CustomerViewController extends BaseController{
     }
 
     private void checkUser() {
-        if (user.getUserType() == 2) {
+        if (user.getUserType().getId() == 2) {
             btnEditCustomer.setVisible(false);
             btnAddTech.setVisible(false);
             btnCancelCustomer.setVisible(false);
             btnCreateCustomer.setVisible(false);
-        } else if (user.getUserType() == 1) {
+        } else if (user.getUserType().getId() == 1) {
             btnEditCustomer.setVisible(false);
             btnCancelCustomer.setVisible(false);
             btnCreateCustomer.setVisible(false);

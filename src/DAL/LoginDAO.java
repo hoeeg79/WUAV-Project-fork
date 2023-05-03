@@ -1,13 +1,11 @@
 package DAL;
 
 import BE.User;
+import BE.UserType;
 import DAL.DatabaseConnector.DBConnector;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LoginDAO {
     private DBConnector dbc;
@@ -26,9 +24,12 @@ public class LoginDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                System.out.println(rs.getInt(5));
+                UserType userType = getUserType(conn, rs.getInt(5));
+                System.out.println(userType);
                 System.out.println("Login successful!");
                 return new User(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getInt(5));
+                        rs.getString(4), userType);
             } else {
                 System.out.println("Invalid username or password.");
             }
@@ -37,6 +38,22 @@ public class LoginDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
+        try {
+            String sqlGetUserType = "SELECT * FROM Usertype WHERE id = ?;";
+
+            PreparedStatement stmt = conn.prepareStatement(sqlGetUserType, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, userTypeId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                String userTypeName = rs.getString("usertypename");
+                return new UserType(userTypeId, userTypeName);
+            }
+            return null;
+        } catch (SQLException e){
+            throw new SQLException("Could not retrieve user type", e);
+        }
     }
 
 }

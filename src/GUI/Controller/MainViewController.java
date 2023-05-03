@@ -304,11 +304,11 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void checkUserType() {
-        if (user.getUserType() == 2) {
+        if (user.getUserType().getId() == 2) {
             btnCreateCustomersMenu.setVisible(false);
             btnDeleteCustomer.setVisible(false);
             btnCreateUsers.setVisible(false);
-        } else if (user.getUserType() == 1) {
+        } else if (user.getUserType().getId() == 1) {
             btnCreateCustomersMenu.setVisible(false);
             btnDeleteCustomer.setVisible(false);
         } else {

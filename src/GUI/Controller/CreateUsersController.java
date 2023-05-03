@@ -233,7 +233,7 @@ public class CreateUsersController extends BaseController{
 
         try {
             if (hashedPassword1.equals(hashedPassword2)) {
-                User u = new User(username, hashedPassword1, name,userType);
+                User u = new User(username,hashedPassword1,name,userType);
                 super.getUModel().createUser(u);
             }
         } catch (Exception e) {
@@ -274,11 +274,11 @@ public class CreateUsersController extends BaseController{
             passwordLabel.setText("New Password");
             confirmPasswordLabel.setText("Confirm New Password");
 
-            if (selectedUser.getUserType() == 3) {
+            if (selectedUser.getUserType().getId() == 3) {
                 techChecker.setSelected(false);
                 managerChecker.setSelected(false);
                 salesChecker.setSelected(true);
-            } else if (selectedUser.getUserType() == 1) {
+            } else if (selectedUser.getUserType().getId() == 1) {
                 techChecker.setSelected(false);
                 managerChecker.setSelected(true);
                 salesChecker.setSelected(false);

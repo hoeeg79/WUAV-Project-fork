@@ -2,6 +2,7 @@ package DAL;
 
 import BE.Customer;
 import BE.User;
+import BE.UserType;
 import DAL.DatabaseConnector.DBConnector;
 
 import java.sql.*;
@@ -29,17 +30,17 @@ public class UsersDAO {
         } else {
             picture = user.getPicture();
         }*/
-        int userType = user.getUserType();
+        int userTypeId = user.getUserType().getId();
 
-        String sql = "INSERT INTO [User] (username, password, name, usertypeID, softDeleted) VALUES (?,?,?,?,0);";
+        String sqlCreateUser = "INSERT INTO [User] (username, password, name, usertypeID, softDeleted) VALUES (?,?,?,?,0);";
 
         try (Connection conn = dbConnector.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = conn.prepareStatement(sqlCreateUser, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, name);
-            stmt.setInt(4, userType);
+            stmt.setInt(4, userTypeId);
             //stmt.setString(5, picture);
 
             stmt.executeUpdate();
@@ -51,6 +52,8 @@ public class UsersDAO {
             if (rs.next()) {
                 id = rs.getInt(1);
             }
+
+            UserType userType = getUserType(conn, userTypeId);
 
             return new User(id, username, password, name, userType);
 
@@ -90,7 +93,9 @@ public class UsersDAO {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-                int userType = rs.getInt("userTypeID");
+                int userTypeID = rs.getInt("userTypeID");
+
+                UserType userType = getUserType(conn, userTypeID);
 
                 User user = new User(id, username, password, name, userType);
                 allUsers.add(user);
@@ -110,7 +115,7 @@ public class UsersDAO {
 
             pstmt.setString(1, user.getPassword());
             pstmt.setString(2, user.getName());
-            pstmt.setInt(3, user.getUserType());
+            pstmt.setInt(3, user.getUserType().getId());
             pstmt.setInt(4, user.getId());
 
             pstmt.executeUpdate();
@@ -119,5 +124,21 @@ public class UsersDAO {
         }
     }
 
+    private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
+        try {
+            String sqlGetUserType = "SELECT * FROM Usertype WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sqlGetUserType, Statement.RETURN_GENERATED_KEYS);
 
+            stmt.setInt(1, userTypeId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String userTypeName = rs.getString("usertypename");
+                return new UserType(userTypeId, userTypeName);
+            }
+            return null;
+        } catch (SQLException e){
+            throw new SQLException("Could not retrieve user type", e);
+        }
+    }
 }

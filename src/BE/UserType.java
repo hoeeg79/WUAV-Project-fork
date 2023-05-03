@@ -1,5 +1,7 @@
 package BE;
 
+import java.util.Objects;
+
 public class UserType {
     private int id;
     private String userTypeName;
@@ -23,5 +25,10 @@ public class UserType {
 
     public void setUserTypeName(String userTypeName) {
         this.userTypeName = userTypeName;
+    }
+
+    @Override
+    public String toString() {
+        return userTypeName;
     }
 }

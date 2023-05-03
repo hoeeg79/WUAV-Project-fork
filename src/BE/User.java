@@ -5,11 +5,12 @@ public class User {
     private String username;
     private String password;
     private String name;
-    private int userType;
+    private UserType userType;
+    private int userTypeID;
     private String picture;
 
 
-    public User(int id, String username, String password, String name, int userType) {
+    public User(int id, String username, String password, String name, UserType userType) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -17,12 +18,27 @@ public class User {
         this.userType = userType;
     }
 
-    public User(String username, String password, String name, int userType) {
+    public User(String username, String password, String name, UserType userType) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.userType = userType;
-       // this.picture = picture;
+    }
+
+    public User(String username, String password, String name, int userTypeID) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.userTypeID = userTypeID;
+    }
+
+    public int getUserTypeID() {
+        return userTypeID;
+    }
+
+    public void setUserTypeID(int userTypeID) {
+        this.userTypeID = userTypeID;
     }
 
     public String getPicture() {
@@ -64,11 +80,11 @@ public class User {
         this.name = name;
     }
 
-    public int getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 

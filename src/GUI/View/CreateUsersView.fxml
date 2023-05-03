@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
    <children>
       <TableView fx:id="userList" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
         <columns>
@@ -28,10 +28,11 @@
       <Button fx:id="btnSaveUser" layoutX="143.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
       <Button fx:id="deleteUser" layoutX="257.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete" />
       <Button fx:id="btnClose" layoutX="918.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelWindow" text="Close" />
-      <RadioButton fx:id="salesChecker" layoutX="81.0" layoutY="371.0" mnemonicParsing="false" text="SalesCheck" />
-      <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="TechCheck" />
-      <RadioButton fx:id="managerChecker" layoutX="81.0" layoutY="444.0" mnemonicParsing="false" text="ManagerCheck" />
+      <RadioButton fx:id="salesChecker" layoutX="81.0" layoutY="371.0" mnemonicParsing="false" text="Sales Person" />
+      <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="Technician" />
+      <RadioButton fx:id="managerChecker" layoutX="81.0" layoutY="444.0" mnemonicParsing="false" text="Project Manager" />
       <Button fx:id="btnEditUsers" layoutX="316.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleEditUsers" text="Edit" />
       <Button fx:id="btnCancel" layoutX="194.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelItAll" text="Cancel" />
+      <Label layoutX="83.0" layoutY="343.0" text="User Type" />
    </children>
 </AnchorPane>

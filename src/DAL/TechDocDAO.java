@@ -72,7 +72,7 @@ public class TechDocDAO {
     }
 
     public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
-        if (user.getUserType() == 2) {
+        if (user.getUserType().getId() == 2) {
             return getSpecificTechDocs(customer,user);
         } else {
             return getAllTechDocs(customer);
