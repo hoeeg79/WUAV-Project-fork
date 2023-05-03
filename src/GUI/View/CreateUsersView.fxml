@@ -2,14 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.control.PasswordField?>
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
    <children>
       <TableView fx:id="userList" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
         <columns>
@@ -24,12 +24,13 @@
       <Label layoutX="81.0" layoutY="137.0" text="Username" />
       <Label fx:id="passwordLabel" layoutX="81.0" layoutY="209.0" text="Password" />
       <Label fx:id="confirmPasswordLabel" layoutX="81.0" layoutY="288.0" text="Confirm Password" />
-      <Button fx:id="btnSaveUser" layoutX="191.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
+      <Button fx:id="btnSaveUser" layoutX="143.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
       <Button fx:id="deleteUser" layoutX="257.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete" />
       <Button fx:id="btnClose" layoutX="918.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelWindow" text="Close" />
       <RadioButton fx:id="salesChecker" layoutX="81.0" layoutY="371.0" mnemonicParsing="false" text="SalesCheck" />
       <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="TechCheck" />
       <RadioButton fx:id="managerChecker" layoutX="81.0" layoutY="444.0" mnemonicParsing="false" text="ManagerCheck" />
       <Button fx:id="btnEditUsers" layoutX="316.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleEditUsers" text="Edit" />
+      <Button fx:id="btnCancel" layoutX="194.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelItAll" text="Cancel" />
    </children>
 </AnchorPane>
