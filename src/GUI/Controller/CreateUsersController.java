@@ -154,6 +154,8 @@ public class CreateUsersController extends BaseController{
     private void enableTheButtons() {
         if ((checkerSalesField || checkerManagerField || checkerTechField) && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
             btnSaveUser.setDisable(false);
+        } else if ((checkerSalesField || checkerManagerField || checkerTechField) && txtInNameField && txtInUsernameField && isEdit) {
+            btnSaveUser.setDisable(false);
         } else {
             btnSaveUser.setDisable(true);
         }
@@ -200,7 +202,7 @@ public class CreateUsersController extends BaseController{
     private void editUser() throws SQLException {
         User user = userList.getSelectionModel().getSelectedItem();
         user.setName(txtNameUser.getText());
-
+        isEdit = true;
         if (!txtConfirmPwUser.getText().isEmpty()) {
             if (txtConfirmPwUser.equals(txtPasswordUser)){
                 String salt = BCrypt.gensalt(10);
