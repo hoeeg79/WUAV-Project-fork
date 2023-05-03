@@ -14,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.SQLException;
 
 public class CreateUsersController extends BaseController{
-
     public Button btnCancel;
     public TableColumn typecln;
     @FXML
@@ -297,5 +296,9 @@ public class CreateUsersController extends BaseController{
             confirmPasswordLabel.setText("Confirm Password");
         }
 
+    }
+
+    public void handleCancelItAll(ActionEvent actionEvent) {
+        clearItAll();
     }
 }
