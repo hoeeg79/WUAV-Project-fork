@@ -13,7 +13,8 @@
    <children>
       <TableView fx:id="userList" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
         <columns>
-          <TableColumn fx:id="userscln" prefWidth="492.0" text="Users" />
+          <TableColumn fx:id="userscln" prefWidth="306.0" text="Name of User" />
+            <TableColumn fx:id="typecln" prefWidth="185.0" text="Type of User" />
         </columns>
       </TableView>
       <TextField fx:id="txtNameUser" layoutX="81.0" layoutY="83.0" />

@@ -14,6 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.SQLException;
 
 public class CreateUsersController extends BaseController{
+
+    public Button btnCancel;
+    public TableColumn typecln;
     @FXML
     private TextField txtNameUser;
     @FXML
@@ -256,6 +259,7 @@ public class CreateUsersController extends BaseController{
 
     private void insertIntoTable(){
         userscln.setCellValueFactory(new PropertyValueFactory<>("name"));
+        typecln.setCellValueFactory(new PropertyValueFactory<>("userType"));
         userList.getColumns().addAll();
         userList.setItems(super.getUModel().getObservableUsers());
     }
