@@ -250,6 +250,13 @@ public class CustomerViewController extends BaseController{
 
     @FXML
     private void handleAddTechMenu(ActionEvent actionEvent) {
+        try {
+            User selectedTech = lvTechs.getSelectionModel().getSelectedItem();
+            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+            super.getTModel().addTech(techDoc, selectedTech);
+        } catch (SQLException e) {
+            displayError(e);
+        }
     }
 
     @FXML
