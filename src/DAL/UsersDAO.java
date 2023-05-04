@@ -26,13 +26,7 @@ public class UsersDAO {
         String username = user.getUsername();
         String password = user.getPassword();
         String name = user.getName();
-        /*String picture = "";
-        if (user.getPicture() == null) {
-            picture = "defaultUser.jpg";
-        } else {
-            picture = user.getPicture();
-        }*/
-        int userTypeId = user.getUserType().getId();
+        int userTypeId = user.getUserTypeID();
 
         String sqlCreateUser = "INSERT INTO [User] (username, password, name, usertypeID, softDeleted) VALUES (?,?,?,?,0);";
 

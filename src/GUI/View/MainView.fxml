@@ -52,10 +52,9 @@
             <Image url="@/Photatoes/logo.png" />
          </image>
       </ImageView>
-
       <Button fx:id="btnCreateCustomersMenu" layoutX="111.0" layoutY="364.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleCreateCustomersMenu" text="Create Customer" />
       <Button fx:id="btnLogOut" layoutX="1323.0" layoutY="60.0" minHeight="25.0" mnemonicParsing="false" onAction="#handleLogOut" text="Log out" />
-      <TextField fx:id="searchBar" layoutX="699.0" layoutY="73.0" minHeight="25.0" minWidth="150.0">
+      <TextField fx:id="tfSearchBar" layoutX="699.0" layoutY="73.0" minHeight="25.0" minWidth="150.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="16.0" top="5.0" />
          </padding></TextField>

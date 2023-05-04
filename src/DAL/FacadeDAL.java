@@ -58,7 +58,7 @@ public class FacadeDAL {
         techDocDAO.addTech(techDoc, user);
     }
 
-    public User login(String username) throws SQLServerException {
+    public User login(String username) throws Exception {
         return loginDAO.login(username);
     }
 
