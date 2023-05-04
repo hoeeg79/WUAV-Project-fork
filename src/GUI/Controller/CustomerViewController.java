@@ -68,6 +68,7 @@ public class CustomerViewController extends BaseController{
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         checkUser();
         fillFields();
+        //super.setUModel(new UsersModel());
         fillTechs();
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
@@ -128,8 +129,6 @@ public class CustomerViewController extends BaseController{
         tfPictureFilepath.setText(customer.getPicture());
         cbCustomerTypes.getSelectionModel().select(customer.getCustomerType() - 1);
     }
-
-
 
     @FXML
     private void handleEdit(ActionEvent actionEvent) {
@@ -241,7 +240,7 @@ public class CustomerViewController extends BaseController{
     private void fillTechs(){
         ObservableList<User> allUserList = super.getUModel().getObservableUsers();
         ObservableList<User> techList = FXCollections.observableArrayList();
-        for (int i = 0; i < allUserList.size()-1; i++) {
+        for (int i = 0; i < allUserList.size(); i++) {
             if (allUserList.get(i).getUserType().getId() == 2){
                 techList.add(allUserList.get(i));
             }
