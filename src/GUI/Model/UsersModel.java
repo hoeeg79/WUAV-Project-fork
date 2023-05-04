@@ -22,8 +22,8 @@ public class UsersModel {
         userList.addAll(usersManager.getUsers());
     }
     public void createUser(User user) throws SQLException {
-        usersManager.createUser(user);
-        userList.add(user);
+        User newUser = usersManager.createUser(user);
+        userList.add(newUser);
     }
     public void deleteUser(User user) throws SQLException {
         usersManager.deleteUser(user);
@@ -36,7 +36,6 @@ public class UsersModel {
     public void updateUser(User user) throws SQLException {
         usersManager.updateUser(user);
     }
-
 }
 
 

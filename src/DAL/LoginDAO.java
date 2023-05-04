@@ -14,8 +14,8 @@ public class LoginDAO {
         dbc = new DBConnector();
     }
 
-    protected User login(String username) throws SQLServerException {
-        String sql = "SELECT * FROM [User] WHERE username=?;";
+    protected User login(String username) throws Exception {
+        String sql = "SELECT * FROM [User] WHERE username=? AND softDeleted != 1;";
         try (Connection conn = dbc.getConnection()){
             PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -24,20 +24,19 @@ public class LoginDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println(rs.getInt(5));
                 UserType userType = getUserType(conn, rs.getInt(5));
-                System.out.println(userType);
                 System.out.println("Login successful!");
                 return new User(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), userType);
             } else {
                 System.out.println("Invalid username or password.");
+                throw new Exception("Invalid username or password");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new Exception(e);
         }
-        return null;
     }
     private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
         try {

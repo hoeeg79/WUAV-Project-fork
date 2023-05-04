@@ -11,7 +11,7 @@ public class LoginModel {
         loginManager = new LoginManager();
     }
 
-    public User login(String username, String password) throws SQLServerException {
+    public User login(String username, String password) throws Exception {
         return loginManager.login(username, password);
     }
 }
