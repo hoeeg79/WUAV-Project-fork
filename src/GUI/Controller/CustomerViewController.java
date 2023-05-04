@@ -237,7 +237,7 @@ public class CustomerViewController extends BaseController{
         techMenu();
     }
 
-    private void fillTechs(){
+    private void fillTechs() throws Exception {
         ObservableList<User> allUserList = super.getUModel().getObservableUsers();
         ObservableList<User> techList = FXCollections.observableArrayList();
         for (int i = 0; i < allUserList.size(); i++) {

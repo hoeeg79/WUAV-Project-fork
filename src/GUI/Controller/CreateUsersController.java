@@ -161,7 +161,7 @@ public class CreateUsersController extends BaseController{
         }
     }
 
-    public void handleSaveUser(ActionEvent actionEvent) throws SQLException {
+    public void handleSaveUser(ActionEvent actionEvent) throws Exception {
         if (isEdit) {
             editUser();
             isEdit = false;
@@ -199,7 +199,7 @@ public class CreateUsersController extends BaseController{
         techChecker.setSelected(false);
     }
 
-    private void editUser() throws SQLException {
+    private void editUser() throws Exception {
         User user = userList.getSelectionModel().getSelectedItem();
         user.setName(txtNameUser.getText());
         isEdit = true;
@@ -258,7 +258,7 @@ public class CreateUsersController extends BaseController{
         closeWindow(btnClose);
     }
 
-    private void insertIntoTable(){
+    private void insertIntoTable() throws Exception {
         userscln.setCellValueFactory(new PropertyValueFactory<>("name"));
         typecln.setCellValueFactory(new PropertyValueFactory<>("userType"));
         userList.getColumns().addAll();
