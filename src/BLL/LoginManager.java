@@ -12,7 +12,7 @@ public class LoginManager {
         facadeDAL = new FacadeDAL();
     }
 
-    public User login(String username, String password) throws SQLServerException {
+    public User login(String username, String password) throws Exception {
         User user = facadeDAL.login(username);
 
         String hashedPassword = user.getPassword();

@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends BaseController {
     @FXML
     private TextField tfUsername;
     @FXML
@@ -28,21 +28,20 @@ public class LoginController {
     private Button btnLogin;
     @FXML
     private Label lblWarning;
-    private LoginModel loginModel = new LoginModel();
+    private final LoginModel loginModel;
 
     public LoginController() throws Exception {
+        loginModel = new LoginModel();
     }
 
-    private void login() throws Exception {
-        String username = tfUsername.getText();
-        String password = tfPassword.getText();
-        Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
-        User user = loginModel.login(username, password);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/MainView.fxml"));
+    private void login() {
+        try {
+            String username = tfUsername.getText();
+            String password = tfPassword.getText();
+            Stage primaryStage = (Stage) btnLogin.getScene().getWindow();
+            User user = loginModel.login(username, password);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/MainView.fxml"));
 
-        if (user == null) {
-            lblWarning.setText("Username or password is invalid.");
-        } else {
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
@@ -54,6 +53,9 @@ public class LoginController {
             primaryStage.setScene(scene);
             primaryStage.setTitle("Main View");
             primaryStage.show();
+
+        } catch (Exception e) {
+            lblWarning.setText("Username or password is invalid.");
         }
     }
 
@@ -80,5 +82,10 @@ public class LoginController {
     @FXML
     private void handleUsernameCheckKey(KeyEvent keyEvent) {
         checkIfEnter(keyEvent);
+    }
+
+    @Override
+    public void setup() throws Exception {
+
     }
 }
