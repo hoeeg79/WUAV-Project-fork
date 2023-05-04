@@ -3,7 +3,7 @@ AnchorPane{
     -fx-font-family: sans-serif;
 }
 
-#searchBar {
+#tfSearchBar {
     -fx-background-image: url("/search-icon-small.png");
     -fx-background-position: right center;
     -fx-background-repeat: no-repeat;
