@@ -74,7 +74,6 @@ public class CustomerViewController extends BaseController{
         checkUser();
         fillFields();
         //super.setUModel(new UsersModel());
-        fillTechs();
         checkEmailPattern(tfCustomerEmail);
         addNumericalListener(tfCustomerPhoneNumber);
         addAlphabeticListener(tfCustomerName);
