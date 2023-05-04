@@ -4,11 +4,60 @@
 }
 
 #paneRight {
-    -fx-background-color: black;
+    -fx-background-color: #333333;
     -fx-text-fill: white;
 }
 
 #addTechMenu {
     -fx-background-color: white;
-    -fx-text-fill: black;
+    -fx-text-fill: #333333;
+}
+
+#btnAddTech {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+    -fx-background-image: url("/arrow-right.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+#btnRemoveTech {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+    -fx-background-image: url("/arrow-left.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+.button {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}
+
+.combo-box:hover {
+    -fx-background-color: #ee6020;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #ee6020;
 }

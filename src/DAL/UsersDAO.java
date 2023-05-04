@@ -1,9 +1,11 @@
 package DAL;
 
 import BE.Customer;
+import BE.TechDoc;
 import BE.User;
 import BE.UserType;
 import DAL.DatabaseConnector.DBConnector;
+import javafx.collections.FXCollections;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -116,6 +118,37 @@ public class UsersDAO {
         }catch (SQLException e){
             throw new SQLException("Could not update user", e);
         }
+    }
+
+    public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException{
+        String sql = "SELECT u.* FROM DocLinkUser dl INNER JOIN [User] u ON u.id = dl.UserID WHERE dl.TechDocID = ?;";
+
+        List<User> links = FXCollections.observableArrayList();
+
+        try (Connection conn = dbConnector.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, techdoc.getId());
+
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String name = rs.getString("name");
+                int userTypeID = rs.getInt("userTypeID");
+
+                UserType userType = getUserType(conn, userTypeID);
+
+                User user = new User(id, username, password, name, userType);
+
+                links.add(user);
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return links;
     }
 
     private UserType getUserType(Connection conn, int userTypeId) throws SQLException {

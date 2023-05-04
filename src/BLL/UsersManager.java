@@ -1,6 +1,7 @@
 package BLL;
 
 import BE.Customer;
+import BE.TechDoc;
 import BE.User;
 import DAL.FacadeDAL;
 
@@ -41,6 +42,10 @@ public class UsersManager {
 
     public void updateUser(User user) throws SQLException {
         facadeDAL.updateUser(user);
+    }
+
+    public List<User> getLinkedUsers(TechDoc techDoc) throws SQLException {
+        return facadeDAL.getLinkedUsers(techDoc);
     }
 
 }
