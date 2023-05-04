@@ -5,7 +5,6 @@ import BE.TechDoc;
 import BE.User;
 import GUI.Model.CustomerModel;
 import GUI.Model.TechDocModel;
-import GUI.Model.UsersModel;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +21,8 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerViewController extends BaseController{
     @FXML
@@ -59,6 +59,8 @@ public class CustomerViewController extends BaseController{
     private TextField tfCustomerPhoneNumber;
     private Customer customer;
     private User user;
+    private Pattern emailPattern;
+
 
     @Override
     public void setup() throws Exception {
@@ -67,6 +69,9 @@ public class CustomerViewController extends BaseController{
         checkUser();
         fillFields();
         fillTechs();
+        checkEmailPattern(tfCustomerEmail);
+        addNumericalListener(tfCustomerPhoneNumber);
+        addAlphabeticListener(tfCustomerName);
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
@@ -78,6 +83,12 @@ public class CustomerViewController extends BaseController{
 
     @FXML
     private void handleSave(ActionEvent actionEvent) {
+        if(!emailPattern.matcher(tfCustomerEmail.getText()).matches()) {
+            String alertString = "Email is not typed correct";
+            Alert alert = new Alert(Alert.AlertType.WARNING, alertString);
+            alert.showAndWait();
+            return;
+        }
         try{
             btnEditCustomer.setDisable(false);
             lockFieldsAndButtons();
@@ -279,5 +290,29 @@ public class CustomerViewController extends BaseController{
             btnCreateNewTech.setVisible(false);
             btnEditTechDoc.setVisible(false);
         }
+    }
+
+    private void checkEmailPattern(TextField textField){
+        emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    }
+
+
+    private void addNumericalListener(TextField textField){
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")){
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            if(newValue.length() >= 8){
+                textField.setText(newValue.substring(0, 8));
+            }
+        });
+    }
+
+    private void addAlphabeticListener(TextField textField){
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[a-æøåA-ÆØÅ]*")){
+                textField.setText(newValue.replaceAll("[^a-æøåA-ÆØÅ]",""));
+            }
+        });
     }
 }
