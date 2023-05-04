@@ -1,12 +1,14 @@
 package GUI.Model;
 
 import BE.Customer;
+import BE.TechDoc;
 import BE.User;
 import BLL.UsersManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UsersModel {
 
@@ -37,6 +39,9 @@ public class UsersModel {
         usersManager.updateUser(user);
     }
 
+    public List<User> getLinkedUsers(TechDoc techDoc) throws SQLException {
+        return usersManager.getLinkedUsers(techDoc);
+    }
 }
 
 

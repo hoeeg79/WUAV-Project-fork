@@ -3,7 +3,10 @@ package DAL;
 import BE.Customer;
 import BE.TechDoc;
 import BE.User;
+import BE.UserType;
 import DAL.DatabaseConnector.DBConnector;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import javafx.collections.FXCollections;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -154,4 +157,6 @@ public class TechDocDAO {
             throw new SQLException(e);
         }
     }
+
+
 }

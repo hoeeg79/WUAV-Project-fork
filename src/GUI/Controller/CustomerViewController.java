@@ -238,15 +238,33 @@ public class CustomerViewController extends BaseController{
         techMenu();
     }
 
-    private void fillTechs(){
+//    private void fillTechs(){
+//        ObservableList<User> allUserList = super.getUModel().getObservableUsers();
+//        ObservableList<User> techList = FXCollections.observableArrayList();
+//        for (int i = 0; i < allUserList.size()-1; i++) {
+//            if (allUserList.get(i).getUserType().getId() == 2){
+//                techList.add(allUserList.get(i));
+//            }
+//        }
+//        lvTechs.setItems(techList);
+//    }
+
+    private void fillTechs() throws SQLException {
+        ObservableList<User> linkedTechList = FXCollections.observableArrayList();
         ObservableList<User> allUserList = super.getUModel().getObservableUsers();
         ObservableList<User> techList = FXCollections.observableArrayList();
-        for (int i = 0; i < allUserList.size()-1; i++) {
+        for (int i = 0; i < allUserList.size(); i++) {
             if (allUserList.get(i).getUserType().getId() == 2){
                 techList.add(allUserList.get(i));
             }
         }
-        lvTechs.setItems(techList);
+
+        if (lvTechDocs.getSelectionModel() != null) {
+            linkedTechList.addAll(super.getUModel().getLinkedUsers(lvTechDocs.getSelectionModel().getSelectedItem()));
+            techList.removeAll(linkedTechList);
+            lvTechs.setItems(techList);
+        }
+
     }
 
     @FXML
