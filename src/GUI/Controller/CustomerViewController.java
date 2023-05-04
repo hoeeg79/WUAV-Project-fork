@@ -180,6 +180,7 @@ public class CustomerViewController extends BaseController{
 
             Stage currentStage = (Stage) btnHome.getScene().getWindow();
             currentStage.setScene(new Scene(root));
+            currentStage.centerOnScreen();
             currentStage.show();
 
         } catch (Exception e) {
@@ -206,7 +207,13 @@ public class CustomerViewController extends BaseController{
             controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
+            double currentWidth = currentStage.getWidth();
+            double currentHeight = currentStage.getHeight();
+
             currentStage.setScene(new Scene(root));
+            currentStage.setWidth(currentWidth);
+            currentStage.setHeight(currentHeight);
+
             currentStage.show();
 
         } catch (Exception e) {

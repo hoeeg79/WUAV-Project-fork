@@ -52,6 +52,7 @@ public class LoginController extends BaseController {
 
             primaryStage.setScene(scene);
             primaryStage.setTitle("Main View");
+            primaryStage.centerOnScreen();
             primaryStage.show();
 
         } catch (Exception e) {

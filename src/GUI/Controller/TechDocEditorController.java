@@ -57,6 +57,7 @@ public class TechDocEditorController extends BaseController{
 
         Stage currentStage = (Stage) btnClose.getScene().getWindow();
         currentStage.setScene(new Scene(root));
+        currentStage.centerOnScreen();
         currentStage.show();
     }
 

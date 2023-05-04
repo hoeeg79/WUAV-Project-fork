@@ -164,6 +164,7 @@ public class MainViewController extends BaseController implements Initializable 
         stage.setTitle("Create User");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -269,7 +270,13 @@ public class MainViewController extends BaseController implements Initializable 
             controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
+            double currentWidth = currentStage.getWidth();
+            double currentHeight = currentStage.getHeight();
+
             currentStage.setScene(new Scene(root));
+            currentStage.setWidth(currentWidth);
+            currentStage.setHeight(currentHeight);
+
             currentStage.show();
 
         } catch (Exception e) {

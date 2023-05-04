@@ -1,6 +1,5 @@
 package GUI.Controller;
 
-import BLL.CustomerManager;
 import GUI.Model.CustomerModel;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
@@ -52,5 +51,4 @@ public abstract class BaseController {
         Stage stage = (Stage) btn.getScene().getWindow();
         stage.close();
     }
-
 }
