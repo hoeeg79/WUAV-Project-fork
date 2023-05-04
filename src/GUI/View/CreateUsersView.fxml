@@ -12,7 +12,8 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@CreateUsersView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
    <children>
-      <TableView fx:id="userList" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
+      <Pane fx:id="paneLeft" layoutX="-1.0" prefHeight="600.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <TableView fx:id="userList" focusTraversable="false" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
         <columns>
           <TableColumn fx:id="userscln" prefWidth="306.0" text="Name of User" />
             <TableColumn fx:id="typecln" prefWidth="185.0" text="Type of User" />
@@ -22,10 +23,10 @@
       <TextField fx:id="txtUsernameUser" layoutX="81.0" layoutY="160.0" />
       <PasswordField fx:id="txtPasswordUser" layoutX="81.0" layoutY="233.0" />
       <PasswordField fx:id="txtConfirmPwUser" layoutX="81.0" layoutY="308.0" />
-      <Label layoutX="81.0" layoutY="58.0" text="Name" />
-      <Label layoutX="81.0" layoutY="137.0" text="Username" />
-      <Label fx:id="passwordLabel" layoutX="81.0" layoutY="209.0" text="Password" />
-      <Label fx:id="confirmPasswordLabel" layoutX="81.0" layoutY="288.0" text="Confirm Password" />
+      <Label layoutX="86.0" layoutY="66.0" styleClass="tfLabels" text="Name" />
+      <Label layoutX="86.0" layoutY="143.0" styleClass="tfLabels" text="Username" />
+      <Label fx:id="passwordLabel" layoutX="86.0" layoutY="216.0" styleClass="tfLabels" text="Password" />
+      <Label fx:id="confirmPasswordLabel" layoutX="86.0" layoutY="291.0" styleClass="tfLabels" text="Confirm Password" />
       <Button fx:id="btnSaveUser" layoutX="81.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
       <Button fx:id="deleteUser" layoutX="195.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete" />
       <Button fx:id="btnClose" layoutX="918.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelWindow" text="Close" />
@@ -35,6 +36,5 @@
       <Button fx:id="btnEditUsers" layoutX="254.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleEditUsers" text="Edit" />
       <Button fx:id="btnCancel" layoutX="132.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelItAll" text="Cancel" />
       <Label layoutX="83.0" layoutY="343.0" text="User Type" />
-      <Pane fx:id="paneLeft" layoutX="-1.0" prefHeight="600.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

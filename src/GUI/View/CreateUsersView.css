@@ -42,3 +42,24 @@
     -fx-background-color: white;
 }
 
+.table-view {
+    -fx-text-fill: white;
+    -fx-border-color: #333333;
+}
+
+.table-view .column-header {
+    -fx-background-color: #ee6020;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #ee6020;
+}
+
+.table-view .column-header .arrow {
+    -fx-background-color: white;
+}
+
+.table-view .label{
+    -fx-background-color: #e84910;
+}
+
