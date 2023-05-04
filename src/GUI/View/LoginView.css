@@ -1,0 +1,25 @@
+.text-field{
+    -fx-background-radius: 0px;
+}
+
+.text-field:focused {
+    -fx-border-color: #e84910;
+}
+
+.password-field {
+    -fx-background-radius: 0px;
+}
+
+.password-field:focused {
+    -fx-border-color: #e84910;
+}
+
+.button {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #ee6020;
+}

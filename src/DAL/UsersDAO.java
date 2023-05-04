@@ -130,7 +130,7 @@ public class UsersDAO {
 
             stmt.setInt(1, techdoc.getId());
 
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 int id = rs.getInt("id");
                 String username = rs.getString("username");

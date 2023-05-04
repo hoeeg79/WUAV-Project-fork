@@ -5,8 +5,8 @@ import BE.TechDoc;
 import BE.User;
 import GUI.Model.CustomerModel;
 import GUI.Model.TechDocModel;
-import GUI.Model.UsersModel;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,9 +22,10 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class CustomerViewController extends BaseController{
+    @FXML
+    private ListView lvTechsWorking;
     @FXML
     private Pane paneRight;
     @FXML
@@ -66,10 +67,9 @@ public class CustomerViewController extends BaseController{
     public void setup() throws Exception {
         lockFieldsAndButtons();
         cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
+        addListener();
         checkUser();
         fillFields();
-        //super.setUModel(new UsersModel());
-        fillTechs();
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
@@ -233,23 +233,23 @@ public class CustomerViewController extends BaseController{
     }
 
     @FXML
-    private void handleAddTech(ActionEvent actionEvent) {
+    private void handleManageTechs(ActionEvent actionEvent) {
         techMenu();
     }
 
+    private void addListener() {
+        Platform.runLater(() -> {
+            lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
+                try {
+                    fillTechs(newValue);
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            })));
+        });
+    }
 
-//    private void fillTechs(){
-//        ObservableList<User> allUserList = super.getUModel().getObservableUsers();
-//        ObservableList<User> techList = FXCollections.observableArrayList();
-//        for (int i = 0; i < allUserList.size()-1; i++) {
-//            if (allUserList.get(i).getUserType().getId() == 2){
-//                techList.add(allUserList.get(i));
-//            }
-//        }
-//        lvTechs.setItems(techList);
-//    }
-
-    private void fillTechs() throws SQLException {
+    private void fillTechs(TechDoc techDoc) throws Exception {
         ObservableList<User> linkedTechList = FXCollections.observableArrayList();
         ObservableList<User> allUserList = super.getUModel().getObservableUsers();
         ObservableList<User> techList = FXCollections.observableArrayList();
@@ -260,8 +260,10 @@ public class CustomerViewController extends BaseController{
         }
 
         if (lvTechDocs.getSelectionModel() != null) {
-            linkedTechList.addAll(super.getUModel().getLinkedUsers(lvTechDocs.getSelectionModel().getSelectedItem()));
-            techList.removeAll(linkedTechList);
+            linkedTechList.addAll(super.getUModel().getLinkedUsers(techDoc));
+            for (int i = 0; i < linkedTechList.size(); i++) {
+                techList.remove(linkedTechList.get(i));
+            }
             lvTechs.setItems(techList);
         }
 
@@ -281,6 +283,9 @@ public class CustomerViewController extends BaseController{
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
         techMenu();
+    }
+
+    public void handleRemoveTechMenu(ActionEvent actionEvent) {
     }
 
     private void checkUser() {
