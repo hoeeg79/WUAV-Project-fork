@@ -26,6 +26,8 @@ import java.util.ArrayList;
 
 public class CustomerViewController extends BaseController{
     @FXML
+    private Pane paneRight;
+    @FXML
     private Pane addTechMenu;
     @FXML
     private ListView<User> lvTechs;
@@ -218,16 +220,15 @@ public class CustomerViewController extends BaseController{
     private void techMenu(){
         if (addTechMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
-            slideOut.setToX(btnAddTech.getScene().getWidth());
+            slideOut.setToX(-addTechMenu.getWidth());
             slideOut.setOnFinished(e -> addTechMenu.setVisible(false));
             slideOut.play();
         } else {
-            addTechMenu.setTranslateX(btnAddTech.getScene().getWidth());
-            addTechMenu.toFront();
+            addTechMenu.setTranslateX(-addTechMenu.getWidth());
             addTechMenu.setVisible(true);
 
             TranslateTransition slideIn = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
-            slideIn.setToX(btnAddTech.getScene().getWidth() - addTechMenu.getWidth());
+            slideIn.setToX(0);
             slideIn.play();
         }
     }

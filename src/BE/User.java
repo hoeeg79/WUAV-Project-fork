@@ -91,5 +91,8 @@ public class User {
     public void add(User user) {
     }
 
-
+    @Override
+    public String toString() {
+        return name;
+    }
 }

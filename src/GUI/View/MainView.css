@@ -1,5 +1,41 @@
+AnchorPane{
+    -fx-background-color: white;
+    -fx-font-family: sans-serif;
+}
+
+#searchBar {
+    -fx-background-image: url("/search-icon-small.png");
+    -fx-background-position: right center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 0 -4 0 0;
+    -fx-border-color: black;
+}
+
 #createCustomerMenu {
     -fx-background-color: black;
+}
+
+#createCustomerMenu .label {
+    -fx-background-color: transparent;
+}
+
+.combo-box {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}
+
+.text-field{
+    -fx-background-radius: 0px;
 }
 
 .menuText{
@@ -13,4 +49,21 @@
     -fx-background-repeat: stretch;
     -fx-border-width: 1;
     -fx-pref-width: 160;
+}
+
+.button {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.list-view{
+    -fx-border-color: black;
+}
+
+.label {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 5 5 0 0;
+    -fx-background-insets: 0 -5 0 -5;
+    -fx-text-fill: white;
 }

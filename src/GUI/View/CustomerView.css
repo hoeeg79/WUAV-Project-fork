@@ -9,6 +9,6 @@
 }
 
 #addTechMenu {
-    -fx-background-color: black;
-    -fx-text-fill: white;
+    -fx-background-color: white;
+    -fx-text-fill: black;
 }
