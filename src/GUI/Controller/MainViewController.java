@@ -106,6 +106,7 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
+        clearCustomerMenu();
     }
 
     @FXML
@@ -119,6 +120,8 @@ public class MainViewController extends BaseController implements Initializable 
         Customer customer = new Customer(name, email, tlf, image, customerType);
 
         super.getCModel().createCustomer(customer);
+        clearCustomerMenu();
+        customerMenu();
     }
 
     @FXML
@@ -131,6 +134,7 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerEmail.clear();
         tfCustomerPhonenumber.clear();
         tfCustomerImage.clear();
+        cbCustomerTypes.getSelectionModel().clearSelection();
     }
 
     private void customerMenu() {
