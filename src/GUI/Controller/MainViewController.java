@@ -205,15 +205,23 @@ public class MainViewController extends BaseController implements Initializable 
                             text.setText(null);
                             setGraphic(null);
                         } else if (!customer.getPicture().isEmpty()) {
-                            File imageFile = new File(customer.getPicture());
-                            Image image = new Image(imageFile.toURI().toString());
-                            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                            bufferedImage = resizeImage(bufferedImage, 150, 130);
-                            Image showingImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                            try {
+                                File imageFile = new File(customer.getPicture());
+                                Image image = new Image(imageFile.toURI().toString());
+                                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                                bufferedImage = resizeImage(bufferedImage, 150, 130);
+                                Image showingImage = SwingFXUtils.toFXImage(bufferedImage, null);
 
-                            imageView.setImage(showingImage);
-                            text.setText(customer.getName());
-                            text.toFront();
+                                imageView.setImage(showingImage);
+                                text.setText(customer.getName());
+                                text.toFront();
+                            } catch (Exception e) {
+                                Image image = new Image("defaultUserResize-noBG.png");
+                                imageView.setImage(image);
+                                text.setText(customer.getName());
+                                text.toFront();
+                            }
+
                         } else {
                             Image image = new Image("defaultUserResize-noBG.png");
                             imageView.setImage(image);
