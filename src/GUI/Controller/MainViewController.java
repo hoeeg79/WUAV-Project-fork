@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.UsersModel;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -12,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,23 +20,22 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.awt.image.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.text.TextAlignment.CENTER;
 
 
@@ -199,7 +198,7 @@ public class MainViewController extends BaseController implements Initializable 
                         Text text = new Text();
                         text.setTextAlignment(CENTER);
                         text.setTranslateY(50);
-                        text.setWrappingWidth(100);
+                        text.setWrappingWidth(140);
                         StackPane stackPane = new StackPane(imageView, text);
                         setGraphic(stackPane);
                         if (customer == null || empty) {
@@ -208,7 +207,11 @@ public class MainViewController extends BaseController implements Initializable 
                         } else if (!customer.getPicture().isEmpty()) {
                             File imageFile = new File(customer.getPicture());
                             Image image = new Image(imageFile.toURI().toString());
-                            imageView.setImage(image);
+                            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                            bufferedImage = resizeImage(bufferedImage, 150, 130);
+                            Image showingImage = SwingFXUtils.toFXImage(bufferedImage, null);
+
+                            imageView.setImage(showingImage);
                             text.setText(customer.getName());
                             text.toFront();
                         } else {
@@ -221,6 +224,13 @@ public class MainViewController extends BaseController implements Initializable 
                 };
             }
         });
+    }
+
+    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight){
+        java.awt.Image resultImage = originalImage.getScaledInstance(targetWidth, targetHeight, java.awt.Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        outputImage.getGraphics().drawImage(resultImage, 0, 0, null);
+        return outputImage;
     }
 
     @FXML
