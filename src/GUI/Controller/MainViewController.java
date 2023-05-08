@@ -199,6 +199,7 @@ public class MainViewController extends BaseController implements Initializable 
                         Text text = new Text();
                         text.setTextAlignment(CENTER);
                         text.setTranslateY(50);
+                        text.setWrappingWidth(100);
                         StackPane stackPane = new StackPane(imageView, text);
                         setGraphic(stackPane);
                         if (customer == null || empty) {
