@@ -167,6 +167,8 @@ public class CreateUsersController extends BaseController{
             isEdit = false;
             clearItAll();
             txtUsernameUser.setDisable(false);
+            userList.getItems().clear();
+            userList.setItems(getUModel().getObservableUsers());
         } else if (checkThatHoe()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Stupid");
@@ -202,6 +204,16 @@ public class CreateUsersController extends BaseController{
     private void editUser() throws Exception {
         User user = userList.getSelectionModel().getSelectedItem();
         user.setName(txtNameUser.getText());
+        int userType = -1;   {
+            if(techChecker.isSelected()) {
+                userType = 2;
+            } else if (managerChecker.isSelected()) {
+                userType = 1;
+            } else if (salesChecker.isSelected()) {
+                userType = 3;
+            }
+            user.setUserTypeID(userType);
+        };
         isEdit = true;
         if (!txtConfirmPwUser.getText().isEmpty()) {
             if (txtConfirmPwUser.equals(txtPasswordUser)){
@@ -210,7 +222,6 @@ public class CreateUsersController extends BaseController{
                 user.setPassword(hashedPassword1);
             }
         }
-
         super.getUModel().updateUser(user);
     }
 
@@ -297,7 +308,6 @@ public class CreateUsersController extends BaseController{
             passwordLabel.setText("Password");
             confirmPasswordLabel.setText("Confirm Password");
         }
-
     }
 
     public void handleCancelItAll(ActionEvent actionEvent) {

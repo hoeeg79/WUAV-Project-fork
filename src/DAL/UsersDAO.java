@@ -111,7 +111,7 @@ public class UsersDAO {
 
             pstmt.setString(1, user.getPassword());
             pstmt.setString(2, user.getName());
-            pstmt.setInt(3, user.getUserType().getId());
+            pstmt.setInt(3, user.getUserTypeID());
             pstmt.setInt(4, user.getId());
 
             pstmt.executeUpdate();
