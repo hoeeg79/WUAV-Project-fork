@@ -36,6 +36,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.text.TextAlignment.CENTER;
 
 
@@ -200,10 +201,12 @@ public class MainViewController extends BaseController implements Initializable 
                         super.updateItem(customer, empty);
                         ImageView imageView = new ImageView();
                         Text text = new Text();
+                        Pane pane = new Pane();
                         text.setTextAlignment(CENTER);
                         text.setTranslateY(50);
                         text.setWrappingWidth(140);
-                        StackPane stackPane = new StackPane(imageView, text);
+                        pane.setVisible(false);
+                        StackPane stackPane = new StackPane(imageView, pane, text);
                         setGraphic(stackPane);
                         if (customer == null || empty) {
                             text.setText(null);
