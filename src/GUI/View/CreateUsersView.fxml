@@ -7,10 +7,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@CreateUsersView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@CreateUsersView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateUsersController">
    <children>
       <Pane fx:id="paneLeft" layoutX="-1.0" prefHeight="600.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TableView fx:id="userList" focusTraversable="false" layoutX="403.0" layoutY="49.0" prefHeight="509.0" prefWidth="493.0">
@@ -30,9 +31,12 @@
       <Button fx:id="btnSaveUser" layoutX="81.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleSaveUser" text="Save" />
       <Button fx:id="deleteUser" layoutX="195.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleDeleteUser" text="Delete" />
       <Button fx:id="btnClose" layoutX="918.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelWindow" text="Close" />
-      <RadioButton fx:id="salesChecker" layoutX="81.0" layoutY="371.0" mnemonicParsing="false" text="Sales Person" />
-      <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="Technician" />
-      <RadioButton fx:id="managerChecker" layoutX="81.0" layoutY="444.0" mnemonicParsing="false" text="Project Manager" />
+      <RadioButton fx:id="salesChecker" layoutX="81.0" layoutY="371.0" mnemonicParsing="false" text="Sales Person">
+         <toggleGroup>
+            <ToggleGroup fx:id="userType" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="techChecker" layoutX="81.0" layoutY="408.0" mnemonicParsing="false" text="Technician" toggleGroup="$userType" />
+      <RadioButton fx:id="managerChecker" layoutX="81.0" layoutY="444.0" mnemonicParsing="false" text="Project Manager" toggleGroup="$userType" />
       <Button fx:id="btnEditUsers" layoutX="254.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleEditUsers" text="Edit" />
       <Button fx:id="btnCancel" layoutX="132.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelItAll" text="Cancel" />
       <Label layoutX="83.0" layoutY="343.0" text="User Type" />

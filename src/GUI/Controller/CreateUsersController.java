@@ -14,8 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.SQLException;
 
 public class CreateUsersController extends BaseController{
-    public Button btnCancel;
-    public TableColumn typecln;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private TableColumn typecln;
+    @FXML
+    private ToggleGroup userType;
     @FXML
     private TextField txtNameUser;
     @FXML
@@ -50,9 +54,7 @@ public class CreateUsersController extends BaseController{
     private boolean txtInNameField;
     private boolean txtInPasswordField;
     private boolean txtInConfirmField;
-    private boolean checkerSalesField;
-    private boolean checkerManagerField;
-    private boolean checkerTechField;
+    private boolean userTypes;
     private boolean isEdit;
 
 
@@ -119,45 +121,20 @@ public class CreateUsersController extends BaseController{
             enableTheButtons();
         });
 
-        techChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                checkerTechField = true;
-                managerChecker.setSelected(false);
-                salesChecker.setSelected(false);
+        userType.selectedToggleProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                userTypes = true;
             } else {
-                checkerTechField = false;
+                userTypes = false;
             }
             enableTheButtons();
-        });
-        managerChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                checkerManagerField = true;
-                techChecker.setSelected(false);
-                salesChecker.setSelected(false);
-            } else {
-                checkerManagerField = false;
-            }
-            enableTheButtons();
-        });
-        salesChecker.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                checkerSalesField = true;
-                managerChecker.setSelected(false);
-                techChecker.setSelected(false);
-            } else {
-                checkerSalesField = false;
-            }
-            enableTheButtons();
-        });
+        }));
+
     }
 
     private void enableTheButtons() {
-        if ((checkerSalesField || checkerManagerField || checkerTechField) && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
+        if (userTypes && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
             btnSaveUser.setDisable(false);
-        } else if ((checkerSalesField || checkerManagerField || checkerTechField) && txtInNameField && txtInUsernameField && isEdit) {
-            btnSaveUser.setDisable(false);
-        } else {
-            btnSaveUser.setDisable(true);
         }
     }
 
@@ -167,6 +144,8 @@ public class CreateUsersController extends BaseController{
             isEdit = false;
             clearItAll();
             txtUsernameUser.setDisable(false);
+            userList.getItems().clear();
+            userList.setItems(getUModel().getObservableUsers());
         } else if (checkThatHoe()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Stupid");
@@ -202,6 +181,16 @@ public class CreateUsersController extends BaseController{
     private void editUser() throws Exception {
         User user = userList.getSelectionModel().getSelectedItem();
         user.setName(txtNameUser.getText());
+        int userType = -1;   {
+            if(techChecker.isSelected()) {
+                userType = 2;
+            } else if (managerChecker.isSelected()) {
+                userType = 1;
+            } else if (salesChecker.isSelected()) {
+                userType = 3;
+            }
+            user.setUserTypeID(userType);
+        };
         isEdit = true;
         if (!txtConfirmPwUser.getText().isEmpty()) {
             if (txtConfirmPwUser.equals(txtPasswordUser)){
@@ -210,7 +199,6 @@ public class CreateUsersController extends BaseController{
                 user.setPassword(hashedPassword1);
             }
         }
-
         super.getUModel().updateUser(user);
     }
 
@@ -220,12 +208,14 @@ public class CreateUsersController extends BaseController{
         String password = txtPasswordUser.getText();
         String confirmPassword = txtConfirmPwUser.getText();
 
+        Toggle selectedToggle = userType.getSelectedToggle();
+
         int userType = -1;
-        if(techChecker.isSelected()) {
+        if(selectedToggle == techChecker) {
             userType = 2;
-        } else if (managerChecker.isSelected()) {
+        } else if (selectedToggle == managerChecker) {
             userType = 1;
-        } else if (salesChecker.isSelected()) {
+        } else if (selectedToggle == salesChecker) {
             userType = 3;
         }
 
@@ -297,7 +287,6 @@ public class CreateUsersController extends BaseController{
             passwordLabel.setText("Password");
             confirmPasswordLabel.setText("Confirm Password");
         }
-
     }
 
     public void handleCancelItAll(ActionEvent actionEvent) {

@@ -68,6 +68,10 @@ AnchorPane{
     -fx-pref-height: 130;
 }
 
+#cellPane .cellImage:hover {
+    -fx-background-image: null;
+}
+
 .button {
     -fx-background-color: #e84910;
     -fx-background-radius: 0px;
