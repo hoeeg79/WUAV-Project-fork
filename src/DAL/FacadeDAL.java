@@ -30,8 +30,9 @@ public class FacadeDAL {
         customerDAO.deleteCustomer(customer);
     }
 
-    public Map<Integer, List<Customer>> getCustomers() throws Exception{
-        return customerDAO.returnCustomersByType();
+    public List<Customer> getCustomers() throws Exception{
+        CustomerDAO customers = new CustomerDAO();
+        return customers.returnCustomers();
     }
 
     public User createUser(User user) throws SQLException {
