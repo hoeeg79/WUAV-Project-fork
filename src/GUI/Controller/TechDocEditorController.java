@@ -13,15 +13,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TechDocEditorController extends BaseController{
+public class TechDocEditorController extends BaseController {
+    @FXML
+    private Label lblNoPictures;
+    @FXML
+    private Button btnDeletePicture;
+    @FXML
+    private Button btnAddPicture;
+    @FXML
+    private ImageView imageViewTechDoc;
+    @FXML
+    private Button btnNextPicture;
     @FXML
     private TextArea taExtraInfo;
     @FXML
@@ -38,10 +54,13 @@ public class TechDocEditorController extends BaseController{
     private Customer customer;
     private User user;
     private boolean isEdit;
+    private List<Image> imageList = new ArrayList<>();
+    private int currentImageIndex = -1;
 
     @Override
     public void setup() throws Exception {
         super.setTModel(new TechDocModel());
+        lblNoPictures.setVisible(true);
     }
 
     @FXML
@@ -118,15 +137,74 @@ public class TechDocEditorController extends BaseController{
             displayError(e);
         }
     }
-    private void clearSavedLabelText(){
+
+    private void clearSavedLabelText() {
         Timer timer = new Timer();
 
-        TimerTask task = new TimerTask(){
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> lblSaveStatus.setText(""));
             }
         };
         timer.schedule(task, 5000);
+    }
+
+    public void handleAddPicture(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Picture");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
+        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            ImageView imageView = imageViewTechDoc;
+            Image image = new Image(selectedFile.toURI().toString());
+            imageList.add(image);
+            if (currentImageIndex == -1) {
+                currentImageIndex = 0;
+                displayCurrentImage();
+            }
+            imageViewTechDoc.setImage(image);
+            imageViewTechDoc.setFitWidth(400);
+            imageViewTechDoc.setFitHeight(400);
+
+            lblNoPictures.setVisible(false);
+        }
+    }
+    private void displayCurrentImage() {
+        if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
+            Image currentImage = imageList.get(currentImageIndex);
+            imageViewTechDoc.setImage(currentImage);
+            imageViewTechDoc.setFitWidth(400);
+            imageViewTechDoc.setFitHeight(400);
+        }
+    }
+
+    public void handleNextPicture(ActionEvent actionEvent) {
+        if (imageList.size() > 1) {
+            currentImageIndex++;
+            if (currentImageIndex >= imageList.size()) {
+                currentImageIndex = 0;
+            }
+            displayCurrentImage();
+        }
+    }
+
+    public void handleDeletePicture(ActionEvent actionEvent) {
+        if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
+            imageList.remove(currentImageIndex);
+            if (imageList.isEmpty()) {
+                currentImageIndex = -1;
+                imageViewTechDoc.setImage(null);
+                lblNoPictures.setVisible(true);
+            } else {
+                if (currentImageIndex >= imageList.size()) {
+                    currentImageIndex = 0;
+                }
+                displayCurrentImage();
+            }
+        }
     }
 }
