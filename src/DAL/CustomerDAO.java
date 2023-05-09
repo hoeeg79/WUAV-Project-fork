@@ -61,7 +61,7 @@ public class CustomerDAO {
 
         try(Connection connection = dbc.getConnection()){
 
-            String sql = "SELECT * FROM Customer;";
+            String sql = "SELECT * FROM Customer WHERE softDeleted != 1;;";
 
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
