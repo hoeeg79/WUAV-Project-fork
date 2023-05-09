@@ -73,7 +73,6 @@ public class CustomerViewController extends BaseController{
         addListener();
         checkUser();
         fillFields();
-        //super.setUModel(new UsersModel());
         checkEmailPattern(tfCustomerEmail);
         addNumericalListener(tfCustomerPhoneNumber);
         addAlphabeticListener(tfCustomerName);

@@ -115,9 +115,14 @@ public class TechDocDAO {
 
         try (Connection conn = dbc.getConnection()) {
             int customerID = customer.getId();
-            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
-                    "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = "+ user.getId() +")";
+            String sql = "";
 
+            if (user.getUserType().getId() == 2) {
+                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
+                        "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = " + user.getId() + ")";
+            } else {
+                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+            }
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
