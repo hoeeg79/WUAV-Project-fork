@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -42,6 +43,16 @@ import static javafx.scene.text.TextAlignment.CENTER;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
+    private TableView tvMain;
+    @FXML
+    private TableColumn tcName;
+    @FXML
+    private TableColumn tcEmail;
+    @FXML
+    private TableColumn tcPhoneNumber;
+    @FXML
+    private TableColumn tcAddress;
+    @FXML
     private Button btnCreateUsers;
     @FXML
     private Button btnLogOut;
@@ -49,12 +60,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnOpenCustomer;
     @FXML
     private Button btnDeleteCustomer;
-    @FXML
-    private ListView<Customer> lvPriv;
-    @FXML
-    private ListView<Customer> lvCorp;
-    @FXML
-    private ListView<Customer> lvGov;
 
     @FXML
     private ComboBox cbCustomerTypes;
@@ -92,8 +97,6 @@ public class MainViewController extends BaseController implements Initializable 
             loadLists(super.getCModel());
             searchBar();
             clearCustomerMenu();
-            cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
-            changeSelectedCustomer();
             checkUserType();
         } catch (Exception e) {
             displayError(e);
@@ -115,10 +118,9 @@ public class MainViewController extends BaseController implements Initializable 
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
-        String image = tfCustomerImage.getText();
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
-        Customer customer = new Customer(name, email, tlf, image, customerType);
+        Customer customer = new Customer(name, email, tlf, customerType);
 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
@@ -173,80 +175,35 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void loadLists(CustomerModel model) throws Exception {
-        lvPriv.setItems(model.getPrivateCustomer());
-        prepList(lvPriv);
-        lvCorp.setItems(model.getBusinessCustomer());
-        prepList(lvCorp);
-        lvGov.setItems(model.getGovernmentCustomer());
-        prepList(lvGov);
+        tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        //tcAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
+
+        tvMain.getColumns().addAll();
+        tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 
-    private void searchBar() throws Exception{
+    private void searchBar(){
         tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             try{
-                super.getCModel().customerSearch(newValue);
-            } catch (Exception e){
-                e.printStackTrace();
+                super.getCModel().searchCustomer(newValue);
+            }catch(Exception e){
                 displayError(e);
             }
         }));
     }
-    private void prepList(ListView listView) {
-        listView.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
-            @Override
-            public ListCell<Customer> call(ListView<Customer> listView) {
-                return new ListCell<Customer>() {
-                    @Override
-                    protected void updateItem(Customer customer, boolean empty) {
-                        super.updateItem(customer, empty);
-                        ImageView imageView = new ImageView();
-                        Text text = new Text();
-                        Pane pane = new Pane();
-                        text.setTextAlignment(CENTER);
-                        text.setTranslateY(50);
-                        text.setWrappingWidth(140);
-                        pane.setVisible(false);
-                        StackPane stackPane = new StackPane(imageView, pane, text);
-                        setGraphic(stackPane);
-                        if (customer == null || empty) {
-                            text.setText(null);
-                            setGraphic(null);
-                        } else if (!customer.getPicture().isEmpty()) {
-                            try {
-                                File imageFile = new File(customer.getPicture());
-                                Image image = new Image(imageFile.toURI().toString());
-                                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                                bufferedImage = resizeImage(bufferedImage, 150, 130);
-                                Image showingImage = SwingFXUtils.toFXImage(bufferedImage, null);
 
-                                imageView.setImage(showingImage);
-                                text.setText(customer.getName());
-                                text.toFront();
-                            } catch (Exception e) {
-                                Image image = new Image("defaultUserResize-noBG.png");
-                                imageView.setImage(image);
-                                text.setText(customer.getName());
-                                text.toFront();
-                            }
-
-                        } else {
-                            Image image = new Image("defaultUserResize-noBG.png");
-                            imageView.setImage(image);
-                            text.setText(customer.getName());
-                            text.toFront();
-                        }
-                    }
-                };
-            }
-        });
-    }
-
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight){
-        java.awt.Image resultImage = originalImage.getScaledInstance(targetWidth, targetHeight, java.awt.Image.SCALE_SMOOTH);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultImage, 0, 0, null);
-        return outputImage;
-    }
+//    private void searchBar() throws Exception{
+//        tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
+//            try{
+//                super.getCModel().customerSearch(newValue);
+//            } catch (Exception e){
+//                e.printStackTrace();
+//                displayError(e);
+//            }
+//        }));
+//    }
 
     @FXML
     private void handlePickImage(ActionEvent actionEvent) {
@@ -260,29 +217,6 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerImage.setText(selectedFile.getAbsolutePath());
     }
 
-    private void changeSelectedCustomer(){
-        lvCorp.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->{
-            if (newValue != null) {
-                lvGov.getSelectionModel().clearSelection();
-                lvPriv.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
-            }
-        }));
-        lvGov.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                lvCorp.getSelectionModel().clearSelection();
-                lvPriv.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
-            }
-        }));
-        lvPriv.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                lvGov.getSelectionModel().clearSelection();
-                lvCorp.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
-            }
-        }));
-    }
 
     private void setSceneSelectCompany(Button btn, Customer customer){
         try {

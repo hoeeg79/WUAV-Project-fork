@@ -5,24 +5,24 @@ public class Customer {
     private String name;
     private String email;
     private String tlf;
-    private String picture;
     private int customerType;
-    
-    public Customer(int id, String name, String email, String tlf, String picture, int customerType) {
+    private String address;
+
+
+
+    public Customer(int id, String name, String email, String tlf, int customerType) {
 
         this.id = id;
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.picture = picture;
         this.customerType = customerType;
     }
 
-    public Customer(String name, String email, String tlf, String picture, int customerType) {
+    public Customer(String name, String email, String tlf,  int customerType) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.picture = picture;
         this.customerType = customerType;
     }
 
@@ -57,14 +57,6 @@ public class Customer {
 
     public void setTlf(String tlf) {
         this.tlf = tlf;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public int getCustomerType() {

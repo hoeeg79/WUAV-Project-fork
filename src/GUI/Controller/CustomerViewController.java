@@ -44,10 +44,6 @@ public class CustomerViewController extends BaseController{
     @FXML
     private Button btnHome;
     @FXML
-    private TextField tfPictureFilepath;
-    @FXML
-    private Button btnPictureFinder;
-    @FXML
     private ComboBox cbCustomerTypes;
     @FXML
     private Button btnEditCustomer;
@@ -100,13 +96,11 @@ public class CustomerViewController extends BaseController{
             String name = tfCustomerName.getText();
             String email = tfCustomerEmail.getText();
             String phoneNumber = tfCustomerPhoneNumber.getText();
-            String pictureFP = tfPictureFilepath.getText();
             int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
             customer.setName(name);
             customer.setEmail(email);
             customer.setTlf(phoneNumber);
-            customer.setPicture(pictureFP);
             customer.setCustomerType(customerType);
 
             super.getCModel().updateCustomer(customer);
@@ -127,10 +121,8 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setDisable(true);
         tfCustomerPhoneNumber.setDisable(true);
         tfCustomerName.setDisable(true);
-        tfPictureFilepath.setDisable(true);
         btnCancelCustomer.setDisable(true);
         btnCreateCustomer.setDisable(true);
-        btnPictureFinder.setDisable(true);
         cbCustomerTypes.setDisable(true);
     }
 
@@ -138,7 +130,6 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setText(customer.getEmail());
         tfCustomerName.setText(customer.getName());
         tfCustomerPhoneNumber.setText(String.valueOf(customer.getTlf()));
-        tfPictureFilepath.setText(customer.getPicture());
         cbCustomerTypes.getSelectionModel().select(customer.getCustomerType() - 1);
     }
 
@@ -148,24 +139,9 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setDisable(false);
         tfCustomerPhoneNumber.setDisable(false);
         tfCustomerName.setDisable(false);
-        tfPictureFilepath.setDisable(false);
         btnCancelCustomer.setDisable(false);
         btnCreateCustomer.setDisable(false);
-        btnPictureFinder.setDisable(false);
         cbCustomerTypes.setDisable(false);
-    }
-
-    @FXML
-    private void handlePictureFinder(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Picture");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
-        Stage stage = (Stage) btnPictureFinder.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            tfPictureFilepath.setText(String.valueOf(selectedFile));
-        }
     }
 
     @FXML

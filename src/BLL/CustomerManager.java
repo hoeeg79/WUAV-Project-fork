@@ -28,14 +28,9 @@ public class CustomerManager {
         return facadeDAL.createCustomer(customer);
     }
 
-
-    /**
-     *  A method that uses facadeDAL to retrieve all customers from our database, and return them as a map.
-     */
-    public Map<Integer, List<Customer>> getCustomers()throws Exception {
+    public List<Customer> getCustomers() throws Exception{
         return facadeDAL.getCustomers();
     }
-
     /**
      * A method that takes in a customer object and uses facadeDAL to delete a customer in the database
      */
@@ -54,8 +49,9 @@ public class CustomerManager {
      *  A method that takes a list of customers and a search query,
      *  and uses customerSearch to search for customers that match the query
      */
-    public List<Customer> searchCustomer(List<Customer> customers, String searchQuery) throws Exception{
-        List<Customer> searchRestult = customerSearch.searchCustomers(customers, searchQuery);
+    public List<Customer> searchCustomer(String searchQuery) throws Exception{
+        List<Customer> allCustomers = getCustomers();
+        List<Customer> searchRestult = customerSearch.searchCustomers(allCustomers ,searchQuery);
         return searchRestult;
     }
 }
