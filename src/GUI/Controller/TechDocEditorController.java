@@ -9,10 +9,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -128,5 +130,25 @@ public class TechDocEditorController extends BaseController{
             }
         };
         timer.schedule(task, 5000);
+    }
+
+    public void handleDraw(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/DrawView.fxml"));
+            Parent root = loader.load();
+
+            DrawController controller = loader.getController();
+            controller.setup();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Technical Drawing");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 }

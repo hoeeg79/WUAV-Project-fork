@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="683.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
+<AnchorPane prefHeight="683.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +20,7 @@
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
                   <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Finalize" />
                   <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                  <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" text="Draw">
+                  <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin>
