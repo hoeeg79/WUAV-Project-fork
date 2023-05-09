@@ -72,7 +72,7 @@ public class CustomerDAO {
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("tlf");
                 int customerTypeId = rs.getInt("customertypeid");
-                boolean softDeleted = rs.getBoolean("softDeleted");
+//                boolean softDeleted = rs.getBoolean("softDeleted");
 
                 Customer customer = new Customer(id, name, email, phoneNumber, customerTypeId);
                 allCustomers.add(customer);
