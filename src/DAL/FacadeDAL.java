@@ -1,13 +1,12 @@
 package DAL;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class FacadeDAL {
     private CustomerDAO customerDAO;
@@ -77,5 +76,9 @@ public class FacadeDAL {
 
     public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException {
         return usersDAO.getLinkedUsers(techdoc);
+    }
+
+    public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
+        return techDocDAO.addTechPictures(pictures, techDoc);
     }
 }

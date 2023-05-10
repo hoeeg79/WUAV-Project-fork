@@ -15,8 +15,6 @@ public class CustomerModel {
     private CustomerManager customerManager;
     private ObservableList<Customer> customerList;
 
-
-
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();
         customerList = FXCollections.observableArrayList();
