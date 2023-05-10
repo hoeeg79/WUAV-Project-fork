@@ -16,11 +16,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -96,12 +94,10 @@ public class CustomerViewController extends BaseController{
             String name = tfCustomerName.getText();
             String email = tfCustomerEmail.getText();
             String phoneNumber = tfCustomerPhoneNumber.getText();
-            int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
 
             customer.setName(name);
             customer.setEmail(email);
             customer.setTlf(phoneNumber);
-            customer.setCustomerType(customerType);
 
             super.getCModel().updateCustomer(customer);
         }catch (Exception e){
@@ -130,7 +126,6 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setText(customer.getEmail());
         tfCustomerName.setText(customer.getName());
         tfCustomerPhoneNumber.setText(String.valueOf(customer.getTlf()));
-        cbCustomerTypes.getSelectionModel().select(customer.getCustomerType() - 1);
     }
 
     @FXML

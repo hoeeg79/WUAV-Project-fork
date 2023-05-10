@@ -5,27 +5,24 @@ public class Customer {
     private String name;
     private String email;
     private String tlf;
-    private int customerType;
     private String streetName;
     private String zipcode;
 
 
 
-    public Customer(int id, String name, String email, String tlf, int customerType, String streetName, String zipcode) {
+    public Customer(int id, String name, String email, String tlf,  String streetName, String zipcode) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.customerType = customerType;
         this.streetName = streetName;
         this.zipcode = zipcode;
     }
 
-    public Customer(String name, String email, String tlf, int customerType, String streetName, String zipcode) {
+    public Customer(String name, String email, String tlf,  String streetName, String zipcode) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.customerType = customerType;
         this.streetName = streetName;
         this.zipcode = zipcode;
 
@@ -62,14 +59,6 @@ public class Customer {
 
     public void setTlf(String tlf) {
         this.tlf = tlf;
-    }
-
-    public int getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(int customerType) {
-        this.customerType = customerType;
     }
 
     public String getStreetName() {

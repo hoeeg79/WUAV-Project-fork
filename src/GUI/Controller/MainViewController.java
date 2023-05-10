@@ -52,8 +52,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnDeleteCustomer;
 
     @FXML
-    private ComboBox cbCustomerTypes;
-    @FXML
     private TextField tfCustomerName;
     @FXML
     private TextField tfCustomerEmail;
@@ -64,11 +62,7 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private TextField tfCustomerZipcode;
     @FXML
-    private TextField tfCustomerImage;
-    @FXML
     private TextField tfSearchBar;
-    @FXML
-    private Button btnCustomerImage;
     @FXML
     private Button btnCancelCustomer;
     @FXML
@@ -108,19 +102,20 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+    private void handleCreateCustomer(ActionEvent actionEvent) throws Exception {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
-        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
         String streetName = tfCustomerStreetName.getText();
         String zipcode = tfCustomerZipcode.getText();
 
-        Customer customer = new Customer(name, email, tlf, customerType, streetName, zipcode);
+        Customer customer = new Customer(name, email, tlf, streetName, zipcode);
 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
         customerMenu();
+        tvMain.getItems().clear();
+        tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 
     @FXML
@@ -132,10 +127,8 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerName.clear();
         tfCustomerEmail.clear();
         tfCustomerPhonenumber.clear();
-        tfCustomerImage.clear();
         tfCustomerStreetName.clear();
         tfCustomerZipcode.clear();
-        cbCustomerTypes.getSelectionModel().clearSelection();
     }
 
     private void customerMenu() {
@@ -179,7 +172,7 @@ public class MainViewController extends BaseController implements Initializable 
         tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
         tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
 
-        tvMain.getColumns().addAll();
+        tvMain.getItems().clear();
         tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 
@@ -192,19 +185,6 @@ public class MainViewController extends BaseController implements Initializable 
             }
         }));
     }
-
-    @FXML
-    private void handlePickImage(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*jpeg", "*.gif"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-        File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
-        tfCustomerImage.setText(selectedFile.getAbsolutePath());
-    }
-
 
     private void setSceneSelectCompany(Button btn, Customer customer){
         try {

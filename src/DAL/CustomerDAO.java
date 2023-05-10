@@ -27,10 +27,7 @@ public class CustomerDAO {
         String streetName = customer.getStreetName();
         String zipcode = customer.getZipcode();
 
-
-        int customerType = customer.getCustomerType();
-
-        String sql = "INSERT INTO Customer (name, email, tlf,  customertypeid, streetName, zipcode, softdeleted) VALUES (?,?,?,?,?,?,0);";
+        String sql = "INSERT INTO Customer (name, email, tlf, streetName, zipcode, softdeleted) VALUES (?,?,?,?,?,0);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -38,11 +35,8 @@ public class CustomerDAO {
             stmt.setString(1, name);
             stmt.setString(2, email);
             stmt.setString(3, tlf);
-            stmt.setInt(4, customerType);
-            stmt.setString(5, streetName);
-            stmt.setString(6, zipcode);
-
-
+            stmt.setString(4, streetName);
+            stmt.setString(5, zipcode);
 
             stmt.executeUpdate();
 
@@ -54,7 +48,7 @@ public class CustomerDAO {
                 id = rs.getInt(1);
             }
 
-            return new Customer(id, name, email, tlf, customerType, streetName, zipcode);
+            return new Customer(id, name, email, tlf, streetName, zipcode);
 
         } catch (SQLException e) {
             throw new SQLException(e);
@@ -76,13 +70,11 @@ public class CustomerDAO {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("tlf");
-                int customerTypeId = rs.getInt("customertypeid");
-//                boolean softDeleted = rs.getBoolean("softDeleted");
                 String streetName = rs.getString("streetName");
                 String zipcode = rs.getString("zipcode");
 
 
-                Customer customer = new Customer(id, name, email, phoneNumber, customerTypeId, streetName, zipcode);
+                Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode);
                 allCustomers.add(customer);
             }
         }catch(Exception e){
@@ -115,16 +107,15 @@ public class CustomerDAO {
     public void updateCustomer(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
 
-            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, customertypeid=?, streetName=?, zipcode=? WHERE id=?;";
+            String sql = "UPDATE Customer SET name=?, email=?, tlf=?, streetName=?, zipcode=? WHERE id=?;";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getEmail());
             pstmt.setString(3, customer.getTlf());
-            pstmt.setInt(4, customer.getCustomerType());
-            pstmt.setString(5, customer.getStreetName());
-            pstmt.setString(6, customer.getZipcode());
-            pstmt.setInt(7,customer.getId());
+            pstmt.setString(4, customer.getStreetName());
+            pstmt.setString(5, customer.getZipcode());
+            pstmt.setInt(6,customer.getId());
             
             pstmt.executeUpdate();
         }catch (SQLException e){
