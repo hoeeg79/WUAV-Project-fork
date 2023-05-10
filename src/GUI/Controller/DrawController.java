@@ -1,5 +1,8 @@
 package GUI.Controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,13 +10,30 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DrawController extends BaseController implements Initializable {
+    @FXML
+    private Button btnEraser;
+    @FXML
+    private Button btnIcon;
+    @FXML
+    private ComboBox cbIcons;
+    @FXML
+    private Canvas tempCanvas;
     @FXML
     private Button btnLine;
     @FXML
@@ -25,14 +45,18 @@ public class DrawController extends BaseController implements Initializable {
     @FXML
     private Button btnBrush;
     private GraphicsContext brushTool;
+    private GraphicsContext tempBrushTool;
     private boolean brushSelected;
     private boolean lineSelected;
-    private boolean circleSelected;
+    private boolean imageSelected;
     private boolean eraserSelected;
     private double startX;
     private double startY;
     private double endX;
     private double endY;
+    private Image image;
+    private List<File> imageFiles;
+    private ObservableList icons;
 
     @Override
     public void setup() throws Exception {
@@ -42,38 +66,113 @@ public class DrawController extends BaseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         brushTool = canvas.getGraphicsContext2D();
+        tempBrushTool = tempCanvas.getGraphicsContext2D();
+        brushSelected = true;
+        disableButton(btnBrush);
+        addIcons();
+        cbIcons.valueProperty().addListener(observable -> {
+            setIcon();
+            handleSelectIcon();
+        });
+    }
+
+    private void setIcon() {
+        int iconIndex = cbIcons.getSelectionModel().getSelectedIndex();
+        File file = imageFiles.get(iconIndex);
+        image = new Image(file.toURI().toString());
+    }
+
+    private void addIcons() {
+        imageFiles = getImageFiles("resources/Icons");
+        List<String> iconNames = new ArrayList<>();
+
+        if (imageFiles != null) {
+            for (File file : imageFiles) {
+                iconNames.add(file.getName());
+            }
+        }
+
+        icons = FXCollections.observableArrayList(iconNames);
+        cbIcons.setItems(icons);
+    }
+
+    private List<File> getImageFiles(String folderPath) {
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+
+        List<File> imageFiles = new ArrayList<>();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && isImageFile(file)) {
+                    imageFiles.add(file);
+                }
+            }
+        }
+        return imageFiles;
+    }
+
+    private boolean isImageFile(File file) {
+        String fileName = file.getName().toLowerCase();
+        return fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg");
     }
 
     private void unselectAll() {
         brushSelected = false;
         lineSelected = false;
-        circleSelected = false;
+        imageSelected = false;
         eraserSelected = false;
     }
 
     @FXML
-    private void handleSelectBrush(ActionEvent actionEvent) {
+    private void handleSelectBrush() {
         unselectAll();
         brushSelected = true;
+        enableButtons();
+        disableButton(btnBrush);
     }
 
     @FXML
-    private void handleSelectLine(ActionEvent actionEvent) {
+    private void handleSelectLine() {
         unselectAll();
         lineSelected = true;
+        enableButtons();
+        disableButton(btnLine);
     }
 
     @FXML
-    private void handleSelectCircle(ActionEvent actionEvent) {
-        unselectAll();
-        circleSelected = true;
-
-    }
-
-    @FXML
-    private void handleSelectEraser(ActionEvent actionEvent) {
+    private void handleSelectEraser() {
         unselectAll();
         eraserSelected = true;
+        enableButtons();
+        disableButton(btnEraser);
+    }
+
+    public void handleSelectIcon() {
+        unselectAll();
+        imageSelected = true;
+        enableButtons();
+        disableButton(btnIcon);
+    }
+
+    public void handleSave(ActionEvent actionEvent) {
+        WritableImage imageToSave = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+        canvas.snapshot(null, imageToSave);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageToSave, null);
+        String filePath = System.getProperty("user.home") + File.separator + "Downloads";
+        File file = new File(filePath);
+
+        try {
+            ImageIO.write(bufferedImage, "png", file);
+        } catch (IOException e) {
+            displayError(e);
+            throw new RuntimeException(e);
+        }
+        closeWindow(btnBrush);
+    }
+
+    public void handleCancel(ActionEvent actionEvent) {
+        closeWindow(btnBrush);
     }
 
     @FXML
@@ -81,20 +180,24 @@ public class DrawController extends BaseController implements Initializable {
         if (lineSelected) {
             linePressed(e);
         }
-        if (circleSelected) {
-            circlePressed(e);
+        if (imageSelected) {
+            imagePressed(e);
         }
     }
 
     @FXML
     private void mouseDragged(MouseEvent e) {
-            mouseDrag(e);
-
+        if (lineSelected) {
+            lineDrag(e);
+        }
         if (brushSelected) {
             brushDragged(e);
         }
         if (eraserSelected) {
             eraserDragged(e);
+        }
+        if (imageSelected) {
+            imageDrag(e);
         }
     }
 
@@ -103,8 +206,8 @@ public class DrawController extends BaseController implements Initializable {
         if (lineSelected) {
             lineReleased(e);
         }
-        if (circleSelected) {
-            circleReleased(e);
+        if (imageSelected) {
+            imageReleased(e);
         }
     }
 
@@ -117,34 +220,28 @@ public class DrawController extends BaseController implements Initializable {
         brushTool.clearRect(x, y, size, size);
     }
 
-    private void circlePressed(MouseEvent e) {
-        startX = e.getX();
-        startY = e.getY();
-        brushTool.setStroke(colorPicker.getValue());
-    }
-
-    private void circleReleased(MouseEvent e) {
-        endX = e.getX();
-        endY = e.getY();
-        brushTool.fillOval(startX, startY, endX, endY);
-    }
-
     private void linePressed(MouseEvent e) {
         startX = e.getX();
         startY = e.getY();
         brushTool.setLineWidth(Double.parseDouble(tfBrushSize.getText()));
+        tempBrushTool.setLineWidth(Double.parseDouble(tfBrushSize.getText()));
         brushTool.setStroke(colorPicker.getValue());
+        tempBrushTool.setStroke(colorPicker.getValue());
     }
 
-    private void mouseDrag(MouseEvent e) {
+    private void lineDrag(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
+        tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
+        tempBrushTool.strokeLine(startX, startY, endX, endY);
+
     }
 
     private void lineReleased(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
         brushTool.strokeLine(startX, startY, endX, endY);
+        tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
     }
 
     private void brushDragged(MouseEvent e) {
@@ -154,5 +251,53 @@ public class DrawController extends BaseController implements Initializable {
 
         brushTool.setFill(colorPicker.getValue());
         brushTool.fillRoundRect(x, y, size, size, size, size);
+    }
+
+    private void imagePressed(MouseEvent e) {
+        startX = e.getX();
+        startY = e.getY();
+    }
+
+    private void imageDrag(MouseEvent e) {
+        endX = e.getX();
+        endY = e.getY();
+
+        double width = endX-startX;
+        double height = endY-startY;
+        double scaleFactor = Math.min(width / image.getWidth(), height / image.getHeight());
+        double scaledWidth = image.getWidth() * scaleFactor;
+        double scaledHeight = image.getHeight() * scaleFactor;
+        double x = startX + (width - scaledWidth) / 2;
+        double y = startY + (height - scaledHeight) / 2;
+
+        tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
+        tempBrushTool.drawImage(image, x, y, scaledWidth, scaledHeight);
+    }
+
+    private void imageReleased(MouseEvent e) {
+        endX = e.getX();
+        endY = e.getY();
+
+        double width = endX-startX;
+        double height = endY-startY;
+        double scaleFactor = Math.min(width / image.getWidth(), height / image.getHeight());
+        double scaledWidth = image.getWidth() * scaleFactor;
+        double scaledHeight = image.getHeight() * scaleFactor;
+        double x = startX + (width - scaledWidth) / 2;
+        double y = startY + (height - scaledHeight) / 2;
+
+        brushTool.drawImage(image, x, y, scaledWidth, scaledHeight);
+        tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
+    }
+
+    private void disableButton(Button b) {
+        b.setDisable(true);
+    }
+
+    private void enableButtons() {
+        btnEraser.setDisable(false);
+        btnIcon.setDisable(false);
+        btnBrush.setDisable(false);
+        btnLine.setDisable(false);
     }
 }
