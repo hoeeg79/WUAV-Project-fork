@@ -2,14 +2,12 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.UsersModel;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
 import GUI.Model.CustomerModel;
 import javafx.animation.TranslateTransition;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,32 +16,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.awt.image.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static javafx.scene.paint.Color.WHITE;
-import static javafx.scene.text.TextAlignment.CENTER;
-
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
-    private TableView tvMain;
+    private TableView<Customer> tvMain;
     @FXML
     private TableColumn tcName;
     @FXML
@@ -60,7 +47,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnOpenCustomer;
     @FXML
     private Button btnDeleteCustomer;
-
     @FXML
     private ComboBox cbCustomerTypes;
     @FXML
@@ -83,7 +69,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnCreateCustomer;
     @FXML
     private Pane createCustomerMenu;
-    private Customer selectedCustomer;
     private User user;
 
     @Override
@@ -248,12 +233,12 @@ public class MainViewController extends BaseController implements Initializable 
 
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        super.getCModel().deleteCustomer(selectedCustomer);
+        super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
-        setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
+        setSceneSelectCompany(btnOpenCustomer, tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML

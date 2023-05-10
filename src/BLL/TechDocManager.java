@@ -1,6 +1,7 @@
 package BLL;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
 import DAL.FacadeDAL;
@@ -29,4 +30,9 @@ public class TechDocManager {
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
         facadeDAL.updateTechDoc(techDoc);
     }
+
+    public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
+        return facadeDAL.addTechPictures(pictures, techDoc);
+    }
+
 }
