@@ -42,10 +42,14 @@ public class TechDocEditorController extends BaseController{
     @Override
     public void setup() throws Exception {
         super.setTModel(new TechDocModel());
+        generateTechDoc();
     }
 
     @FXML
     private void handleClose(ActionEvent actionEvent) throws Exception {
+        if (!isEdit) {
+            //super.getTModel().deleteTechDoc(techDoc); //IMPLEMENT THIS!
+        }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
         Parent root = loader.load();
 
@@ -66,22 +70,21 @@ public class TechDocEditorController extends BaseController{
         if (isEdit) {
             doEditOfDoc();
         } else {
-            saveNewDoc();
+            isEdit = true;
+            doEditOfDoc();
             addTech(techDoc, user);
         }
         lblSaveStatus.setText("Saved successfully!");
         clearSavedLabelText();
     }
 
-    private void saveNewDoc() throws SQLException {
-        TechDoc newDoc = new TechDoc(tfTitle.getText(), customer.getId());
-        newDoc.setSetupDescription(taSetupDescription.getText());
-        newDoc.setDeviceLoginInfo(taDeviceInfo.getText());
-        newDoc.setExtraInfo(taExtraInfo.getText());
+    private void generateTechDoc() throws SQLException {
+        TechDoc newDoc = new TechDoc("not saved yet", customer.getId());
         techDoc = getTModel().createTechDoc(newDoc);
     }
 
     private void doEditOfDoc() throws SQLException {
+        techDoc.setSetupName(tfTitle.getText());
         techDoc.setSetupDescription(taSetupDescription.getText());
         techDoc.setDeviceLoginInfo(taDeviceInfo.getText());
         techDoc.setExtraInfo(taExtraInfo.getText());
@@ -118,6 +121,7 @@ public class TechDocEditorController extends BaseController{
             displayError(e);
         }
     }
+
     private void clearSavedLabelText(){
         Timer timer = new Timer();
 
