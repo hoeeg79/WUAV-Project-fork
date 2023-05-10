@@ -1,9 +1,6 @@
 package DAL;
 
-import BE.Customer;
-import BE.TechDoc;
-import BE.User;
-import BE.UserType;
+import BE.*;
 import DAL.DatabaseConnector.DBConnector;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.collections.FXCollections;
@@ -159,6 +156,35 @@ public class TechDocDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        String sql = "INSERT INTO Pictures (filepath, pictureDescription) VALUES (?,?);";
+
+        try(Connection connection = dbc.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            System.out.println("from DAO");
+            System.out.println(sql);
+            System.out.println(pictures.getFilePath());
+            System.out.println(pictures.getDescription());
+            preparedStatement.setString(1, pictures.getFilePath());
+            preparedStatement.setString(2, pictures.getDescription());
+
+            preparedStatement.executeUpdate();
+
+            int id = 0;
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+            pictures.setId(id);
+
+            return pictures;
+
+        } catch (SQLException e) {
             throw new SQLException(e);
         }
     }

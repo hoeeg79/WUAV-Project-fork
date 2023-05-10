@@ -1,6 +1,7 @@
 package DAL;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -77,5 +78,9 @@ public class FacadeDAL {
 
     public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException {
         return usersDAO.getLinkedUsers(techdoc);
+    }
+
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        return techDocDAO.addTechPictures(pictures);
     }
 }

@@ -69,7 +69,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnCreateCustomer;
     @FXML
     private Pane createCustomerMenu;
-    private Customer selectedCustomer;
     private User user;
 
     @Override
@@ -234,7 +233,7 @@ public class MainViewController extends BaseController implements Initializable 
 
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        super.getCModel().deleteCustomer(selectedCustomer);
+        super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML

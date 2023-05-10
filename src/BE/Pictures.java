@@ -5,9 +5,12 @@ public class Pictures {
     private String description;
     private String filePath;
 
-    public Pictures(int id, String description, String filePath) {
+    public Pictures(int id, String filePath) {
         this.id = id;
-        this.description = description;
+        this.filePath = filePath;
+    }
+
+    public Pictures(String filePath) {
         this.filePath = filePath;
     }
 
@@ -33,5 +36,14 @@ public class Pictures {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    @Override
+    public String toString() {
+        return "Pictures{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", filePath='" + filePath + '\'' +
+                '}';
     }
 }
