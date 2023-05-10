@@ -112,8 +112,7 @@ public class MainViewController extends BaseController implements Initializable 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
         customerMenu();
-        tvMain.getItems().clear();
-        tvMain.setItems(super.getCModel().getObservableCustomers());
+        refreshList();
     }
 
     @FXML
@@ -170,8 +169,7 @@ public class MainViewController extends BaseController implements Initializable 
         tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
         tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
 
-        tvMain.getItems().clear();
-        tvMain.setItems(super.getCModel().getObservableCustomers());
+        refreshList();
     }
 
     private void searchBar(){
@@ -213,8 +211,9 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+    private void handleDeleteCustomer(ActionEvent actionEvent) throws Exception {
         super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
+        refreshList();
     }
 
     @FXML
@@ -247,5 +246,9 @@ public class MainViewController extends BaseController implements Initializable 
         } else {
             btnCreateUsers.setVisible(false);
         }
+    }
+    private void refreshList() throws Exception {
+        tvMain.getItems().clear();
+        tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 }
