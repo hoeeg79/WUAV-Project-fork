@@ -2,14 +2,12 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.UsersModel;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
 import GUI.Model.CustomerModel;
 import javafx.animation.TranslateTransition;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,30 +16,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.awt.image.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static javafx.scene.paint.Color.WHITE;
-import static javafx.scene.text.TextAlignment.CENTER;
-
 
 public class MainViewController extends BaseController implements Initializable {
+
     @FXML
     private TableView tvMain;
     @FXML
@@ -51,7 +39,9 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private TableColumn tcPhoneNumber;
     @FXML
-    private TableColumn tcAddress;
+    private TableColumn tcStreetName;
+    @FXML
+    private TableColumn tcZipcode;
     @FXML
     private Button btnCreateUsers;
     @FXML
@@ -69,6 +59,10 @@ public class MainViewController extends BaseController implements Initializable 
     private TextField tfCustomerEmail;
     @FXML
     private TextField tfCustomerPhonenumber;
+    @FXML
+    private TextField tfCustomerStreetName;
+    @FXML
+    private TextField tfCustomerZipcode;
     @FXML
     private TextField tfCustomerImage;
     @FXML
@@ -119,8 +113,10 @@ public class MainViewController extends BaseController implements Initializable 
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
         int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
+        String streetName = tfCustomerStreetName.getText();
+        String zipcode = tfCustomerZipcode.getText();
 
-        Customer customer = new Customer(name, email, tlf, customerType);
+        Customer customer = new Customer(name, email, tlf, customerType, streetName, zipcode);
 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
@@ -137,6 +133,8 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerEmail.clear();
         tfCustomerPhonenumber.clear();
         tfCustomerImage.clear();
+        tfCustomerStreetName.clear();
+        tfCustomerZipcode.clear();
         cbCustomerTypes.getSelectionModel().clearSelection();
     }
 
@@ -177,8 +175,9 @@ public class MainViewController extends BaseController implements Initializable 
     private void loadLists(CustomerModel model) throws Exception {
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        //tcAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
+        tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
+        tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
 
         tvMain.getColumns().addAll();
         tvMain.setItems(super.getCModel().getObservableCustomers());
@@ -193,17 +192,6 @@ public class MainViewController extends BaseController implements Initializable 
             }
         }));
     }
-
-//    private void searchBar() throws Exception{
-//        tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
-//            try{
-//                super.getCModel().customerSearch(newValue);
-//            } catch (Exception e){
-//                e.printStackTrace();
-//                displayError(e);
-//            }
-//        }));
-//    }
 
     @FXML
     private void handlePickImage(ActionEvent actionEvent) {

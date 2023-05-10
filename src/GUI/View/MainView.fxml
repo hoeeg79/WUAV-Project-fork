@@ -29,7 +29,10 @@
                   <TextField fx:id="tfCustomerEmail" />
                   <Label styleClass="menuText" text="Phone number" />
                   <TextField fx:id="tfCustomerPhonenumber" />
-                  <Label styleClass="menuText" text="Image" />
+                  <Label styleClass="menuText" text="StreetName" />
+                  <TextField fx:id="tfCustomerStreetName" />
+                  <Label styleClass="menuText" text="Zipcode" />
+                  <TextField fx:id="tfCustomerZipcode" />
                   <HBox spacing="10.0">
                      <children>
                         <TextField fx:id="tfCustomerImage" editable="false" focusTraversable="false" />
@@ -62,12 +65,13 @@
       <Button fx:id="btnCreateUsers" layoutX="1281.0" layoutY="166.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" AnchorPane.rightAnchor="119.0" AnchorPane.topAnchor="166.0" />
       <Button fx:id="btnDeleteCustomer" layoutX="111.0" layoutY="407.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" text="Delete Customer" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="407.0" />
       <Button fx:id="btnOpenCustomer" layoutX="111.0" layoutY="450.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleOpenCustomer" text="Open Customer" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="450.0" />
-      <TableView fx:id="tvMain" layoutX="394.0" layoutY="214.0" prefHeight="583.0" prefWidth="757.0">
+      <TableView fx:id="tvMain" layoutX="389.0" layoutY="214.0" prefHeight="583.0" prefWidth="757.0">
         <columns>
-          <TableColumn fx:id="tcName" prefWidth="239.0" text="Name" />
-          <TableColumn fx:id="tcEmail" minWidth="0.0" prefWidth="139.0" text="Email" />
-            <TableColumn fx:id="tcPhoneNumber" prefWidth="137.0" text="PhoneNumber" />
-            <TableColumn fx:id="tcAddress" prefWidth="241.0" text="Address" />
+          <TableColumn fx:id="tcName" prefWidth="179.0" text="Name" />
+          <TableColumn fx:id="tcEmail" minWidth="0.0" prefWidth="135.0" text="Email" />
+            <TableColumn fx:id="tcPhoneNumber" prefWidth="139.0" text="PhoneNumber" />
+            <TableColumn fx:id="tcStreetName" prefWidth="184.0" text="StreetName" />
+            <TableColumn fx:id="tcZipcode" prefWidth="119.0" text="Zipcode" />
         </columns>
       </TableView>
 

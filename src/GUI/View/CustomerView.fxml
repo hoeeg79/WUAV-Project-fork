@@ -31,12 +31,6 @@
                         <Label styleClass="menuText" text="Phone number" />
                         <TextField fx:id="tfCustomerPhoneNumber" />
                         <Label styleClass="menuText" text="Image" />
-                        <HBox>
-                           <children>
-                              <TextField fx:id="tfPictureFilepath" />
-                              <Button fx:id="btnPictureFinder" mnemonicParsing="false" text="Find" />
-                           </children>
-                        </HBox>
                         <Label styleClass="menuText" text="Customer type" />
                         <ComboBox fx:id="cbCustomerTypes" prefWidth="150.0" />
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
