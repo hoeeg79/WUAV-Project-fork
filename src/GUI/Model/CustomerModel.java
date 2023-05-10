@@ -45,42 +45,4 @@ public class CustomerModel {
         customerList.clear();
         customerList.addAll(searchResults);
     }
-
-//    public void customerSearch(String searchQuery) throws Exception {
-//        if(searchQuery.isEmpty()){
-//            backUpSearch();
-//        }else {
-//        businessSearch(searchQuery);
-//        governmentSearch(searchQuery);
-//        privateSearch(searchQuery);
-//        }
-//    }
-//
-//    private void businessSearch(String searchQuery) throws Exception{
-//        List<Customer> searchResult = customerManager.searchCustomer(businessCustomer, searchQuery);
-//            businessCustomer.clear();
-//            businessCustomer.addAll(searchResult);
-//        }
-//
-//
-//    private void governmentSearch(String searchQuery) throws Exception{
-//        List<Customer> searchResult = customerManager.searchCustomer(governmentCustomer, searchQuery);
-//            governmentCustomer.clear();
-//            governmentCustomer.addAll(searchResult);
-//        }
-//
-//    private void privateSearch(String searchQuery) throws Exception{
-//        List<Customer> searchResult = customerManager.searchCustomer(privateCustomer, searchQuery);
-//            privateCustomer.clear();
-//            privateCustomer.addAll(searchResult);
-//    }
-//
-//    private void backUpSearch() throws Exception{
-//        businessCustomer.clear();
-//        governmentCustomer.clear();
-//        privateCustomer.clear();
-//        businessCustomer.addAll(backUpBusiness);
-//        governmentCustomer.addAll(backUpGovernment);
-//        privateCustomer.addAll(backUpPrivate);
-//    }
 }
