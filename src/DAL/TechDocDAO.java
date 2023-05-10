@@ -160,37 +160,32 @@ public class TechDocDAO {
         }
     }
 
-    public List<Pictures> getTechPictures(Pictures pictures) throws SQLException {
-        ArrayList<Pictures> techPictures = new ArrayList<>();
-        String sql = "INSERT INTO Pictures (filepath, pictureDescription, techDocID) VALUES (?,?,?);";
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        String sql = "INSERT INTO Pictures (filepath, pictureDescription) VALUES (?,?);";
 
         try(Connection connection = dbc.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, pictures.getDescription());
-            preparedStatement.setString(2, pictures.getFilePath());
-            preparedStatement.setInt(3, pictures.getId());
+            preparedStatement.setString(1, pictures.getFilePath());
+            preparedStatement.setString(2, pictures.getDescription());
 
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                int id = rs.getInt("techDocID");
+                int id = rs.getInt("id");
                 String pictureDescription = rs.getString("pictureDescription");
                 String pictureFilepath = rs.getString("filepath");
 
-                Pictures pictures1 = new Pictures(id,pictureDescription,pictureFilepath);
+                Pictures pictures1 = new Pictures(id, pictureFilepath);
                 pictures1.setDescription(pictureDescription);
-                pictures1.setFilePath(pictureFilepath);
-                pictures1.setId(id);
-                techPictures.add(pictures1);
+                return pictures1;
             }
 
-            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e);
         }
-        return techPictures;
+        return null;
     }
 
 

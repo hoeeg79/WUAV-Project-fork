@@ -31,8 +31,8 @@ public class TechDocManager {
         facadeDAL.updateTechDoc(techDoc);
     }
 
-    public List<Pictures> getTechPictures(Pictures pictures) throws SQLException {
-        return facadeDAL.getTechPictures(pictures);
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        return facadeDAL.addTechPictures(pictures);
     }
 
 }

@@ -13,7 +13,6 @@ import java.sql.SQLException;
 public class TechDocModel {
     private final TechDocManager techDocManager;
     private final ObservableList<TechDoc> techDocList;
-
     private final ObservableList<Pictures> techPictures;
 
     public TechDocModel() throws Exception {
@@ -41,9 +40,10 @@ public class TechDocModel {
         techDocManager.updateTechDoc(techDoc);
     }
 
-    public ObservableList<Pictures> getGetTechPictures(Pictures pictures) throws SQLException {
-        techPictures.addAll(techDocManager.getTechPictures(pictures));
-        return techPictures;
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        Pictures newPicture = techDocManager.addTechPictures(pictures);
+        techPictures.add(newPicture);
+        return newPicture;
     }
 
 }

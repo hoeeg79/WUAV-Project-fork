@@ -7,6 +7,7 @@ import BE.User;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +24,6 @@ import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,10 +52,10 @@ public class TechDocEditorController extends BaseController {
     private Button btnClose;
     private TechDoc techDoc;
     private Customer customer;
-    private Pictures pictures;
+    private Pictures picture;
     private User user;
     private boolean isEdit;
-    private List<Image> imageList = new ArrayList<>();
+    private ObservableList<Pictures> imageList;
     private int currentImageIndex = -1;
 
     @Override
@@ -123,6 +122,8 @@ public class TechDocEditorController extends BaseController {
         taExtraInfo.setText(techDoc.getExtraInfo());
     }
 
+    public void setPicture(Pictures picture)
+    {this.picture = picture; }
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -152,7 +153,7 @@ public class TechDocEditorController extends BaseController {
         timer.schedule(task, 5000);
     }
 
-    public void handleAddPicture(ActionEvent actionEvent) {
+    public void handleAddPicture(ActionEvent actionEvent) throws SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Picture");
         fileChooser.getExtensionFilters().add(
@@ -161,9 +162,8 @@ public class TechDocEditorController extends BaseController {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            ImageView imageView = imageViewTechDoc;
-            Pictures pictures = new Pictures();
-            getTModel().getGetTechPictures(image);
+            picture = new Pictures(selectedFile.toURI().toString());
+            Image image = new Image(picture.getFilePath());
             if (currentImageIndex == -1) {
                 currentImageIndex = 0;
                 displayCurrentImage();
@@ -173,11 +173,12 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setFitHeight(400);
 
             lblNoPictures.setVisible(false);
+            imageList.add(super.getTModel().addTechPictures(picture));
         }
     }
     private void displayCurrentImage() {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
-            Image currentImage = imageList.get(currentImageIndex);
+            Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
             imageViewTechDoc.setImage(currentImage);
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);

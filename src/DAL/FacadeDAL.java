@@ -80,7 +80,7 @@ public class FacadeDAL {
         return usersDAO.getLinkedUsers(techdoc);
     }
 
-    public List<Pictures> getTechPictures(Pictures pictures) throws SQLException {
-        return  techDocDAO.getTechPictures(pictures);
+    public Pictures addTechPictures(Pictures pictures) throws SQLException {
+        return techDocDAO.addTechPictures(pictures);
     }
 }
