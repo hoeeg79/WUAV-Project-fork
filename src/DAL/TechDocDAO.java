@@ -2,8 +2,6 @@ package DAL;
 
 import BE.*;
 import DAL.DatabaseConnector.DBConnector;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-import javafx.collections.FXCollections;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -94,8 +92,8 @@ public class TechDocDAO {
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
                 String deviceLoginInfo = rs.getString("deviceLoginInfo");
-
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
+                techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setDeviceLoginInfo(deviceLoginInfo);
                 techDocs.add(techDoc);
@@ -134,6 +132,7 @@ public class TechDocDAO {
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setDeviceLoginInfo(deviceLoginInfo);
                 techDoc.setExtraInfo(extraInfo);
+                techDoc.setPictures(getTechPictures(techDoc));
                 techDocs.add(techDoc);
             }
 
@@ -160,8 +159,37 @@ public class TechDocDAO {
         }
     }
 
-    public Pictures addTechPictures(Pictures pictures) throws SQLException {
-        String sql = "INSERT INTO Pictures (filepath, pictureDescription) VALUES (?,?);";
+    public List<Pictures> getTechPictures(TechDoc techDoc) throws SQLException {
+        List<Pictures> picturesList = new ArrayList<>();
+
+        String sql = "SELECT * FROM Pictures WHERE techDocID = ?;";
+
+        try (Connection conn = dbc.getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, techDoc.getId());
+            System.out.println(techDoc.getId());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String filepath = rs.getString("filepath");
+                String pictureDescription = rs.getString("pictureDescription");
+
+                Pictures picture = new Pictures(id, filepath);
+                picture.setDescription(pictureDescription);
+
+                picturesList.add(picture);
+            }
+
+            return picturesList;
+
+        } catch (SQLException e) {
+            throw new SQLException();
+        }
+    }
+
+    public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
+        String sql = "INSERT INTO Pictures (filepath, pictureDescription, techDocID) VALUES (?,?,?);";
 
         try(Connection connection = dbc.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -171,6 +199,7 @@ public class TechDocDAO {
             System.out.println(pictures.getDescription());
             preparedStatement.setString(1, pictures.getFilePath());
             preparedStatement.setString(2, pictures.getDescription());
+            preparedStatement.setInt(3, techDoc.getId());
 
             preparedStatement.executeUpdate();
 

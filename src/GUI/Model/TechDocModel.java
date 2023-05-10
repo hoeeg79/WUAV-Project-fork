@@ -40,8 +40,8 @@ public class TechDocModel {
         techDocManager.updateTechDoc(techDoc);
     }
 
-    public Pictures addTechPictures(Pictures pictures) throws SQLException {
-        Pictures newPicture = techDocManager.addTechPictures(pictures);
+    public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
+        Pictures newPicture = techDocManager.addTechPictures(pictures, techDoc);
         techPictures.add(newPicture);
         return newPicture;
     }

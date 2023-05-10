@@ -62,9 +62,11 @@ public class TechDocEditorController extends BaseController {
     @Override
     public void setup() throws Exception {
         super.setTModel(new TechDocModel());
-        generateTechDoc();
         lblNoPictures.setVisible(true);
-        imageList = FXCollections.observableArrayList();
+        if (!isEdit) {
+            initializeList();
+            generateTechDoc();
+        }
     }
 
     @FXML
@@ -115,9 +117,14 @@ public class TechDocEditorController extends BaseController {
 
     public void setIsEdit(TechDoc techDoc) {
         this.techDoc = techDoc;
+        System.out.println(this.techDoc);
         isEdit = true;
+        initializeList();
         fillFields();
-        tfTitle.setDisable(true);
+    }
+
+    private void initializeList() {
+        imageList = FXCollections.observableArrayList();
     }
 
     private void fillFields() {
@@ -125,10 +132,17 @@ public class TechDocEditorController extends BaseController {
         taDeviceInfo.setText(techDoc.getDeviceLoginInfo());
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
+        if (techDoc.getPictures() != null) {
+            imageList.addAll(techDoc.getPictures());
+            currentImageIndex = 0;
+        }
+        displayCurrentImage();
     }
 
-    public void setPicture(Pictures picture)
-    {this.picture = picture; }
+    public void setPicture(Pictures picture) {
+        this.picture = picture;
+    }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -145,7 +159,6 @@ public class TechDocEditorController extends BaseController {
             displayError(e);
         }
     }
-
 
     private void clearSavedLabelText() {
         Timer timer = new Timer();
@@ -169,8 +182,7 @@ public class TechDocEditorController extends BaseController {
 
         if (selectedFile != null) {
             picture = new Pictures(selectedFile.toURI().toString());
-            System.out.println(picture);
-            imageList.add(super.getTModel().addTechPictures(picture));
+            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
             Image image = new Image(picture.getFilePath());
             if (currentImageIndex == -1) {
                 currentImageIndex = 0;
@@ -181,9 +193,9 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setFitHeight(400);
 
             lblNoPictures.setVisible(false);
-            System.out.println(picture);
         }
     }
+
     private void displayCurrentImage() {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
