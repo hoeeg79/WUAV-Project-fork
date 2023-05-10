@@ -37,4 +37,13 @@ public class Pictures {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+
+    @Override
+    public String toString() {
+        return "Pictures{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
 }

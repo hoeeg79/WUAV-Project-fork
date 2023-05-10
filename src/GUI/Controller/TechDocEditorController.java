@@ -7,6 +7,7 @@ import BE.User;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,6 +63,7 @@ public class TechDocEditorController extends BaseController {
     public void setup() throws Exception {
         super.setTModel(new TechDocModel());
         lblNoPictures.setVisible(true);
+        imageList = FXCollections.observableArrayList();
     }
 
     @FXML
@@ -163,6 +165,8 @@ public class TechDocEditorController extends BaseController {
 
         if (selectedFile != null) {
             picture = new Pictures(selectedFile.toURI().toString());
+            System.out.println(picture);
+            imageList.add(super.getTModel().addTechPictures(picture));
             Image image = new Image(picture.getFilePath());
             if (currentImageIndex == -1) {
                 currentImageIndex = 0;
@@ -173,7 +177,7 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setFitHeight(400);
 
             lblNoPictures.setVisible(false);
-            imageList.add(super.getTModel().addTechPictures(picture));
+            System.out.println(picture);
         }
     }
     private void displayCurrentImage() {

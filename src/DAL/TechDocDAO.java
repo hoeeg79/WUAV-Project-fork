@@ -164,28 +164,29 @@ public class TechDocDAO {
         String sql = "INSERT INTO Pictures (filepath, pictureDescription) VALUES (?,?);";
 
         try(Connection connection = dbc.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            System.out.println("from DAO");
+            System.out.println(sql);
+            System.out.println(pictures.getFilePath());
+            System.out.println(pictures.getDescription());
             preparedStatement.setString(1, pictures.getFilePath());
             preparedStatement.setString(2, pictures.getDescription());
 
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            preparedStatement.executeUpdate();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String pictureDescription = rs.getString("pictureDescription");
-                String pictureFilepath = rs.getString("filepath");
-
-                Pictures pictures1 = new Pictures(id, pictureFilepath);
-                pictures1.setDescription(pictureDescription);
-                return pictures1;
+            int id = 0;
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
             }
+
+            pictures.setId(id);
+
+            return pictures;
 
         } catch (SQLException e) {
             throw new SQLException(e);
         }
-        return null;
     }
 
 
