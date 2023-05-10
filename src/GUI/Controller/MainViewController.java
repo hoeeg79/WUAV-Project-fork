@@ -43,7 +43,7 @@ import static javafx.scene.text.TextAlignment.CENTER;
 
 public class MainViewController extends BaseController implements Initializable {
     @FXML
-    private TableView tvMain;
+    private TableView<Customer> tvMain;
     @FXML
     private TableColumn tcName;
     @FXML
@@ -83,7 +83,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnCreateCustomer;
     @FXML
     private Pane createCustomerMenu;
-    private Customer selectedCustomer;
     private User user;
 
     @Override
@@ -248,12 +247,12 @@ public class MainViewController extends BaseController implements Initializable 
 
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        super.getCModel().deleteCustomer(selectedCustomer);
+        super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
-        setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
+        setSceneSelectCompany(btnOpenCustomer, tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML

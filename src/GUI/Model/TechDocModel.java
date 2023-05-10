@@ -1,6 +1,7 @@
 package GUI.Model;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
 import BLL.TechDocManager;
@@ -12,9 +13,13 @@ import java.sql.SQLException;
 public class TechDocModel {
     private final TechDocManager techDocManager;
     private final ObservableList<TechDoc> techDocList;
+
+    private final ObservableList<Pictures> techPictures;
+
     public TechDocModel() throws Exception {
         techDocManager = new TechDocManager();
         techDocList = FXCollections.observableArrayList();
+        techPictures = FXCollections.observableArrayList();
     }
 
     public TechDoc createTechDoc(TechDoc techDoc) throws SQLException {
@@ -35,4 +40,10 @@ public class TechDocModel {
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
         techDocManager.updateTechDoc(techDoc);
     }
+
+    public ObservableList<Pictures> getGetTechPictures(Pictures pictures) throws SQLException {
+        techPictures.addAll(techDocManager.getTechPictures(pictures));
+        return techPictures;
+    }
+
 }

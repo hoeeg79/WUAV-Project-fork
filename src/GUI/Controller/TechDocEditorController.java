@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
 import GUI.Model.TechDocModel;
@@ -52,6 +53,7 @@ public class TechDocEditorController extends BaseController {
     private Button btnClose;
     private TechDoc techDoc;
     private Customer customer;
+    private Pictures pictures;
     private User user;
     private boolean isEdit;
     private List<Image> imageList = new ArrayList<>();
@@ -160,8 +162,8 @@ public class TechDocEditorController extends BaseController {
 
         if (selectedFile != null) {
             ImageView imageView = imageViewTechDoc;
-            Image image = new Image(selectedFile.toURI().toString());
-            imageList.add(image);
+            Pictures pictures = new Pictures();
+            getTModel().getGetTechPictures(image);
             if (currentImageIndex == -1) {
                 currentImageIndex = 0;
                 displayCurrentImage();
