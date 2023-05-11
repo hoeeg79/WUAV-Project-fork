@@ -143,15 +143,16 @@ public class TechDocDAO {
     }
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
-        String sql = "  UPDATE TechDoc SET setupDescription = ?, deviceLoginInfo = ?, extraInfo = ? WHERE id = ?;";
+        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, deviceLoginInfo = ?, extraInfo = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, techDoc.getSetupDescription());
-            stmt.setString(2, techDoc.getDeviceLoginInfo());
-            stmt.setString(3, techDoc.getExtraInfo());
-            stmt.setInt(4,techDoc.getId());
+            stmt.setString(1, techDoc.getSetupName());
+            stmt.setString(2, techDoc.getSetupDescription());
+            stmt.setString(3, techDoc.getDeviceLoginInfo());
+            stmt.setString(4, techDoc.getExtraInfo());
+            stmt.setInt(5,techDoc.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e){
@@ -234,17 +235,30 @@ public class TechDocDAO {
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
-            String sql = "";
+            deletePictureBasedOnTechDoc(techDoc, conn);
+            deleteDocLinkUser(techDoc, conn);
             deleteSelectedTechDoc(techDoc, conn);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
-    private static void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+    private void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM TechDoc WHERE id = ?;";
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+    private void deleteDocLinkUser(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM DocLinkUser WHERE TechDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+
+    private void deletePictureBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM Pictures WHERE techDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, techDoc.getId());
         stmt.executeUpdate();
     }
