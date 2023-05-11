@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 
 public class MainViewController extends BaseController implements Initializable {
 
+
     @FXML
     private TableView<Customer> tvMain;
     @FXML
@@ -42,6 +43,8 @@ public class MainViewController extends BaseController implements Initializable 
     private TableColumn tcStreetName;
     @FXML
     private TableColumn tcZipcode;
+    @FXML
+    private TableColumn tcCity;
     @FXML
     private Button btnCreateUsers;
     @FXML
@@ -60,6 +63,8 @@ public class MainViewController extends BaseController implements Initializable 
     private TextField tfCustomerStreetName;
     @FXML
     private TextField tfCustomerZipcode;
+    @FXML
+    private TextField tfCustomerCity;
     @FXML
     private TextField tfSearchBar;
     @FXML
@@ -106,8 +111,9 @@ public class MainViewController extends BaseController implements Initializable 
         String tlf = tfCustomerPhonenumber.getText();
         String streetName = tfCustomerStreetName.getText();
         String zipcode = tfCustomerZipcode.getText();
+        String city = tfCustomerCity.getText();
 
-        Customer customer = new Customer(name, email, tlf, streetName, zipcode);
+        Customer customer = new Customer(name, email, tlf, streetName, zipcode, city);
 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
@@ -168,6 +174,7 @@ public class MainViewController extends BaseController implements Initializable 
         tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
         tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
         tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
+        tcCity.setCellValueFactory(new PropertyValueFactory<>("city"));
 
         refreshList();
     }

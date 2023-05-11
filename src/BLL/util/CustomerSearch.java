@@ -17,7 +17,7 @@ public class CustomerSearch {
 
         for(Customer customer: search){
 
-            if(compareName(searchQuery, customer) || compareTlf(searchQuery, customer) || compareEmail(searchQuery, customer)){
+            if(compareName(searchQuery, customer) || compareTlf(searchQuery, customer) || compareEmail(searchQuery, customer) || compareZipCode(searchQuery, customer) || compareStreetName(searchQuery, customer)){
                 matchingCustomers.add(customer);
         }
     }
@@ -42,11 +42,11 @@ public class CustomerSearch {
         return customer.getEmail().toLowerCase().contains(searchQuery.toLowerCase());
     }
 
-//    private boolean compareZipCode(String searchQuery, Customer customer){
-//        return customer.getZipCode.toLowerCase().contains(searchQuery.toLowerCase());
-//    }
+    private boolean compareZipCode(String searchQuery, Customer customer){
+        return customer.getZipcode().toLowerCase().contains(searchQuery.toLowerCase());
+    }
 
-//        private boolean compareAddress(String searchQuery, Customer customer){
-//        return customer.getAddress.toLowerCase().contains(searchQuery.toLowerCase());
-//    }
+        private boolean compareStreetName(String searchQuery, Customer customer){
+        return customer.getStreetName().toLowerCase().contains(searchQuery.toLowerCase());
+    }
 }

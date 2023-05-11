@@ -25,6 +25,7 @@ public class CustomerDAO {
         String tlf = customer.getTlf();
         String streetName = customer.getStreetName();
         String zipcode = customer.getZipcode();
+        String city = customer.getCity();
 
         String sql = "INSERT INTO Customer (name, email, tlf, streetName, zipcode, softdeleted) VALUES (?,?,?,?,?,0);";
 
@@ -36,7 +37,7 @@ public class CustomerDAO {
             stmt.setString(3, tlf);
             stmt.setString(4, streetName);
             stmt.setString(5, zipcode);
-
+            zipCheck(customer);
             stmt.executeUpdate();
 
             int id = 0;
@@ -47,19 +48,20 @@ public class CustomerDAO {
                 id = rs.getInt(1);
             }
 
-            return new Customer(id, name, email, tlf, streetName, zipcode);
+            return new Customer(id, name, email, tlf, streetName, zipcode, city);
 
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
+
     public List<Customer> returnCustomers() throws Exception{
         ArrayList<Customer> allCustomers = new ArrayList<>();
 
         try(Connection connection = dbc.getConnection()){
 
-            String sql = "SELECT * FROM Customer WHERE softDeleted != 1;;";
+            String sql = "SELECT * FROM Customer c JOIN City ci ON c.zipcode = ci.zipcode WHERE softDeleted != 1;";
 
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -71,9 +73,9 @@ public class CustomerDAO {
                 String phoneNumber = rs.getString("tlf");
                 String streetName = rs.getString("streetName");
                 String zipcode = rs.getString("zipcode");
+                String city = rs.getString("city");
 
-
-                Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode);
+                Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode, city);
                 allCustomers.add(customer);
             }
         }catch(Exception e){
@@ -115,39 +117,39 @@ public class CustomerDAO {
             pstmt.setString(4, customer.getStreetName());
             pstmt.setString(5, customer.getZipcode());
             pstmt.setInt(6,customer.getId());
-            
+            zipCheck(customer);
             pstmt.executeUpdate();
         }catch (SQLException e){
             throw new SQLException("Could not update customer", e);
         }
     }
-    public Customer zipCheck(String city, String zipcode) throws SQLException {
+    private void zipCheck(Customer customer) throws SQLException {
         try(Connection conn = dbc.getConnection()){
-            String sql = "SELECT COUNT(*) FROM Customer Where zipcode = ?;";
+            String sql = "SELECT * FROM City Where zipcode = ?;";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, zipcode);
+            pstmt.setString(1, customer.getZipcode());
 
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next() && rs.getString(1) > 0){
-                return null;
+            if(!rs.next()){
+                zipInsert(customer);
             }
         }catch (SQLException e){
             throw new SQLException();
         }
-        zipInsert(city, zipcode);
     }
 
-    public void zipInsert(String city, String zipcode) throws SQLException{
+    private void zipInsert(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
             String sql = "INSERT INTO City (city, zipcode) VALUES (?,?);";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            pstmt.setString(1, city);
-            pstmt.setString(2, zipcode);
+            pstmt.setString(1, customer.getCity());
+            pstmt.setString(2, customer.getZipcode());
 
             pstmt.executeUpdate();
         }catch (SQLException e){
             throw new SQLException(e);
         }
     }
+
 }

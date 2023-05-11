@@ -11,6 +11,24 @@ public class Customer {
 
 
 
+    public Customer(int id, String name, String email, String tlf, String streetName, String zipcode, String city) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.tlf = tlf;
+        this.streetName = streetName;
+        this.zipcode = zipcode;
+        this.city = city;
+    }
+
+    public Customer(String name, String email, String tlf, String streetName, String zipcode, String city) {
+        this.name = name;
+        this.email = email;
+        this.tlf = tlf;
+        this.streetName = streetName;
+        this.zipcode = zipcode;
+        this.city = city;
+    }
     public Customer(int id, String name, String email, String tlf, String streetName, String zipcode) {
         this.id = id;
         this.name = name;
@@ -18,15 +36,6 @@ public class Customer {
         this.tlf = tlf;
         this.streetName = streetName;
         this.zipcode = zipcode;
-    }
-
-    public Customer(String name, String email, String tlf, String streetName, String zipcode) {
-        this.name = name;
-        this.email = email;
-        this.tlf = tlf;
-        this.streetName = streetName;
-        this.zipcode = zipcode;
-
     }
 
     public int getId() {
@@ -75,6 +84,14 @@ public class Customer {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override
