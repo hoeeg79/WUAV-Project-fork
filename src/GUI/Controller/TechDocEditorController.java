@@ -67,7 +67,7 @@ public class TechDocEditorController extends BaseController {
             initializeList();
             generateTechDoc();
         }
-        if (!techDoc.getPictures().isEmpty()) {
+        if (techDoc.getPictures() != null) {
             lblNoPictures.setVisible(false);
         }
     }
@@ -75,7 +75,7 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleClose(ActionEvent actionEvent) throws Exception {
         if (!isEdit) {
-            //super.getTModel().deleteTechDoc(techDoc); //IMPLEMENT THIS!
+            super.getTModel().deleteTechDoc(techDoc);
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
         Parent root = loader.load();

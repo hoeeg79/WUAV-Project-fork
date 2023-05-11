@@ -39,5 +39,7 @@ public class TechDocManager {
         facadeDAL.deletePicture(pictures);
     }
 
-
+    public void deleteTechDoc(TechDoc techDoc) throws SQLException {
+        facadeDAL.deleteTechdoc(techDoc);
+    }
 }

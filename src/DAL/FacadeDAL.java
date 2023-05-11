@@ -85,4 +85,8 @@ public class FacadeDAL {
     public void deletePicture(Pictures pictures) throws SQLException {
         techDocDAO.deletePicture(pictures);
     }
+
+    public void deleteTechdoc(TechDoc techDoc) throws SQLException {
+        techDocDAO.deleteTechDoc(techDoc);
+    }
 }
