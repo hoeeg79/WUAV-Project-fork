@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -156,19 +157,19 @@ public class DrawController extends BaseController implements Initializable {
     }
 
     public void handleSave(ActionEvent actionEvent) {
-        WritableImage imageToSave = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-        canvas.snapshot(null, imageToSave);
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageToSave, null);
-        String filePath = System.getProperty("user.home") + File.separator + "Downloads";
-        File file = new File(filePath);
-
         try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Png", "*.png"));
+            fileChooser.setInitialFileName("Techdoc Drawing");
+            WritableImage imageToSave = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+            canvas.snapshot(null, imageToSave);
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageToSave, null);
+            File file = fileChooser.showSaveDialog(btnBrush.getScene().getWindow());
             ImageIO.write(bufferedImage, "png", file);
         } catch (IOException e) {
             displayError(e);
             throw new RuntimeException(e);
         }
-        closeWindow(btnBrush);
     }
 
     public void handleCancel(ActionEvent actionEvent) {
