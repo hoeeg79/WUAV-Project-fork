@@ -1,5 +1,7 @@
 package GUI.Controller;
 
+import BE.TechDoc;
+import GUI.Model.TechDocModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -42,7 +44,7 @@ public class DrawController extends BaseController implements Initializable {
     @FXML
     private ColorPicker colorPicker;
     @FXML
-    private TextField tfBrushSize;
+    private ComboBox cbBrushSize;
     @FXML
     private Button btnBrush;
     private GraphicsContext brushTool;
@@ -58,10 +60,21 @@ public class DrawController extends BaseController implements Initializable {
     private Image image;
     private List<File> imageFiles;
     private ObservableList icons;
+    private TechDoc techDoc;
+    private TechDocModel techDocModel;
 
     @Override
-    public void setup() throws Exception {
+    public void setup() {
+        try {
+            techDocModel = new TechDocModel();
+            System.out.println(techDoc);
+        } catch (Exception e) {
+            displayError(e);
+        }
+    }
 
+    public void setTechDoc(TechDoc techDoc) {
+        this.techDoc = techDoc;
     }
 
     @Override
@@ -75,6 +88,15 @@ public class DrawController extends BaseController implements Initializable {
             setIcon();
             handleSelectIcon();
         });
+        addBrushSizes();
+        cbBrushSize.getSelectionModel().select(0);
+    }
+
+    public void editDrawing() {
+        if (techDoc.getFilePathDiagram() != null) {
+            Image image = new Image(techDoc.getFilePathDiagram());
+            brushTool.drawImage(image, 0, 0);
+        }
     }
 
     private void setIcon() {
@@ -156,19 +178,27 @@ public class DrawController extends BaseController implements Initializable {
         disableButton(btnIcon);
     }
 
+    private void addBrushSizes() {
+        Integer[] ints = {10, 12, 14, 16, 18, 20, 25, 30};
+        ObservableList<Integer> brushSizes =  FXCollections.observableArrayList(ints);
+        cbBrushSize.setItems(brushSizes);
+    }
+
     public void handleSave(ActionEvent actionEvent) {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Png", "*.png"));
-            fileChooser.setInitialFileName("Techdoc Drawing");
+            fileChooser.setInitialFileName(techDoc.getSetupName() + " Technical-drawing");
             WritableImage imageToSave = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
             canvas.snapshot(null, imageToSave);
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageToSave, null);
             File file = fileChooser.showSaveDialog(btnBrush.getScene().getWindow());
+            techDoc.setFilePathDiagram(file.getAbsolutePath());
             ImageIO.write(bufferedImage, "png", file);
-        } catch (IOException e) {
+            techDocModel.updateDrawing(file.getAbsolutePath(), techDoc);
+            closeWindow(btnBrush);
+        } catch (Exception e) {
             displayError(e);
-            throw new RuntimeException(e);
         }
     }
 
@@ -213,7 +243,7 @@ public class DrawController extends BaseController implements Initializable {
     }
 
     private void eraserDragged(MouseEvent e) {
-        double size = Double.parseDouble(tfBrushSize.getText());
+        double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
         double x = e.getX() - size/2;
         double y = e.getY() - size/2;
 
@@ -224,8 +254,8 @@ public class DrawController extends BaseController implements Initializable {
     private void linePressed(MouseEvent e) {
         startX = e.getX();
         startY = e.getY();
-        brushTool.setLineWidth(Double.parseDouble(tfBrushSize.getText()));
-        tempBrushTool.setLineWidth(Double.parseDouble(tfBrushSize.getText()));
+        brushTool.setLineWidth(Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString()));
+        tempBrushTool.setLineWidth(Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString()));
         brushTool.setStroke(colorPicker.getValue());
         tempBrushTool.setStroke(colorPicker.getValue());
     }
@@ -246,7 +276,7 @@ public class DrawController extends BaseController implements Initializable {
     }
 
     private void brushDragged(MouseEvent e) {
-        double size = Double.parseDouble(tfBrushSize.getText());
+        double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
         double x = e.getX() - size/2;
         double y = e.getY() - size/2;
 

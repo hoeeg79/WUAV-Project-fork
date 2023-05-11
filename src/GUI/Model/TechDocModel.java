@@ -49,4 +49,12 @@ public class TechDocModel {
         techDocManager.deletePictures(pictures);
         techPictures.remove(pictures);
     }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        techDocManager.updateDrawing(filePath, techDoc);
+    }
+
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return techDocManager.getTechDoc(techDoc);
+    }
 }

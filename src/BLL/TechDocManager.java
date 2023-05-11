@@ -39,5 +39,11 @@ public class TechDocManager {
         facadeDAL.deletePicture(pictures);
     }
 
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        facadeDAL.updateDrawing(filePath, techDoc);
+    }
 
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return facadeDAL.getTechDoc(techDoc);
+    }
 }

@@ -127,12 +127,14 @@ public class TechDocDAO {
                 String setupDescription = rs.getString("setupDescription");
                 String deviceLoginInfo = rs.getString("deviceLoginInfo");
                 String extraInfo = rs.getString("extraInfo");
+                String filepathDiagram = rs.getString("filepathDiagram");
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setDeviceLoginInfo(deviceLoginInfo);
                 techDoc.setExtraInfo(extraInfo);
                 techDoc.setPictures(getTechPictures(techDoc));
+                techDoc.setFilePathDiagram(filepathDiagram);
                 techDocs.add(techDoc);
             }
 
@@ -231,5 +233,50 @@ public class TechDocDAO {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "UPDATE TechDoc SET filepathDiagram = ? WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, filePath);
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+
+    }
+
+    public TechDoc getTechdoc(TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "SELECT * FROM TechDoc WHERE id = " + techDoc.getId() + ";";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                int id = techDoc.getId();
+                int customerID = rs.getInt("CustomerID");
+                String setupName = rs.getString("setupname");
+                String setupDescription = rs.getString("setupDescription");
+                String deviceLoginInfo = rs.getString("deviceLoginInfo");
+                String extraInfo = rs.getString("extraInfo");
+                String filepathDiagram = rs.getString("filepathDiagram");
+
+                TechDoc td = new TechDoc(id,setupName,customerID);
+                td.setSetupDescription(setupDescription);
+                td.setDeviceLoginInfo(deviceLoginInfo);
+                td.setExtraInfo(extraInfo);
+                td.setPictures(getTechPictures(td));
+                td.setFilePathDiagram(filepathDiagram);
+                return td;
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return null;
     }
 }

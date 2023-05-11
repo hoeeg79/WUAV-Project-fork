@@ -32,6 +32,8 @@ import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
     @FXML
+    private ImageView techDrawing;
+    @FXML
     private Label lblNoPictures;
     @FXML
     private Button btnDeletePicture;
@@ -138,6 +140,9 @@ public class TechDocEditorController extends BaseController {
             imageList.addAll(techDoc.getPictures());
             currentImageIndex = 0;
         }
+        if (techDoc.getFilePathDiagram() != null) {
+            techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
+        }
         displayCurrentImage();
     }
 
@@ -182,15 +187,21 @@ public class TechDocEditorController extends BaseController {
 
             DrawController controller = loader.getController();
             controller.setup();
+            controller.setTechDoc(techDoc);
+            controller.editDrawing();
 
             stage.setScene(new Scene(root));
             stage.setTitle("Technical Drawing");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
-            stage.show();
+            stage.showAndWait();
+
+            super.getTModel().getTechDoc(techDoc);
+            displayDrawing();
         } catch (Exception e) {
             displayError(e);
+            e.printStackTrace();
         }
     }
 
@@ -224,6 +235,17 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setImage(currentImage);
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);
+        }
+    }
+
+    private void displayDrawing() {
+        try {
+            if (techDoc.getFilePathDiagram() != null) {
+                Image drawing = new Image(techDoc.getFilePathDiagram());
+                techDrawing.setImage(drawing);
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
