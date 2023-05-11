@@ -20,7 +20,7 @@ public class LoginManager {
             return user;
         } else {
             System.out.println("Invalid username or password.");
+            throw new Exception();
         }
-        return null;
     }
 }
