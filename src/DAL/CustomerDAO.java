@@ -7,7 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class CustomerDAO {
     private final DBConnector dbc;
 
@@ -120,6 +119,35 @@ public class CustomerDAO {
             pstmt.executeUpdate();
         }catch (SQLException e){
             throw new SQLException("Could not update customer", e);
+        }
+    }
+    public Customer zipCheck(String city, String zipcode) throws SQLException {
+        try(Connection conn = dbc.getConnection()){
+            String sql = "SELECT COUNT(*) FROM Customer Where zipcode = ?;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, zipcode);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next() && rs.getString(1) > 0){
+                return null;
+            }
+        }catch (SQLException e){
+            throw new SQLException();
+        }
+        zipInsert(city, zipcode);
+    }
+
+    public void zipInsert(String city, String zipcode) throws SQLException{
+        try(Connection conn = dbc.getConnection()){
+            String sql = "INSERT INTO City (city, zipcode) VALUES (?,?);";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, city);
+            pstmt.setString(2, zipcode);
+
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            throw new SQLException(e);
         }
     }
 }

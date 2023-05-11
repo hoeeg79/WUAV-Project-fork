@@ -7,10 +7,11 @@ public class Customer {
     private String tlf;
     private String streetName;
     private String zipcode;
+    private String city;
 
 
 
-    public Customer(int id, String name, String email, String tlf,  String streetName, String zipcode) {
+    public Customer(int id, String name, String email, String tlf, String streetName, String zipcode) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -19,7 +20,7 @@ public class Customer {
         this.zipcode = zipcode;
     }
 
-    public Customer(String name, String email, String tlf,  String streetName, String zipcode) {
+    public Customer(String name, String email, String tlf, String streetName, String zipcode) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;

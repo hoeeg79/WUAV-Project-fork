@@ -30,9 +30,10 @@
                         <TextField fx:id="tfCustomerEmail" />
                         <Label styleClass="menuText" text="Phone number" />
                         <TextField fx:id="tfCustomerPhoneNumber" />
-                        <Label styleClass="menuText" text="Image" />
-                        <Label styleClass="menuText" text="Customer type" />
-                        <ComboBox fx:id="cbCustomerTypes" prefWidth="150.0" />
+                        <Label styleClass="menuText" text="Street name" />
+                        <TextField fx:id="tfCustomerStreetName" />
+                        <Label styleClass="menuText" text="Zipcode" />
+                        <TextField fx:id="tfCustomerZipcode" />
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
                            <children>
                               <Button fx:id="btnCreateCustomer" mnemonicParsing="false" onAction="#handleSave" text="Save" />
