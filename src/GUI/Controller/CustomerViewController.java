@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 public class CustomerViewController extends BaseController{
+
     @FXML
     private Pane paneRight;
     @FXML
@@ -48,13 +49,15 @@ public class CustomerViewController extends BaseController{
     @FXML
     private Button btnCreateCustomer;
     @FXML
-    private ComboBox cbCustomerTypes;
-    @FXML
     private TextField tfCustomerName;
     @FXML
     private TextField tfCustomerEmail;
     @FXML
     private TextField tfCustomerPhoneNumber;
+    @FXML
+    private TextField tfCustomerStreetName;
+    @FXML
+    private TextField tfCustomerZipcode;
     private Customer customer;
     private User user;
     private Pattern emailPattern;
@@ -63,7 +66,6 @@ public class CustomerViewController extends BaseController{
     @Override
     public void setup() throws Exception {
         lockFieldsAndButtons();
-        cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
         addListener();
         checkUser();
         fillFields();
@@ -94,10 +96,14 @@ public class CustomerViewController extends BaseController{
             String name = tfCustomerName.getText();
             String email = tfCustomerEmail.getText();
             String phoneNumber = tfCustomerPhoneNumber.getText();
+            String streetName = tfCustomerStreetName.getText();
+            String zipcode = tfCustomerZipcode.getText();
 
             customer.setName(name);
             customer.setEmail(email);
             customer.setTlf(phoneNumber);
+            customer.setStreetName(streetName);
+            customer.setZipcode(zipcode);
 
             super.getCModel().updateCustomer(customer);
         }catch (Exception e){
@@ -117,15 +123,18 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setDisable(true);
         tfCustomerPhoneNumber.setDisable(true);
         tfCustomerName.setDisable(true);
+        tfCustomerStreetName.setDisable(true);
+        tfCustomerZipcode.setDisable(true);
         btnCancelCustomer.setDisable(true);
         btnCreateCustomer.setDisable(true);
-        cbCustomerTypes.setDisable(true);
     }
 
     private void fillFields() {
         tfCustomerEmail.setText(customer.getEmail());
         tfCustomerName.setText(customer.getName());
         tfCustomerPhoneNumber.setText(String.valueOf(customer.getTlf()));
+        tfCustomerStreetName.setText(customer.getStreetName());
+        tfCustomerZipcode.setText(customer.getZipcode());
     }
 
     @FXML
@@ -134,9 +143,10 @@ public class CustomerViewController extends BaseController{
         tfCustomerEmail.setDisable(false);
         tfCustomerPhoneNumber.setDisable(false);
         tfCustomerName.setDisable(false);
+        tfCustomerStreetName.setDisable(false);
+        tfCustomerZipcode.setDisable(false);
         btnCancelCustomer.setDisable(false);
         btnCreateCustomer.setDisable(false);
-        cbCustomerTypes.setDisable(false);
     }
 
     @FXML

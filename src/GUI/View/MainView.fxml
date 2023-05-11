@@ -32,6 +32,8 @@
                   <TextField fx:id="tfCustomerStreetName" />
                   <Label styleClass="menuText" text="Zipcode" />
                   <TextField fx:id="tfCustomerZipcode" />
+                  <Label styleClass="menuText" text="City" />
+                  <TextField fx:id="tfCustomerCity" />
                   <HBox spacing="10.0" />
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="211.0" spacing="20.0">
                      <children>
@@ -62,8 +64,9 @@
           <TableColumn fx:id="tcName" prefWidth="179.0" text="Name" />
           <TableColumn fx:id="tcEmail" minWidth="0.0" prefWidth="135.0" text="Email" />
             <TableColumn fx:id="tcPhoneNumber" prefWidth="139.0" text="PhoneNumber" />
-            <TableColumn fx:id="tcStreetName" prefWidth="184.0" text="StreetName" />
-            <TableColumn fx:id="tcZipcode" prefWidth="119.0" text="Zipcode" />
+            <TableColumn fx:id="tcStreetName" prefWidth="124.0" text="StreetName" />
+            <TableColumn fx:id="tcCity" prefWidth="105.0" text="City" />
+            <TableColumn fx:id="tcZipcode" prefWidth="74.0" text="Zipcode" />
         </columns>
       </TableView>
 
