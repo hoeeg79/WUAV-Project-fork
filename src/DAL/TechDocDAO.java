@@ -218,5 +218,34 @@ public class TechDocDAO {
         }
     }
 
+    public void deletePicture(Pictures pictures) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
 
+            String sql = "DELETE FROM Pictures WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, pictures.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void deleteTechDoc(TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "";
+            deleteSelectedTechDoc(techDoc, conn);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    private static void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM TechDoc WHERE id = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
 }

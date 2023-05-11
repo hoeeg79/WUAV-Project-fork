@@ -72,7 +72,7 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleClose(ActionEvent actionEvent) throws Exception {
         if (!isEdit) {
-            //super.getTModel().deleteTechDoc(techDoc); //IMPLEMENT THIS!
+            super.getTModel().deleteTechDoc(techDoc); //IMPLEMENT THIS!
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
         Parent root = loader.load();
