@@ -222,7 +222,7 @@ public class TechDocEditorController extends BaseController {
                 currentImageIndex = -1;
                 imageViewTechDoc.setImage(null);
                 lblNoPictures.setVisible(true);
-                imageList.remove(getTModel().deletePictures(picture));
+//                imageList.remove(getTModel().deletePictures(picture));
             } else {
                 if (currentImageIndex >= imageList.size()) {
                     currentImageIndex = 0;
