@@ -219,4 +219,17 @@ public class TechDocDAO {
     }
 
 
+    public void deletePicture(Pictures pictures) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+
+            String sql = "DELETE FROM Pictures WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, pictures.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
 }

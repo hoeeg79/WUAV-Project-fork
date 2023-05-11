@@ -215,13 +215,14 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
-    public void handleDeletePicture(ActionEvent actionEvent) {
+    public void handleDeletePicture(ActionEvent actionEvent) throws SQLException {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             imageList.remove(currentImageIndex);
             if (imageList.isEmpty()) {
                 currentImageIndex = -1;
                 imageViewTechDoc.setImage(null);
                 lblNoPictures.setVisible(true);
+                imageList.remove(getTModel().deletePictures(picture));
             } else {
                 if (currentImageIndex >= imageList.size()) {
                     currentImageIndex = 0;

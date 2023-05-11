@@ -45,5 +45,8 @@ public class TechDocModel {
         techPictures.add(newPicture);
         return newPicture;
     }
-
+    public void deletePictures(Pictures pictures) throws SQLException {
+        techDocManager.deletePictures(pictures);
+        techPictures.remove(pictures);
+    }
 }
