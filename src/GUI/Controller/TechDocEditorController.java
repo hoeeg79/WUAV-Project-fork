@@ -67,6 +67,9 @@ public class TechDocEditorController extends BaseController {
             initializeList();
             generateTechDoc();
         }
+        if (!techDoc.getPictures().isEmpty()) {
+            lblNoPictures.setVisible(false);
+        }
     }
 
     @FXML
@@ -218,11 +221,11 @@ public class TechDocEditorController extends BaseController {
     public void handleDeletePicture(ActionEvent actionEvent) throws SQLException {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             imageList.remove(currentImageIndex);
+            super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
             if (imageList.isEmpty()) {
                 currentImageIndex = -1;
                 imageViewTechDoc.setImage(null);
                 lblNoPictures.setVisible(true);
-//                imageList.remove(getTModel().deletePictures(picture));
             } else {
                 if (currentImageIndex >= imageList.size()) {
                     currentImageIndex = 0;
