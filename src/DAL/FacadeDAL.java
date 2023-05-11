@@ -89,4 +89,12 @@ public class FacadeDAL {
     public void deleteTechdoc(TechDoc techDoc) throws SQLException {
         techDocDAO.deleteTechDoc(techDoc);
     }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        techDocDAO.updateDrawing(filePath, techDoc);
+    }
+
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return techDocDAO.getTechdoc(techDoc);
+    }
 }
