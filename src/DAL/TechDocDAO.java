@@ -218,7 +218,6 @@ public class TechDocDAO {
         }
     }
 
-
     public void deletePicture(Pictures pictures) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
 
