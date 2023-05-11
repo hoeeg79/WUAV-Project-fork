@@ -5,25 +5,27 @@ public class Customer {
     private String name;
     private String email;
     private String tlf;
-    private String picture;
-    private int customerType;
-    
-    public Customer(int id, String name, String email, String tlf, String picture, int customerType) {
+    private String streetName;
+    private String zipcode;
 
+
+
+    public Customer(int id, String name, String email, String tlf,  String streetName, String zipcode) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.picture = picture;
-        this.customerType = customerType;
+        this.streetName = streetName;
+        this.zipcode = zipcode;
     }
 
-    public Customer(String name, String email, String tlf, String picture, int customerType) {
+    public Customer(String name, String email, String tlf,  String streetName, String zipcode) {
         this.name = name;
         this.email = email;
         this.tlf = tlf;
-        this.picture = picture;
-        this.customerType = customerType;
+        this.streetName = streetName;
+        this.zipcode = zipcode;
+
     }
 
     public int getId() {
@@ -59,20 +61,19 @@ public class Customer {
         this.tlf = tlf;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public int getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(int customerType) {
-        this.customerType = customerType;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     @Override

@@ -1,11 +1,13 @@
 package BE;
 
+import java.util.List;
+
 public class TechDoc {
     private int id;
     private String setupName;
     private String filePathDiagram;
     private String setupDescription;
-    private String filepathPicture;
+    private List<Pictures> pictures;
     private String extraInfo;
     private String deviceLoginInfo;
     private int customerID;
@@ -29,6 +31,10 @@ public class TechDoc {
         return setupName;
     }
 
+    public void setSetupName(String setupName) {
+        this.setupName = setupName;
+    }
+
     public String getFilePathDiagram() {
         return filePathDiagram;
     }
@@ -43,14 +49,6 @@ public class TechDoc {
 
     public void setSetupDescription(String setupDescription) {
         this.setupDescription = setupDescription;
-    }
-
-    public String getFilepathPicture() {
-        return filepathPicture;
-    }
-
-    public void setFilepathPicture(String filepathPicture) {
-        this.filepathPicture = filepathPicture;
     }
 
     public String getExtraInfo() {
@@ -75,6 +73,14 @@ public class TechDoc {
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
+    }
+
+    public List<Pictures> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Pictures> pictures) {
+        this.pictures = pictures;
     }
 
     @Override

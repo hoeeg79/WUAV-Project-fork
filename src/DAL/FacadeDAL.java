@@ -1,13 +1,12 @@
 package DAL;
 
 import BE.Customer;
+import BE.Pictures;
 import BE.TechDoc;
 import BE.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class FacadeDAL {
     private CustomerDAO customerDAO;
@@ -30,8 +29,9 @@ public class FacadeDAL {
         customerDAO.deleteCustomer(customer);
     }
 
-    public Map<Integer, List<Customer>> getCustomers() throws Exception{
-        return customerDAO.returnCustomersByType();
+    public List<Customer> getCustomers() throws Exception{
+        CustomerDAO customers = new CustomerDAO();
+        return customers.returnCustomers();
     }
 
     public User createUser(User user) throws SQLException {
@@ -76,5 +76,13 @@ public class FacadeDAL {
 
     public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException {
         return usersDAO.getLinkedUsers(techdoc);
+    }
+
+    public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
+        return techDocDAO.addTechPictures(pictures, techDoc);
+    }
+
+    public void deletePicture(Pictures pictures) throws SQLException {
+        techDocDAO.deletePicture(pictures);
     }
 }

@@ -2,14 +2,12 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.UsersModel;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
 import GUI.Model.CustomerModel;
 import javafx.animation.TranslateTransition;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,30 +15,33 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.awt.image.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static javafx.scene.paint.Color.WHITE;
-import static javafx.scene.text.TextAlignment.CENTER;
-
 
 public class MainViewController extends BaseController implements Initializable {
+
+    @FXML
+    private TableView<Customer> tvMain;
+    @FXML
+    private TableColumn tcName;
+    @FXML
+    private TableColumn tcEmail;
+    @FXML
+    private TableColumn tcPhoneNumber;
+    @FXML
+    private TableColumn tcStreetName;
+    @FXML
+    private TableColumn tcZipcode;
     @FXML
     private Button btnCreateUsers;
     @FXML
@@ -50,26 +51,17 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private Button btnDeleteCustomer;
     @FXML
-    private ListView<Customer> lvPriv;
-    @FXML
-    private ListView<Customer> lvCorp;
-    @FXML
-    private ListView<Customer> lvGov;
-
-    @FXML
-    private ComboBox cbCustomerTypes;
-    @FXML
     private TextField tfCustomerName;
     @FXML
     private TextField tfCustomerEmail;
     @FXML
     private TextField tfCustomerPhonenumber;
     @FXML
-    private TextField tfCustomerImage;
+    private TextField tfCustomerStreetName;
+    @FXML
+    private TextField tfCustomerZipcode;
     @FXML
     private TextField tfSearchBar;
-    @FXML
-    private Button btnCustomerImage;
     @FXML
     private Button btnCancelCustomer;
     @FXML
@@ -78,7 +70,6 @@ public class MainViewController extends BaseController implements Initializable 
     private Button btnCreateCustomer;
     @FXML
     private Pane createCustomerMenu;
-    private Customer selectedCustomer;
     private User user;
 
     @Override
@@ -92,8 +83,6 @@ public class MainViewController extends BaseController implements Initializable 
             loadLists(super.getCModel());
             searchBar();
             clearCustomerMenu();
-            cbCustomerTypes.setItems(FXCollections.observableArrayList("Business", "Government", "Private"));
-            changeSelectedCustomer();
             checkUserType();
         } catch (Exception e) {
             displayError(e);
@@ -111,18 +100,19 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleCreateCustomer(ActionEvent actionEvent) throws SQLException {
+    private void handleCreateCustomer(ActionEvent actionEvent) throws Exception {
         String name = tfCustomerName.getText();
         String email = tfCustomerEmail.getText();
         String tlf = tfCustomerPhonenumber.getText();
-        String image = tfCustomerImage.getText();
-        int customerType = cbCustomerTypes.getSelectionModel().getSelectedIndex() + 1;
+        String streetName = tfCustomerStreetName.getText();
+        String zipcode = tfCustomerZipcode.getText();
 
-        Customer customer = new Customer(name, email, tlf, image, customerType);
+        Customer customer = new Customer(name, email, tlf, streetName, zipcode);
 
         super.getCModel().createCustomer(customer);
         clearCustomerMenu();
         customerMenu();
+        refreshList();
     }
 
     @FXML
@@ -134,8 +124,8 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerName.clear();
         tfCustomerEmail.clear();
         tfCustomerPhonenumber.clear();
-        tfCustomerImage.clear();
-        cbCustomerTypes.getSelectionModel().clearSelection();
+        tfCustomerStreetName.clear();
+        tfCustomerZipcode.clear();
     }
 
     private void customerMenu() {
@@ -173,113 +163,21 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     private void loadLists(CustomerModel model) throws Exception {
-        lvPriv.setItems(model.getPrivateCustomer());
-        prepList(lvPriv);
-        lvCorp.setItems(model.getBusinessCustomer());
-        prepList(lvCorp);
-        lvGov.setItems(model.getGovernmentCustomer());
-        prepList(lvGov);
+        tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
+        tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
+        tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
+
+        refreshList();
     }
 
-    private void searchBar() throws Exception{
+    private void searchBar(){
         tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             try{
-                super.getCModel().customerSearch(newValue);
-            } catch (Exception e){
-                e.printStackTrace();
+                super.getCModel().searchCustomer(newValue);
+            }catch(Exception e){
                 displayError(e);
-            }
-        }));
-    }
-    private void prepList(ListView listView) {
-        listView.setCellFactory(new Callback<ListView<Customer>, ListCell<Customer>>() {
-            @Override
-            public ListCell<Customer> call(ListView<Customer> listView) {
-                return new ListCell<Customer>() {
-                    @Override
-                    protected void updateItem(Customer customer, boolean empty) {
-                        super.updateItem(customer, empty);
-                        ImageView imageView = new ImageView();
-                        Text text = new Text();
-                        Pane pane = new Pane();
-                        text.setTextAlignment(CENTER);
-                        text.setTranslateY(50);
-                        text.setWrappingWidth(140);
-                        pane.setVisible(false);
-                        StackPane stackPane = new StackPane(imageView, pane, text);
-                        setGraphic(stackPane);
-                        if (customer == null || empty) {
-                            text.setText(null);
-                            setGraphic(null);
-                        } else if (!customer.getPicture().isEmpty()) {
-                            try {
-                                File imageFile = new File(customer.getPicture());
-                                Image image = new Image(imageFile.toURI().toString());
-                                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                                bufferedImage = resizeImage(bufferedImage, 150, 130);
-                                Image showingImage = SwingFXUtils.toFXImage(bufferedImage, null);
-
-                                imageView.setImage(showingImage);
-                                text.setText(customer.getName());
-                                text.toFront();
-                            } catch (Exception e) {
-                                Image image = new Image("defaultUserResize-noBG.png");
-                                imageView.setImage(image);
-                                text.setText(customer.getName());
-                                text.toFront();
-                            }
-
-                        } else {
-                            Image image = new Image("defaultUserResize-noBG.png");
-                            imageView.setImage(image);
-                            text.setText(customer.getName());
-                            text.toFront();
-                        }
-                    }
-                };
-            }
-        });
-    }
-
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight){
-        java.awt.Image resultImage = originalImage.getScaledInstance(targetWidth, targetHeight, java.awt.Image.SCALE_SMOOTH);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultImage, 0, 0, null);
-        return outputImage;
-    }
-
-    @FXML
-    private void handlePickImage(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*jpeg", "*.gif"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-        File selectedFile = fileChooser.showOpenDialog(btnCustomerImage.getScene().getWindow());
-        tfCustomerImage.setText(selectedFile.getAbsolutePath());
-    }
-
-    private void changeSelectedCustomer(){
-        lvCorp.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->{
-            if (newValue != null) {
-                lvGov.getSelectionModel().clearSelection();
-                lvPriv.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
-            }
-        }));
-        lvGov.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                lvCorp.getSelectionModel().clearSelection();
-                lvPriv.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
-            }
-        }));
-        lvPriv.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                lvGov.getSelectionModel().clearSelection();
-                lvCorp.getSelectionModel().clearSelection();
-                selectedCustomer = newValue;
             }
         }));
     }
@@ -313,13 +211,14 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        super.getCModel().deleteCustomer(selectedCustomer);
+    private void handleDeleteCustomer(ActionEvent actionEvent) throws Exception {
+        super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
+        refreshList();
     }
 
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
-        setSceneSelectCompany(btnOpenCustomer, selectedCustomer);
+        setSceneSelectCompany(btnOpenCustomer, tvMain.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -347,5 +246,9 @@ public class MainViewController extends BaseController implements Initializable 
         } else {
             btnCreateUsers.setVisible(false);
         }
+    }
+    private void refreshList() throws Exception {
+        tvMain.getItems().clear();
+        tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 }
