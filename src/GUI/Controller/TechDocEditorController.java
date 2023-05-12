@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,16 +20,23 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
+
+    @FXML
+    private TextArea txtPictureDescription;
+    @FXML
+    private Button btnAddDescription;
     @FXML
     private Label lblNoPictures;
     @FXML
@@ -234,4 +242,23 @@ public class TechDocEditorController extends BaseController {
             }
         }
     }
+
+    public void handleAddDescription(ActionEvent actionEvent) throws Exception {
+        if (!imageList.isEmpty()) {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/PictureDescription.fxml"));
+            Parent root = loader.load();
+
+            PictureDescriptionController controller = loader.getController();
+            controller.setup();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Add Description");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.centerOnScreen();
+            stage.show();
+        }
+    }
+
 }
