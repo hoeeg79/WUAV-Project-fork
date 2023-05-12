@@ -58,6 +58,10 @@ public class FacadeDAL {
         techDocDAO.addTech(techDoc, user);
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException {
+        techDocDAO.removeTech(techDoc, user);
+    }
+
     public User login(String username) throws Exception {
         return loginDAO.login(username);
     }
