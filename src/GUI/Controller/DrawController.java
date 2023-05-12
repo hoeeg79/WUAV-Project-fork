@@ -93,9 +93,13 @@ public class DrawController extends BaseController implements Initializable {
     }
 
     public void editDrawing() {
-        if (techDoc.getFilePathDiagram() != null) {
-            Image image = new Image(techDoc.getFilePathDiagram());
-            brushTool.drawImage(image, 0, 0);
+        try {
+            if (techDoc.getFilePathDiagram() != null) {
+                Image image = new Image(techDoc.getFilePathDiagram());
+                brushTool.drawImage(image, 0, 0);
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
