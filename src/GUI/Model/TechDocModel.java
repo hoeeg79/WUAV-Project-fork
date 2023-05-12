@@ -33,6 +33,10 @@ public class TechDocModel {
         techDocManager.addTech(techDoc, user);
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException {
+        techDocManager.removeTech(techDoc, user);
+    }
+
     public ObservableList<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
         techDocList.addAll(techDocManager.getTechDocs(customer, user));
         return techDocList;

@@ -69,6 +69,21 @@ public class TechDocDAO {
         }
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException{
+        String sql = "DELETE FROM DocLinkUser WHERE UserID = ? AND TechDocID = ?";
+
+        try(Connection conn = dbc.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
     public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
         if (user.getUserType().getId() == 2) {
             return getSpecificTechDocs(customer,user);

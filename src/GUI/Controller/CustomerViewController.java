@@ -25,6 +25,10 @@ import java.util.regex.Pattern;
 public class CustomerViewController extends BaseController{
 
     @FXML
+    private Button btnManageTech;
+    @FXML
+    private Button btnRemoveTech;
+    @FXML
     private Pane paneRight;
     @FXML
     private Pane addTechMenu;
@@ -256,12 +260,20 @@ public class CustomerViewController extends BaseController{
     }
 
     @FXML
-    private void handleCancelAddTechMenu(ActionEvent actionEvent) {
-        techMenu();
+    private void handleRemoveTechMenu(ActionEvent actionEvent) {
+        try {
+            User selectedTech = lvTechsWorking.getSelectionModel().getSelectedItem();
+            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+            super.getTModel().removeTech(techDoc, selectedTech);
+            fillTechs(techDoc);
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     @FXML
-    private void handleRemoveTechMenu(ActionEvent actionEvent) {
+    private void handleCancelAddTechMenu(ActionEvent actionEvent) {
+        techMenu();
     }
 
     @FXML
@@ -335,6 +347,8 @@ public class CustomerViewController extends BaseController{
         if (user.getUserType().getId() == 2) {
             btnEditCustomer.setVisible(false);
             btnAddTech.setVisible(false);
+            btnRemoveTech.setVisible(false);
+            btnManageTech.setVisible(false);
             btnCancelCustomer.setVisible(false);
             btnCreateCustomer.setVisible(false);
         } else if (user.getUserType().getId() == 1) {
