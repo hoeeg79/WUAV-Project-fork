@@ -145,13 +145,7 @@ public class TechDocEditorController extends BaseController {
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
         getPicturesFromTechDoc();
-        try {
-            if (techDoc.getFilePathDiagram() != null) {
-                techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
-            }
-        } catch (Exception e) {
-            techDrawing.setImage(null);
-        }
+        displayDrawing();
         displayCurrentImage();
     }
 
@@ -234,7 +228,7 @@ public class TechDocEditorController extends BaseController {
                 techDrawing.setImage(drawing);
             }
         } catch (Exception ignored) {
-
+            techDrawing.setImage(null);
         }
     }
 
