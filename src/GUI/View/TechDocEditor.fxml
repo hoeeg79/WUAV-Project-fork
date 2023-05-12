@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="683.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
+<AnchorPane prefHeight="683.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,14 +28,29 @@
                   </Button>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" maxHeight="900.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Technical drawing" VBox.vgrow="ALWAYS" />
-                  <ImageView fx:id="techDrawing" fitHeight="333.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="200.0" text="Technical drawing" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <ImageView fx:id="techDrawing" fitHeight="333.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></ImageView>
+                  <Separator minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </Separator>
                   <Label text="Picture" VBox.vgrow="ALWAYS" />
-                  <Button fx:id="btnAddPicture" mnemonicParsing="false" onAction="#handleAddPicture" prefHeight="26.0" prefWidth="104.0" text="Add Picture" />
-                  <Button fx:id="btnDeletePicture" mnemonicParsing="false" onAction="#handleDeletePicture" prefHeight="26.0" prefWidth="99.0" text="Delete Picture" />
-                  <Button fx:id="btnNextPicture" mnemonicParsing="false" onAction="#handleNextPicture" text="Next Picture" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnAddPicture" mnemonicParsing="false" onAction="#handleAddPicture" prefHeight="26.0" prefWidth="104.0" text="Add Picture" />
+                        <Button fx:id="btnDeletePicture" mnemonicParsing="false" onAction="#handleDeletePicture" prefHeight="26.0" prefWidth="99.0" text="Delete Picture" />
+                        <Button fx:id="btnNextPicture" mnemonicParsing="false" onAction="#handleNextPicture" text="Next Picture" />
+                     </children>
+                  </HBox>
                   <Label fx:id="lblNoPictures" text="There are no pictures selected yet!" />
                   <ImageView fx:id="imageViewTechDoc" fitHeight="259.0" fitWidth="451.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
                   <Label fx:id="lblPictureDescription" maxHeight="60.0" maxWidth="410.0" minHeight="60.0" minWidth="410.0" prefHeight="60.0" prefWidth="410.0" />
@@ -50,7 +66,10 @@
                   <Label layoutX="10.0" layoutY="447.0" text="Extra info" />
                   <TextArea fx:id="taExtraInfo" layoutX="10.0" layoutY="474.0" prefHeight="80.0" prefWidth="273.0" />
                   <Label fx:id="lblSaveStatus" prefHeight="17.0" prefWidth="176.0" />
-               </children></VBox>
+               </children>
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></VBox>
          </children>
       </HBox>
       <ImageView fitHeight="102.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="581.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="797.0" AnchorPane.topAnchor="0.0" />
