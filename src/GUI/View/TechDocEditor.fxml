@@ -19,20 +19,14 @@
          <children>
             <VBox fx:id="vbButtons" alignment="BOTTOM_CENTER" maxWidth="124.0" prefHeight="683.0" prefWidth="130.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" text="PDF" />
-                  <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
-                  <Button fx:id="btnReadyForApproval" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleReadyForApproval" text="Finalize" />
-                  <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                  <Button fx:id="btnDraw" layoutX="10.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw">
+                  <Button fx:id="btnReadyForApproval" layoutX="10.0" layoutY="35.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleReadyForApproval" text="Finalize" />
+                  <Button fx:id="btnDraw" layoutX="10.0" layoutY="85.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw" />
                   <Button minHeight="25.0" minWidth="60.0" mnemonicParsing="false" text="PDF" />
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
-                  <Button layoutX="10.0" layoutY="35.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" text="Finalize" />
-                  <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                  <Button layoutX="10.0" layoutY="85.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw">
+                  <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close">
                      <VBox.margin>
                         <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </Button>
+                     </VBox.margin></Button>
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" maxHeight="900.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
