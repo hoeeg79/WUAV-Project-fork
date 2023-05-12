@@ -313,23 +313,4 @@ public class TechDocEditorController extends BaseController {
             }
         }
     }
-
-    public void handleAddDescription(ActionEvent actionEvent) throws Exception {
-        if (!imageList.isEmpty()) {
-            Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/PictureDescription.fxml"));
-            Parent root = loader.load();
-
-            PictureDescriptionController controller = loader.getController();
-            controller.setup();
-
-            stage.setScene(new Scene(root));
-            stage.setTitle("Add Description");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
-            stage.centerOnScreen();
-            stage.show();
-        }
-    }
-
 }
