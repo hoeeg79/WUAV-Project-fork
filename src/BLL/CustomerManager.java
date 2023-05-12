@@ -31,6 +31,7 @@ public class CustomerManager {
     public List<Customer> getCustomers() throws Exception{
         return facadeDAL.getCustomers();
     }
+
     /**
      * A method that takes in a customer object and uses facadeDAL to delete a customer in the database
      */

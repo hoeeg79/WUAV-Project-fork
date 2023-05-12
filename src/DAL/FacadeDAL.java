@@ -1,9 +1,6 @@
 package DAL;
 
-import BE.Customer;
-import BE.Pictures;
-import BE.TechDoc;
-import BE.User;
+import BE.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -80,5 +77,26 @@ public class FacadeDAL {
 
     public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
         return techDocDAO.addTechPictures(pictures, techDoc);
+    }
+
+    public void deleteTechdoc(TechDoc techDoc) throws SQLException {
+        techDocDAO.deleteTechDoc(techDoc);
+    }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        techDocDAO.updateDrawing(filePath, techDoc);
+    }
+
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return techDocDAO.getTechdoc(techDoc);
+    }
+
+    public Device addDevice(Device device) throws SQLException {
+        return techDocDAO.addDevice(device);
+    }
+
+    public List<Device> getDevices() throws Exception{
+        TechDocDAO devices = new TechDocDAO();
+        return devices.returnDevices();
     }
 }

@@ -1,9 +1,6 @@
 package GUI.Model;
 
-import BE.Customer;
-import BE.Pictures;
-import BE.TechDoc;
-import BE.User;
+import BE.*;
 import BLL.TechDocManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,11 +11,13 @@ public class TechDocModel {
     private final TechDocManager techDocManager;
     private final ObservableList<TechDoc> techDocList;
     private final ObservableList<Pictures> techPictures;
+    private final ObservableList<Device> techDevice;
 
     public TechDocModel() throws Exception {
         techDocManager = new TechDocManager();
         techDocList = FXCollections.observableArrayList();
         techPictures = FXCollections.observableArrayList();
+        techDevice = FXCollections.observableArrayList();
     }
 
     public TechDoc createTechDoc(TechDoc techDoc) throws SQLException {
@@ -46,4 +45,32 @@ public class TechDocModel {
         return newPicture;
     }
 
+    public void deletePictures(Pictures pictures) throws SQLException {
+        techDocManager.deletePictures(pictures);
+        techPictures.remove(pictures);
+    }
+
+    public void deleteTechDoc(TechDoc techDoc) throws SQLException {
+        techDocManager.deleteTechDoc(techDoc);
+    }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        techDocManager.updateDrawing(filePath, techDoc);
+    }
+
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return techDocManager.getTechDoc(techDoc);
+    }
+
+    public Device addDevice(Device device) throws SQLException {
+        Device newDevice = techDocManager.addDevice(device);
+        techDevice.add(newDevice);
+        return newDevice;
+    }
+
+    public ObservableList<Device> getObservableDevices() throws Exception{
+        techDevice.clear();
+        techDevice.addAll(techDocManager.getDevices());
+        return techDevice;
+    }
 }

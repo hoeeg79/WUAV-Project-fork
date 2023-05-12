@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -16,6 +18,7 @@
          <children>
             <VBox alignment="BOTTOM_CENTER" maxWidth="124.0" prefHeight="683.0" prefWidth="124.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
+                  <Button fx:id="btnDevice" mnemonicParsing="false" onAction="#handleOpenDevice" text="Device" />
                   <Button mnemonicParsing="false" text="PDF" />
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Vi ses på mandag" />
                   <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Finalize" />
@@ -45,7 +48,13 @@
                   <Label layoutX="10.0" layoutY="10.0" text="Setup Description" />
                   <TextArea fx:id="taSetupDescription" prefHeight="198.0" prefWidth="325.0" />
                   <Label layoutX="10.0" layoutY="52.0" text="Device/Logon info" />
-                  <TextArea fx:id="taDeviceInfo" layoutX="10.0" layoutY="69.0" prefHeight="80.0" prefWidth="273.0" />
+                  <TableView fx:id="tvDevice" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="tcDevice" prefWidth="96.0" text="Device" />
+                      <TableColumn fx:id="tcUsername" prefWidth="81.0" text="Username" />
+                        <TableColumn fx:id="tcPassword" prefWidth="83.0" text="Password" />
+                    </columns>
+                  </TableView>
                   <Label layoutX="10.0" layoutY="447.0" text="Extra info" />
                   <TextArea fx:id="taExtraInfo" layoutX="10.0" layoutY="474.0" prefHeight="80.0" prefWidth="273.0" />
                   <Label fx:id="lblSaveStatus" prefHeight="17.0" prefWidth="176.0" />

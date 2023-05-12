@@ -18,20 +18,18 @@ public class TechDocDAO {
         //Prepare variables from customer in parameter
         String title = techDoc.getSetupName();
         String setupDescription = techDoc.getSetupDescription();
-        String deviceInfo = techDoc.getDeviceLoginInfo();
         int customerID = techDoc.getCustomerID();
         String extraInfo = techDoc.getExtraInfo();
 
-        String sql = "INSERT INTO TechDoc (setupname, setupDescription, deviceLoginInfo, CustomerID, extraInfo) VALUES (?,?,?,?,?);";
+        String sql = "INSERT INTO TechDoc (setupname, setupDescription, CustomerID, extraInfo) VALUES (?,?,?,?);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, title);
             stmt.setString(2, setupDescription);
-            stmt.setString(3, deviceInfo);
-            stmt.setInt(4, customerID);
-            stmt.setString(5, extraInfo);
+            stmt.setInt(3, customerID);
+            stmt.setString(4, extraInfo);
 
             stmt.executeUpdate();
 
@@ -45,7 +43,6 @@ public class TechDocDAO {
 
             TechDoc returnDoc = new TechDoc(id, title, customerID);
             returnDoc.setSetupDescription(setupDescription);
-            returnDoc.setDeviceLoginInfo(deviceInfo);
             returnDoc.setExtraInfo(extraInfo);
             return returnDoc;
 
@@ -91,11 +88,9 @@ public class TechDocDAO {
                 int id = rs.getInt("id");
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
-                String deviceLoginInfo = rs.getString("deviceLoginInfo");
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
-                techDoc.setDeviceLoginInfo(deviceLoginInfo);
                 techDocs.add(techDoc);
             }
 
@@ -125,12 +120,10 @@ public class TechDocDAO {
                 int id = rs.getInt("id");
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
-                String deviceLoginInfo = rs.getString("deviceLoginInfo");
                 String extraInfo = rs.getString("extraInfo");
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setSetupDescription(setupDescription);
-                techDoc.setDeviceLoginInfo(deviceLoginInfo);
                 techDoc.setExtraInfo(extraInfo);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDocs.add(techDoc);
@@ -143,13 +136,14 @@ public class TechDocDAO {
     }
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
-        String sql = "  UPDATE TechDoc SET setupDescription = ?, deviceLoginInfo = ?, extraInfo = ? WHERE id = ?;";
+
+        String sql = "UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, techDoc.getSetupDescription());
-            stmt.setString(2, techDoc.getDeviceLoginInfo());
+            stmt.setString(1, techDoc.getSetupName());
+            stmt.setString(2, techDoc.getSetupDescription());
             stmt.setString(3, techDoc.getExtraInfo());
             stmt.setInt(4,techDoc.getId());
 
@@ -218,5 +212,156 @@ public class TechDocDAO {
         }
     }
 
+    public void deleteTechDoc(TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            deletePictureBasedOnTechDoc(techDoc, conn);
+            deleteDocLinkUser(techDoc, conn);
+            deleteSelectedTechDoc(techDoc, conn);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
 
+    private void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM TechDoc WHERE id = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+    private void deleteDocLinkUser(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM DocLinkUser WHERE TechDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+
+    private void deletePictureBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM Pictures WHERE techDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "UPDATE TechDoc SET filepathDiagram = ? WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, filePath);
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+
+    }
+
+    public TechDoc getTechdoc(TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "SELECT * FROM TechDoc WHERE id = " + techDoc.getId() + ";";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                int id = techDoc.getId();
+                int customerID = rs.getInt("CustomerID");
+                String setupName = rs.getString("setupname");
+                String setupDescription = rs.getString("setupDescription");
+                String extraInfo = rs.getString("extraInfo");
+                String filepathDiagram = rs.getString("filepathDiagram");
+
+                TechDoc td = new TechDoc(id,setupName,customerID);
+                td.setSetupDescription(setupDescription);
+                td.setExtraInfo(extraInfo);
+                td.setPictures(getTechPictures(td));
+                td.setFilePathDiagram(filepathDiagram);
+                return td;
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return null;
+    }
+
+    public Device addDevice(Device device) throws SQLException {
+
+        String name = device.getDevice();
+        String username = device.getUsername();
+        String password = device.getPassword();
+        String sql = "INSERT INTO Device (name, username, password) VALUES (?,?,?);";
+
+        try(Connection conn = dbc.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, username);
+            pstmt.setString(3, password);
+
+            pstmt.executeUpdate();
+            int id = 0;
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if(rs.next()){
+                id = rs.getInt(1);
+            }
+
+            return new Device(id, name, username, password);
+
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
+    public List<Device> returnDevices(TechDoc techDoc) throws Exception{
+        ArrayList<Device> allDevices = new ArrayList<>();
+
+        try(Connection conn = dbc.getConnection()) {
+            String sql = "SELECT * FROM Device WHERE techDocId = ?;";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, techDoc.getId());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("deviceId");
+                String name = rs.getString("device");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+
+                Device devices = new Device(id, name, username, password);
+                allDevices.add(devices);
+            }
+        }catch(Exception e){
+            throw new Exception("Could not get Devices from database", e);
+        }
+        return allDevices;
+    }
+
+//    SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
+//    public List<Device> returnDevices() throws Exception{
+//        ArrayList<Device> allDevices = new ArrayList<>();
+//
+//        try(Connection conn = dbc.getConnection()){
+//            String sql = "SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
+//
+//            Statement stmt = conn.createStatement();
+//            ResultSet rs = stmt.executeQuery(sql);
+//
+//            while (rs.next()){
+//                int id = rs.getInt("id");
+//                String name = rs.getString("device");
+//                String username = rs.getString("username");
+//                String password = rs.getString("password");
+//
+//                Device device = new Device(id, name, username, password);
+//                allDevices.add(device);
+//            }
+//        }catch(Exception e){
+//            throw new Exception("Could noget get devices from database", e);
+//        }
+//        return allDevices;
+//    }
 }

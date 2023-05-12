@@ -1,9 +1,6 @@
 package GUI.Controller;
 
-import BE.Customer;
-import BE.Pictures;
-import BE.TechDoc;
-import BE.User;
+import BE.*;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.application.Platform;
@@ -12,16 +9,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -29,6 +28,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
+
+    @FXML
+    private TableView<Device> tvDevice;
+    @FXML
+    private TableColumn tcDevice;
+    @FXML
+    private TableColumn tcUsername;
+    @FXML
+    private TableColumn tcPassword;
     @FXML
     private Label lblNoPictures;
     @FXML
@@ -36,15 +44,17 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private Button btnAddPicture;
     @FXML
-    private ImageView imageViewTechDoc;
+    private Button btnDevice;
+    @FXML
+    private Button btnSave;
     @FXML
     private Button btnNextPicture;
+    @FXML
+    private ImageView imageViewTechDoc;
     @FXML
     private TextArea taExtraInfo;
     @FXML
     private Label lblSaveStatus;
-    @FXML
-    private TextArea taDeviceInfo;
     @FXML
     private TextArea taSetupDescription;
     @FXML
@@ -66,6 +76,8 @@ public class TechDocEditorController extends BaseController {
         if (!isEdit) {
             initializeList();
             generateTechDoc();
+        } else{
+            fillDevice(super.getTModel());
         }
     }
 
@@ -110,17 +122,17 @@ public class TechDocEditorController extends BaseController {
     private void doEditOfDoc() throws SQLException {
         techDoc.setSetupName(tfTitle.getText());
         techDoc.setSetupDescription(taSetupDescription.getText());
-        techDoc.setDeviceLoginInfo(taDeviceInfo.getText());
         techDoc.setExtraInfo(taExtraInfo.getText());
         getTModel().updateTechDoc(techDoc);
     }
 
-    public void setIsEdit(TechDoc techDoc) {
+    public void setIsEdit(TechDoc techDoc) throws Exception {
         this.techDoc = techDoc;
         System.out.println(this.techDoc);
         isEdit = true;
         initializeList();
         fillFields();
+
     }
 
     private void initializeList() {
@@ -129,7 +141,6 @@ public class TechDocEditorController extends BaseController {
 
     private void fillFields() {
         taSetupDescription.setText(techDoc.getSetupDescription());
-        taDeviceInfo.setText(techDoc.getDeviceLoginInfo());
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
         if (techDoc.getPictures() != null) {
@@ -229,5 +240,30 @@ public class TechDocEditorController extends BaseController {
                 displayCurrentImage();
             }
         }
+    }
+
+    public void handleOpenDevice(ActionEvent actionEvent) throws Exception {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateDeviceView.fxml"));
+        Parent root = loader.load();
+
+        CreateDeviceController controller = loader.getController();
+        controller.setup();
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("Create Device");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    private void fillDevice(TechDocModel model) throws Exception {
+        tcDevice.setCellValueFactory(new PropertyValueFactory<>("device"));
+        tcUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        tcPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+
+        tvDevice.getItems().clear();
+        tvDevice.setItems(super.getTModel().getObservableDevices());
     }
 }
