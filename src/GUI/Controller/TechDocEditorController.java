@@ -250,18 +250,6 @@ public class TechDocEditorController extends BaseController {
         stage.centerOnScreen();
         stage.showAndWait();
 
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Select Picture");
-//        fileChooser.getExtensionFilters().add(
-//                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
-//        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
-//        File selectedFile = fileChooser.showOpenDialog(stage);
-//
-//        if (selectedFile != null) {
-//            picture = new Pictures(selectedFile.toURI().toString());
-//            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
-//        }
-//
         techDoc = super.getTModel().getTechDoc(techDoc);
         if (getPicturesFromTechDoc()) {
             lblNoPictures.setVisible(false);
