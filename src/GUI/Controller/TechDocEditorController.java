@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -37,6 +38,8 @@ public class TechDocEditorController extends BaseController {
     private TextArea txtPictureDescription;
     @FXML
     private Button btnAddDescription;
+    @FXML
+    private ImageView techDrawing;
     @FXML
     private Label lblNoPictures;
     @FXML
@@ -147,6 +150,9 @@ public class TechDocEditorController extends BaseController {
             imageList.addAll(techDoc.getPictures());
             currentImageIndex = 0;
         }
+        if (techDoc.getFilePathDiagram() != null) {
+            techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
+        }
         displayCurrentImage();
     }
 
@@ -183,6 +189,32 @@ public class TechDocEditorController extends BaseController {
         timer.schedule(task, 5000);
     }
 
+    public void handleDraw(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/DrawView.fxml"));
+            Parent root = loader.load();
+
+            DrawController controller = loader.getController();
+            controller.setup();
+            controller.setTechDoc(techDoc);
+            controller.editDrawing();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Technical Drawing");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.centerOnScreen();
+            stage.showAndWait();
+
+            super.getTModel().getTechDoc(techDoc);
+            displayDrawing();
+        } catch (Exception e) {
+            displayError(e);
+            e.printStackTrace();
+        }
+    }
+
     public void handleAddPicture(ActionEvent actionEvent) throws SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Picture");
@@ -213,6 +245,17 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setImage(currentImage);
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);
+        }
+    }
+
+    private void displayDrawing() {
+        try {
+            if (techDoc.getFilePathDiagram() != null) {
+                Image drawing = new Image(techDoc.getFilePathDiagram());
+                techDrawing.setImage(drawing);
+            }
+        } catch (Exception ignored) {
+
         }
     }
 

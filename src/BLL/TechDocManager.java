@@ -42,4 +42,12 @@ public class TechDocManager {
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         facadeDAL.deleteTechdoc(techDoc);
     }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        facadeDAL.updateDrawing(filePath, techDoc);
+    }
+
+    public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
+        return facadeDAL.getTechDoc(techDoc);
+    }
 }
