@@ -145,8 +145,12 @@ public class TechDocEditorController extends BaseController {
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
         getPicturesFromTechDoc();
-        if (techDoc.getFilePathDiagram() != null) {
-            techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
+        try {
+            if (techDoc.getFilePathDiagram() != null) {
+                techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
+            }
+        } catch (Exception e) {
+            techDrawing.setImage(null);
         }
         displayCurrentImage();
     }
