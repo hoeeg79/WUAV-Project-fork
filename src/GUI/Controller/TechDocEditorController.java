@@ -35,9 +35,7 @@ import java.util.TimerTask;
 public class TechDocEditorController extends BaseController {
 
     @FXML
-    private TextArea txtPictureDescription;
-    @FXML
-    private Button btnAddDescription;
+    private Label lblPictureDescription;
     @FXML
     private ImageView techDrawing;
     @FXML
@@ -146,14 +144,24 @@ public class TechDocEditorController extends BaseController {
         taDeviceInfo.setText(techDoc.getDeviceLoginInfo());
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
-        if (techDoc.getPictures() != null) {
-            imageList.addAll(techDoc.getPictures());
-            currentImageIndex = 0;
-        }
+        getPicturesFromTechDoc();
         if (techDoc.getFilePathDiagram() != null) {
             techDrawing.setImage(new Image(techDoc.getFilePathDiagram()));
         }
         displayCurrentImage();
+    }
+
+    private Boolean getPicturesFromTechDoc() {
+        if (techDoc.getPictures() != null) {
+            imageList.clear();
+            imageList.addAll(techDoc.getPictures());
+            if (currentImageIndex == -1) {
+                currentImageIndex = 0;
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setPicture(Pictures picture) {
@@ -215,39 +223,6 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
-    public void handleAddPicture(ActionEvent actionEvent) throws SQLException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Picture");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
-        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
-        if (selectedFile != null) {
-            picture = new Pictures(selectedFile.toURI().toString());
-            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
-            Image image = new Image(picture.getFilePath());
-            if (currentImageIndex == -1) {
-                currentImageIndex = 0;
-                displayCurrentImage();
-            }
-            imageViewTechDoc.setImage(image);
-            imageViewTechDoc.setFitWidth(400);
-            imageViewTechDoc.setFitHeight(400);
-
-            lblNoPictures.setVisible(false);
-        }
-    }
-
-    private void displayCurrentImage() {
-        if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
-            Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
-            imageViewTechDoc.setImage(currentImage);
-            imageViewTechDoc.setFitWidth(400);
-            imageViewTechDoc.setFitHeight(400);
-        }
-    }
-
     private void displayDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
@@ -259,17 +234,70 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
-    public void handleNextPicture(ActionEvent actionEvent) {
-        if (imageList.size() > 1) {
-            currentImageIndex++;
-            if (currentImageIndex >= imageList.size()) {
+    @FXML
+    private void handleAddPicture(ActionEvent actionEvent) throws Exception {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/PictureDescription.fxml"));
+        Parent root = loader.load();
+
+        PictureDescriptionController controller = loader.getController();
+        controller.setup();
+        controller.setTechDoc(techDoc);
+        stage.setScene(new Scene(root));
+        stage.setTitle("Add Description");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
+        stage.showAndWait();
+
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Select Picture");
+//        fileChooser.getExtensionFilters().add(
+//                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
+//        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
+//        File selectedFile = fileChooser.showOpenDialog(stage);
+//
+//        if (selectedFile != null) {
+//            picture = new Pictures(selectedFile.toURI().toString());
+//            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
+//        }
+//
+        techDoc = super.getTModel().getTechDoc(techDoc);
+        if (getPicturesFromTechDoc()) {
+            lblNoPictures.setVisible(false);
+            if (currentImageIndex == -1) {
                 currentImageIndex = 0;
+            } else {
+                currentImageIndex = imageList.size() - 1;
             }
             displayCurrentImage();
         }
     }
 
-    public void handleDeletePicture(ActionEvent actionEvent) throws SQLException {
+    private void displayCurrentImage() {
+        if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
+            Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
+            imageViewTechDoc.setImage(currentImage);
+            imageViewTechDoc.setFitWidth(400);
+            imageViewTechDoc.setFitHeight(400);
+            lblPictureDescription.setText(imageList.get(currentImageIndex).getDescription());
+        }
+    }
+
+    @FXML
+    private void handleNextPicture(ActionEvent actionEvent) {
+        if (imageList.size() > 1) {
+            currentImageIndex++;
+            if (currentImageIndex >= imageList.size()) {
+                currentImageIndex = 0;
+                displayCurrentImage();
+            }
+            displayCurrentImage();
+        }
+    }
+
+    @FXML
+    private void handleDeletePicture(ActionEvent actionEvent) throws SQLException {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             imageList.remove(currentImageIndex);
             super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));

@@ -196,10 +196,7 @@ public class TechDocDAO {
 
         try(Connection connection = dbc.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            System.out.println("from DAO");
-            System.out.println(sql);
-            System.out.println(pictures.getFilePath());
-            System.out.println(pictures.getDescription());
+
             preparedStatement.setString(1, pictures.getFilePath());
             preparedStatement.setString(2, pictures.getDescription());
             preparedStatement.setInt(3, techDoc.getId());
