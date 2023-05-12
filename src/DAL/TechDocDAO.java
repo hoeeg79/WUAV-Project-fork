@@ -82,7 +82,8 @@ public class TechDocDAO {
 
         try (Connection conn = dbc.getConnection()) {
             int customerID = customer.getId();
-            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+
+            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " ORDER BY isLocked DESC, setupname;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -92,10 +93,15 @@ public class TechDocDAO {
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
                 String deviceLoginInfo = rs.getString("deviceLoginInfo");
+                boolean isLocked = rs.getBoolean("isLocked");
+                boolean approved = rs.getBoolean("approved");
+
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setDeviceLoginInfo(deviceLoginInfo);
+                techDoc.setLocked(isLocked);
+                techDoc.setApproved(approved);
                 techDocs.add(techDoc);
             }
 
@@ -114,9 +120,9 @@ public class TechDocDAO {
 
             if (user.getUserType().getId() == 2) {
                 sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
-                        "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = " + user.getId() + ")";
+                        "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = " + user.getId() + ") ORDER BY isLocked DESC, setupname;";
             } else {
-                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " ORDER BY isLocked DESC, setupname;";
             }
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -128,6 +134,9 @@ public class TechDocDAO {
                 String deviceLoginInfo = rs.getString("deviceLoginInfo");
                 String extraInfo = rs.getString("extraInfo");
                 String filepathDiagram = rs.getString("filepathDiagram");
+                boolean isLocked = rs.getBoolean("isLocked");
+                boolean approved = rs.getBoolean("approved");
+
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setSetupDescription(setupDescription);
@@ -135,6 +144,8 @@ public class TechDocDAO {
                 techDoc.setExtraInfo(extraInfo);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setFilePathDiagram(filepathDiagram);
+                techDoc.setLocked(isLocked);
+                techDoc.setApproved(approved);
                 techDocs.add(techDoc);
             }
 
@@ -145,7 +156,7 @@ public class TechDocDAO {
     }
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
-        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, deviceLoginInfo = ?, extraInfo = ? WHERE id = ?;";
+        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, deviceLoginInfo = ?, extraInfo = ?, isLocked = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -154,7 +165,8 @@ public class TechDocDAO {
             stmt.setString(2, techDoc.getSetupDescription());
             stmt.setString(3, techDoc.getDeviceLoginInfo());
             stmt.setString(4, techDoc.getExtraInfo());
-            stmt.setInt(5,techDoc.getId());
+            stmt.setBoolean(5,techDoc.isLocked());
+            stmt.setInt(6,techDoc.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e){
