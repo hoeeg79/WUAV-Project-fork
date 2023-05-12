@@ -8,8 +8,7 @@ public class Customer {
     private String streetName;
     private String zipcode;
     private String city;
-
-
+    private boolean docReadyForApproval;
 
     public Customer(int id, String name, String email, String tlf, String streetName, String zipcode, String city) {
         this.id = id;
@@ -29,6 +28,7 @@ public class Customer {
         this.zipcode = zipcode;
         this.city = city;
     }
+
     public Customer(int id, String name, String email, String tlf, String streetName, String zipcode) {
         this.id = id;
         this.name = name;
@@ -40,11 +40,6 @@ public class Customer {
 
     public int getId() {
         return id;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -92,6 +87,14 @@ public class Customer {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public boolean isDocReadyForApproval() {
+        return docReadyForApproval;
+    }
+
+    public void setDocReadyForApproval(boolean docReadyForApproval) {
+        this.docReadyForApproval = docReadyForApproval;
     }
 
     @Override

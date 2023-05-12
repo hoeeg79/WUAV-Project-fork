@@ -11,6 +11,8 @@ public class TechDoc {
     private String extraInfo;
     private String deviceLoginInfo;
     private int customerID;
+    private boolean isLocked;
+    private boolean approved;
 
     public TechDoc(int id, String setupName, int customerID) {
         this.id = id;
@@ -81,6 +83,22 @@ public class TechDoc {
 
     public void setPictures(List<Pictures> pictures) {
         this.pictures = pictures;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     @Override

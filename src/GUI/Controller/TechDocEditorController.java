@@ -20,20 +20,21 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
 
+    public Button btnReadyForApproval;
+    @FXML
+    private Button btnDraw;
+    @FXML
+    private Button btnSave;
     @FXML
     private Label lblPictureDescription;
     @FXML
@@ -133,6 +134,9 @@ public class TechDocEditorController extends BaseController {
         isEdit = true;
         initializeList();
         fillFields();
+        if (techDoc.isLocked()) {
+            lockFields();
+        }
     }
 
     private void initializeList() {
@@ -248,18 +252,6 @@ public class TechDocEditorController extends BaseController {
         stage.centerOnScreen();
         stage.showAndWait();
 
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Select Picture");
-//        fileChooser.getExtensionFilters().add(
-//                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
-//        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
-//        File selectedFile = fileChooser.showOpenDialog(stage);
-//
-//        if (selectedFile != null) {
-//            picture = new Pictures(selectedFile.toURI().toString());
-//            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
-//        }
-//
         techDoc = super.getTModel().getTechDoc(techDoc);
         if (getPicturesFromTechDoc()) {
             lblNoPictures.setVisible(false);
@@ -310,5 +302,22 @@ public class TechDocEditorController extends BaseController {
                 displayCurrentImage();
             }
         }
+    }
+
+    @FXML
+    private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
+        techDoc.setLocked(true);
+        super.getTModel().updateTechDoc(techDoc);
+        handleClose(actionEvent);
+    }
+
+    private void lockFields() {
+        tfTitle.setDisable(true);
+        taExtraInfo.setDisable(true);
+        taSetupDescription.setDisable(true);
+        btnAddPicture.setDisable(true);
+        btnDeletePicture.setDisable(true);
+        btnSave.setDisable(true);
+        btnDraw.setDisable(true);
     }
 }
