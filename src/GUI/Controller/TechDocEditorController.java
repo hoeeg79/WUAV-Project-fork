@@ -35,7 +35,10 @@ public class TechDocEditorController extends BaseController {
     private TableColumn tcUsername;
     @FXML
     private TableColumn tcPassword;
-    public Button btnReadyForApproval;
+    @FXML
+    private Button btnDeleteDevice;
+    @FXML
+    private Button btnReadyForApproval;
     @FXML
     private Button btnDraw;
     @FXML
@@ -141,8 +144,12 @@ public class TechDocEditorController extends BaseController {
         initializeList();
         fillFields();
 
-        if (techDoc.isLocked()) {
+        if (techDoc.isApproved() && techDoc.isLocked()) {
+            btnReadyForApproval.setText("Unlock");
+        }
+        else if (techDoc.isLocked()) {
             lockFields();
+            btnReadyForApproval.setText("Approved");
         }
     }
 
@@ -310,7 +317,8 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
-    public void handleOpenDevice(ActionEvent actionEvent) throws Exception {
+    @FXML
+    private void handleOpenDevice(ActionEvent actionEvent) throws Exception {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateDeviceView.fxml"));
         Parent root = loader.load();
@@ -354,9 +362,21 @@ public class TechDocEditorController extends BaseController {
 
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
+    if (techDoc.isApproved() && techDoc.isLocked()) {
+        techDoc.setApproved(false);
+        techDoc.setLocked(false);
+        btnReadyForApproval.setText("Finalize");
+        unlockFields();
+    }
+    else if (techDoc.isLocked()) {
+        techDoc.setApproved(true);
+    }
+    else {
         techDoc.setLocked(true);
-        super.getTModel().updateTechDoc(techDoc);
-        handleClose(actionEvent);
+    }
+
+    super.getTModel().updateTechDoc(techDoc);
+    handleClose(actionEvent);
     }
 
     private void lockFields() {
@@ -367,6 +387,20 @@ public class TechDocEditorController extends BaseController {
         btnDeletePicture.setDisable(true);
         btnSave.setDisable(true);
         btnDraw.setDisable(true);
+        btnDevice.setDisable(true);
+        btnDeleteDevice.setDisable(true);
+    }
+
+    private void unlockFields() {
+        tfTitle.setDisable(false);
+        taExtraInfo.setDisable(false);
+        taSetupDescription.setDisable(false);
+        btnAddPicture.setDisable(false);
+        btnDeletePicture.setDisable(false);
+        btnSave.setDisable(false);
+        btnDraw.setDisable(false);
+        btnDevice.setDisable(false);
+        btnDeleteDevice.setDisable(false);
     }
 }
 

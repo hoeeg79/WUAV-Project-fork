@@ -126,7 +126,7 @@ public class TechDocDAO {
 
         try (Connection conn = dbc.getConnection()) {
             int customerID = customer.getId();
-            String sql = "";
+            String sql;
 
             if (user.getUserType().getId() == 2) {
                 sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
@@ -165,7 +165,7 @@ public class TechDocDAO {
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
 
-        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ? WHERE id = ?;";
+        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ?, approved = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -174,17 +174,30 @@ public class TechDocDAO {
             stmt.setString(2, techDoc.getSetupDescription());
             stmt.setString(3, techDoc.getExtraInfo());
             stmt.setBoolean(4,techDoc.isLocked());
-            stmt.setInt(5,techDoc.getId());
+            stmt.setBoolean(5, techDoc.isApproved());
+            stmt.setInt(6,techDoc.getId());
 
 
             stmt.executeUpdate();
 
-            if (techDoc.isLocked()) {
+            if (techDoc.isApproved()) {
+                removeFromCustomerTechDocReady(conn, techDoc);
+            }
+            else if (techDoc.isLocked()) {
                 addToCustomerTechDocReady(conn, techDoc);
             }
         } catch (SQLException e){
             throw new SQLException(e);
         }
+    }
+
+    private void removeFromCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
+        String sql = "DELETE FROM CustomerTechDocReady WHERE techDocID = ?;";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+
+        stmt.executeUpdate();
     }
 
     private void addToCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
@@ -361,8 +374,6 @@ public class TechDocDAO {
             throw new SQLException(e);
         }
     }
-
-//    SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
 
     public void deletePicture(Pictures pictures) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
