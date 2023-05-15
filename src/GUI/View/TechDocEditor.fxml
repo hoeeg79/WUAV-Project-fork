@@ -18,6 +18,7 @@
          <children>
             <VBox alignment="BOTTOM_CENTER" maxWidth="124.0" prefHeight="683.0" prefWidth="124.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
+                  <Button fx:id="btnDeleteDevice" mnemonicParsing="false" onAction="#handleDeleteDevice" text="Delete device" />
                   <Button fx:id="btnDevice" mnemonicParsing="false" onAction="#handleOpenDevice" text="Device" />
                   <Button mnemonicParsing="false" text="PDF" />
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Vi ses på mandag" />

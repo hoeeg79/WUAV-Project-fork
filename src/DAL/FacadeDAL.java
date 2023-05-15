@@ -99,4 +99,8 @@ public class FacadeDAL {
         TechDocDAO devices = new TechDocDAO();
         return devices.returnDevices(techDoc);
     }
+
+    public void deleteDevice(Device device) throws SQLException {
+        techDocDAO.deleteDevice(device);
+    }
 }

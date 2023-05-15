@@ -342,28 +342,19 @@ public class TechDocDAO {
         return allDevices;
     }
 
+    public void deleteDevice(Device device) throws SQLException {
+        try(Connection conn = dbc.getConnection()) {
+            String sql = "DELETE FROM Device WHERE deviceId = ?;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, device.getId());
+
+            pstmt.executeUpdate();
+        }catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
 //    SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
-//    public List<Device> returnDevices() throws Exception{
-//        ArrayList<Device> allDevices = new ArrayList<>();
-//
-//        try(Connection conn = dbc.getConnection()){
-//            String sql = "SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
-//
-//            Statement stmt = conn.createStatement();
-//            ResultSet rs = stmt.executeQuery(sql);
-//
-//            while (rs.next()){
-//                int id = rs.getInt("id");
-//                String name = rs.getString("device");
-//                String username = rs.getString("username");
-//                String password = rs.getString("password");
-//
-//                Device device = new Device(id, name, username, password);
-//                allDevices.add(device);
-//            }
-//        }catch(Exception e){
-//            throw new Exception("Could not get devices from database", e);
-//        }
-//        return allDevices;
-//    }
+
 }

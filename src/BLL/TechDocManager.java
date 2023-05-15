@@ -55,4 +55,8 @@ public class TechDocManager {
     public List<Device> getDevices(TechDoc techDoc) throws Exception{
         return facadeDAL.getDevices(techDoc);
     }
+
+    public void deleteDevice(Device device) throws SQLException {
+        facadeDAL.deleteDevice(device);
+    }
 }

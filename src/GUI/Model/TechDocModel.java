@@ -73,4 +73,8 @@ public class TechDocModel {
         techDevice.addAll(techDocManager.getDevices(techDoc));
         return techDevice;
     }
+
+    public void deleteDevice(Device device) throws SQLException {
+        techDocManager.deleteDevice(device);
+    }
 }

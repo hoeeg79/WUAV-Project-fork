@@ -273,4 +273,14 @@ public class TechDocEditorController extends BaseController {
         tvDevice.getItems().clear();
         tvDevice.setItems(super.getTModel().getObservableDevices(techDoc));
     }
+
+    public void handleDeleteDevice(ActionEvent actionEvent) {
+        try {
+            Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
+            super.getTModel().deleteDevice(deleteDevice);
+            refreshDevice();
+        } catch (Exception e) {
+            displayError(e);
+        }
+    }
 }
