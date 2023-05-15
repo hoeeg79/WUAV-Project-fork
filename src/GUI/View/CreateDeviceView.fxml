@@ -9,21 +9,21 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CreateDeviceController">
    <children>
-      <HBox layoutX="123.0" layoutY="74.0" prefHeight="236.0" prefWidth="319.0">
+      <VBox alignment="CENTER_LEFT" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="236.0" prefWidth="329.0">
+            <Label text="Device" />
+            <TextField fx:id="tfDevice" alignment="CENTER" prefHeight="25.0" prefWidth="447.0" />
+            <Label text="Username" />
+            <TextField fx:id="tfUsername" />
+            <Label text="Password" />
+            <TextField fx:id="tfPassword" />
+            <HBox prefHeight="268.0" prefWidth="527.0">
                <children>
-                  <Label text="Device" />
-                  <TextField fx:id="tfDevice" alignment="CENTER" />
-                  <Label text="Username" />
-                  <TextField fx:id="tfUsername" />
-                  <Label text="Password" />
-                  <TextField fx:id="tfPassword" />
                   <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleCreateDevice" text="Create" />
-                  <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
                </children>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

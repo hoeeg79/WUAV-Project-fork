@@ -32,9 +32,9 @@ public class TechDocManager {
         return facadeDAL.addTechPictures(pictures, techDoc);
     }
 
-    public void deletePictures(Pictures pictures) throws SQLException {
-        facadeDAL.deletePicture(pictures);
-    }
+//    public void deletePictures(Pictures pictures) throws SQLException {
+//        facadeDAL.deletePicture(pictures);
+//    }
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         facadeDAL.deleteTechdoc(techDoc);
@@ -48,11 +48,11 @@ public class TechDocManager {
         return facadeDAL.getTechDoc(techDoc);
     }
 
-    public Device addDevice(Device device) throws SQLException {
-        return facadeDAL.addDevice(device);
+    public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
+        return facadeDAL.addDevice(device, techDoc);
     }
 
-    public List<Device> getDevices() throws Exception{
-        return facadeDAL.getDevices();
+    public List<Device> getDevices(TechDoc techDoc) throws Exception{
+        return facadeDAL.getDevices(techDoc);
     }
 }

@@ -285,12 +285,12 @@ public class TechDocDAO {
         return null;
     }
 
-    public Device addDevice(Device device) throws SQLException {
+    public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
 
         String name = device.getDevice();
         String username = device.getUsername();
         String password = device.getPassword();
-        String sql = "INSERT INTO Device (name, username, password) VALUES (?,?,?);";
+        String sql = "INSERT INTO Device (name, username, password, techDocId) VALUES (?,?,?,?);";
 
         try(Connection conn = dbc.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -298,6 +298,7 @@ public class TechDocDAO {
             pstmt.setString(1, name);
             pstmt.setString(2, username);
             pstmt.setString(3, password);
+            pstmt.setInt(4, techDoc.getId());
 
             pstmt.executeUpdate();
             int id = 0;
@@ -314,7 +315,7 @@ public class TechDocDAO {
         }
     }
 
-    public List<Device> returnDevices(TechDoc techDoc) throws Exception{
+    public List<Device> returnDevices(TechDoc techDoc) throws SQLException{
         ArrayList<Device> allDevices = new ArrayList<>();
 
         try(Connection conn = dbc.getConnection()) {
@@ -327,15 +328,16 @@ public class TechDocDAO {
 
             while (rs.next()) {
                 int id = rs.getInt("deviceId");
-                String name = rs.getString("device");
+                String name = rs.getString("name");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
 
                 Device devices = new Device(id, name, username, password);
                 allDevices.add(devices);
             }
-        }catch(Exception e){
-            throw new Exception("Could not get Devices from database", e);
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new SQLException("Could not get Devices from database", e);
         }
         return allDevices;
     }
@@ -360,7 +362,7 @@ public class TechDocDAO {
 //                allDevices.add(device);
 //            }
 //        }catch(Exception e){
-//            throw new Exception("Could noget get devices from database", e);
+//            throw new Exception("Could not get devices from database", e);
 //        }
 //        return allDevices;
 //    }

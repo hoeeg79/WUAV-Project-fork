@@ -45,10 +45,10 @@ public class TechDocModel {
         return newPicture;
     }
 
-    public void deletePictures(Pictures pictures) throws SQLException {
-        techDocManager.deletePictures(pictures);
-        techPictures.remove(pictures);
-    }
+//    public void deletePictures(Pictures pictures) throws SQLException {
+//        techDocManager.deletePictures(pictures);
+//        techPictures.remove(pictures);
+//    }
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         techDocManager.deleteTechDoc(techDoc);
@@ -62,15 +62,15 @@ public class TechDocModel {
         return techDocManager.getTechDoc(techDoc);
     }
 
-    public Device addDevice(Device device) throws SQLException {
-        Device newDevice = techDocManager.addDevice(device);
+    public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
+        Device newDevice = techDocManager.addDevice(device, techDoc);
         techDevice.add(newDevice);
         return newDevice;
     }
 
-    public ObservableList<Device> getObservableDevices() throws Exception{
+    public ObservableList<Device> getObservableDevices(TechDoc techDoc) throws Exception{
         techDevice.clear();
-        techDevice.addAll(techDocManager.getDevices());
+        techDevice.addAll(techDocManager.getDevices(techDoc));
         return techDevice;
     }
 }

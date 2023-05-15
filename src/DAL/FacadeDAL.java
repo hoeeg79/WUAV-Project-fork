@@ -91,12 +91,12 @@ public class FacadeDAL {
         return techDocDAO.getTechdoc(techDoc);
     }
 
-    public Device addDevice(Device device) throws SQLException {
-        return techDocDAO.addDevice(device);
+    public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
+        return techDocDAO.addDevice(device, techDoc);
     }
 
-    public List<Device> getDevices() throws Exception{
+    public List<Device> getDevices(TechDoc techDoc) throws Exception{
         TechDocDAO devices = new TechDocDAO();
-        return devices.returnDevices();
+        return devices.returnDevices(techDoc);
     }
 }

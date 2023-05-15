@@ -249,13 +249,15 @@ public class TechDocEditorController extends BaseController {
 
         CreateDeviceController controller = loader.getController();
         controller.setup();
+        controller.setTechDoc(techDoc);
 
         stage.setScene(new Scene(root));
         stage.setTitle("Create Device");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
         stage.centerOnScreen();
-        stage.show();
+        stage.showAndWait();
+        refreshDevice();
     }
 
     private void fillDevice(TechDocModel model) throws Exception {
@@ -264,6 +266,11 @@ public class TechDocEditorController extends BaseController {
         tcPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
 
         tvDevice.getItems().clear();
-        tvDevice.setItems(super.getTModel().getObservableDevices());
+        tvDevice.setItems(super.getTModel().getObservableDevices(techDoc));
+    }
+
+    private void refreshDevice() throws Exception{
+        tvDevice.getItems().clear();
+        tvDevice.setItems(super.getTModel().getObservableDevices(techDoc));
     }
 }

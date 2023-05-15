@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.Device;
+import BE.TechDoc;
 import GUI.Model.TechDocModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ public class CreateDeviceController extends BaseController {
     private Button btnCreate;
     @FXML
     private Button btnCancel;
+    private TechDoc techDoc;
 
 
     @Override
@@ -33,13 +35,22 @@ public class CreateDeviceController extends BaseController {
         String password = tfPassword.getText();
 
         Device device = new Device(name, username, password);
-        super.getTModel().addDevice(device);
+        super.getTModel().addDevice(device, techDoc);
         clearDeviceMenu();
+        closeWindow(btnCreate);
     }
 
     private void clearDeviceMenu(){
         tfDevice.clear();
         tfUsername.clear();
         tfPassword.clear();
+    }
+
+    public void setTechDoc(TechDoc techDoc) {
+        this.techDoc = techDoc;
+    }
+
+    public void handleCancel(ActionEvent actionEvent) {
+        closeWindow(btnCancel);
     }
 }
