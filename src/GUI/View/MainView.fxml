@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1500.0" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainViewController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1500.0" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainViewController">
    <children>
       <Pane fx:id="createCustomerMenu" prefHeight="775.0" prefWidth="339.0" stylesheets="@MainView.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
          <children>
@@ -69,6 +69,11 @@
             <TableColumn fx:id="tcZipcode" prefWidth="74.0" text="Zipcode" />
         </columns>
       </TableView>
+      <Pane fx:id="docApprovalNotification" layoutX="1205.0" layoutY="744.0" prefHeight="156.0" prefWidth="294.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="1.0">
+         <children>
+            <Label layoutX="38.0" layoutY="71.0" prefHeight="15.0" prefWidth="219.0" text="There are documents ready for Approval" />
+         </children>
+      </Pane>
 
    </children>
 </AnchorPane>

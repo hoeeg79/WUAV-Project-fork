@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.UsersModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 import BE.Customer;
@@ -17,20 +18,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.net.URL;
-import java.sql.SQLException;
+import java.security.spec.ECField;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainViewController extends BaseController implements Initializable {
 
 
+    @FXML
+    private Pane docApprovalNotification;
     @FXML
     private TableView<Customer> tvMain;
     @FXML
@@ -85,10 +87,11 @@ public class MainViewController extends BaseController implements Initializable 
     @Override
     public void setup() throws Exception {
         try {
-            loadLists(super.getCModel());
+            loadList(super.getCModel());
             searchBar();
             clearCustomerMenu();
             checkUserType();
+            checkCustomers();
         } catch (Exception e) {
             displayError(e);
         }
@@ -168,17 +171,6 @@ public class MainViewController extends BaseController implements Initializable 
         stage.show();
     }
 
-    private void loadLists(CustomerModel model) throws Exception {
-        tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
-        tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
-        tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
-        tcCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-
-        refreshList();
-    }
-
     private void searchBar(){
         tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             try{
@@ -254,8 +246,72 @@ public class MainViewController extends BaseController implements Initializable 
             btnCreateUsers.setVisible(false);
         }
     }
+
+    private void loadList(CustomerModel model) throws Exception {
+        prepareCells();
+
+        refreshList();
+    }
+
+    private void prepareCells() {
+        tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("tlf"));
+        tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
+        tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
+        tcCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+
+        tcName.setCellFactory(column -> new TableCell<Customer, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    Customer customer = getTableView().getItems().get(getIndex());
+                    setText(item);
+
+                    if (customer.isDocReadyForApproval()) {
+                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
+    }
+
     private void refreshList() throws Exception {
         tvMain.getItems().clear();
         tvMain.setItems(super.getCModel().getObservableCustomers());
+    }
+
+    private void checkCustomers() throws Exception {
+        if (super.getCModel().checkCustomerForDocs()) {
+            docsForApprovalNotifier();
+        }
+    }
+
+    private void docsForApprovalNotifier() throws Exception {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                Platform.runLater(() -> {
+                    docApprovalNotification.setTranslateY(docApprovalNotification.getHeight());
+                    docApprovalNotification.toFront();
+                    docApprovalNotification.setVisible(true);
+
+                    TranslateTransition slideIn = new TranslateTransition(Duration.seconds(1), docApprovalNotification);
+                    slideIn.setToY(0);
+                    slideIn.play();
+                });
+
+            } catch (Exception e) {
+                displayError(e);
+            }
+        });
+        thread.start();
     }
 }

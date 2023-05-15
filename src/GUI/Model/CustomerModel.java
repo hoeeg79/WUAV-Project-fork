@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import java.sql.SQLException;
@@ -42,5 +43,16 @@ public class CustomerModel {
         List<Customer> searchResults = customerManager.searchCustomer(query);
         customerList.clear();
         customerList.addAll(searchResults);
+    }
+
+    public boolean checkCustomerForDocs(){
+
+        for (Customer customer : customerList) {
+            if (customer.isDocReadyForApproval()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
