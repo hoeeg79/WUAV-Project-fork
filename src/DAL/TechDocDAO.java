@@ -179,9 +179,23 @@ public class TechDocDAO {
 
 
             stmt.executeUpdate();
+
+            if (techDoc.isLocked()) {
+                addToCustomerTechDocReady(conn, techDoc);
+            }
         } catch (SQLException e){
             throw new SQLException(e);
         }
+    }
+
+    private void addToCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
+        String sql = "INSERT INTO CustomerTechDocReady VALUES(?,?)";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getCustomerID());
+        stmt.setInt(2,techDoc.getId());
+
+        stmt.executeUpdate();
     }
 
     public List<Pictures> getTechPictures(TechDoc techDoc) throws SQLException {

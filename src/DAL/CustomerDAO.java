@@ -61,27 +61,43 @@ public class CustomerDAO {
 
         try(Connection connection = dbc.getConnection()){
 
-            String sql = "SELECT * FROM Customer c JOIN City ci ON c.zipcode = ci.zipcode WHERE softDeleted != 1;";
+            String sql = "SELECT * FROM Customer c JOIN City ci ON c.zipcode = ci.zipcode WHERE softDeleted != 1 AND EXISTS (SELECT * FROM CustomerTechDocReady WHERE c.id = CustomerTechDocReady.customerID)";
+            allCustomers.addAll(returnSpecificCustomers(connection, true, sql));
 
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            sql = "SELECT * FROM Customer c JOIN City ci ON c.zipcode = ci.zipcode WHERE softDeleted != 1 AND NOT EXISTS (SELECT * FROM CustomerTechDocReady WHERE c.id = CustomerTechDocReady.customerID)";
+            allCustomers.addAll(returnSpecificCustomers(connection, false, sql));
 
-            while (rs.next()){
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String phoneNumber = rs.getString("tlf");
-                String streetName = rs.getString("streetName");
-                String zipcode = rs.getString("zipcode");
-                String city = rs.getString("city");
-
-                Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode, city);
-                allCustomers.add(customer);
-            }
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("Could not get Customers from database", e);
         }
         return allCustomers;
+    }
+
+    private List<Customer> returnSpecificCustomers(Connection conn, boolean checker, String sql) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+            String phoneNumber = rs.getString("tlf");
+            String streetName = rs.getString("streetName");
+            String zipcode = rs.getString("zipcode");
+            String city = rs.getString("city");
+
+            Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode, city);
+            if (checker) {
+                customer.setDocReadyForApproval(true);
+            } else {
+                customer.setDocReadyForApproval(false);
+            }
+            customers.add(customer);
+        }
+        return customers;
     }
 
     /**
