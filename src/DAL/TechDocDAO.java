@@ -104,7 +104,6 @@ public class TechDocDAO {
                 int id = rs.getInt("id");
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
-                String deviceLoginInfo = rs.getString("deviceLoginInfo");
                 boolean isLocked = rs.getBoolean("isLocked");
                 boolean approved = rs.getBoolean("approved");
 
