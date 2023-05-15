@@ -66,6 +66,21 @@ public class TechDocDAO {
         }
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException{
+        String sql = "DELETE FROM DocLinkUser WHERE UserID = ? AND TechDocID = ?";
+
+        try(Connection conn = dbc.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
     public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
         if (user.getUserType().getId() == 2) {
             return getSpecificTechDocs(customer,user);
@@ -79,7 +94,8 @@ public class TechDocDAO {
 
         try (Connection conn = dbc.getConnection()) {
             int customerID = customer.getId();
-            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+
+            String sql =   "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " ORDER BY isLocked DESC, setupname;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -88,9 +104,15 @@ public class TechDocDAO {
                 int id = rs.getInt("id");
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
+                String deviceLoginInfo = rs.getString("deviceLoginInfo");
+                boolean isLocked = rs.getBoolean("isLocked");
+                boolean approved = rs.getBoolean("approved");
+
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
+                techDoc.setLocked(isLocked);
+                techDoc.setApproved(approved);
                 techDocs.add(techDoc);
             }
 
@@ -109,9 +131,9 @@ public class TechDocDAO {
 
             if (user.getUserType().getId() == 2) {
                 sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " " +
-                        "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = " + user.getId() + ")";
+                        "AND TechDoc.id IN (SELECT TechDocID FROM DocLinkUser WHERE UserID = " + user.getId() + ") ORDER BY isLocked DESC, setupname;";
             } else {
-                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + ";";
+                sql = "SELECT * FROM TechDoc WHERE CustomerID = " + customerID + " ORDER BY isLocked DESC, setupname;";
             }
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -121,11 +143,18 @@ public class TechDocDAO {
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
                 String extraInfo = rs.getString("extraInfo");
+                String filepathDiagram = rs.getString("filepathDiagram");
+                boolean isLocked = rs.getBoolean("isLocked");
+                boolean approved = rs.getBoolean("approved");
+
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setExtraInfo(extraInfo);
                 techDoc.setPictures(getTechPictures(techDoc));
+                techDoc.setFilePathDiagram(filepathDiagram);
+                techDoc.setLocked(isLocked);
+                techDoc.setApproved(approved);
                 techDocs.add(techDoc);
             }
 
@@ -137,7 +166,7 @@ public class TechDocDAO {
 
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
 
-        String sql = "UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ? WHERE id = ?;";
+        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -145,7 +174,9 @@ public class TechDocDAO {
             stmt.setString(1, techDoc.getSetupName());
             stmt.setString(2, techDoc.getSetupDescription());
             stmt.setString(3, techDoc.getExtraInfo());
-            stmt.setInt(4,techDoc.getId());
+            stmt.setBoolean(4,techDoc.isLocked());
+            stmt.setInt(5,techDoc.getId());
+
 
             stmt.executeUpdate();
         } catch (SQLException e){
@@ -187,10 +218,7 @@ public class TechDocDAO {
 
         try(Connection connection = dbc.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            System.out.println("from DAO");
-            System.out.println(sql);
-            System.out.println(pictures.getFilePath());
-            System.out.println(pictures.getDescription());
+
             preparedStatement.setString(1, pictures.getFilePath());
             preparedStatement.setString(2, pictures.getDescription());
             preparedStatement.setInt(3, techDoc.getId());
@@ -222,40 +250,6 @@ public class TechDocDAO {
         }
     }
 
-    private void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
-        String sql = "DELETE FROM TechDoc WHERE id = ?;";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, techDoc.getId());
-        stmt.executeUpdate();
-    }
-    private void deleteDocLinkUser(TechDoc techDoc, Connection conn) throws SQLException {
-        String sql = "DELETE FROM DocLinkUser WHERE TechDocID = ?;";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, techDoc.getId());
-        stmt.executeUpdate();
-    }
-
-    private void deletePictureBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
-        String sql = "DELETE FROM Pictures WHERE techDocID = ?;";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, techDoc.getId());
-        stmt.executeUpdate();
-    }
-
-    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
-        try (Connection conn = dbc.getConnection()) {
-            String sql = "UPDATE TechDoc SET filepathDiagram = ? WHERE id = ?;";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, filePath);
-            stmt.setInt(2, techDoc.getId());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
-
-    }
 
     public TechDoc getTechdoc(TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
@@ -357,4 +351,52 @@ public class TechDocDAO {
 
 //    SELECT * FROM Device d JOIN TechDoc td ON d.techDocId = td.id;";
 
+    public void deletePicture(Pictures pictures) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+
+            String sql = "DELETE FROM Pictures WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, pictures.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    private void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM TechDoc WHERE id = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+    private void deleteDocLinkUser(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM DocLinkUser WHERE TechDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+
+    private void deletePictureBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM Pictures WHERE techDocID = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
+        stmt.executeUpdate();
+    }
+
+    public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
+        try (Connection conn = dbc.getConnection()) {
+            String sql = "UPDATE TechDoc SET filepathDiagram = ? WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, filePath);
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+
+    }
 }

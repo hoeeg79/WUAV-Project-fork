@@ -28,7 +28,7 @@
                   <TextField fx:id="tfCustomerEmail" />
                   <Label styleClass="menuText" text="Phone number" />
                   <TextField fx:id="tfCustomerPhonenumber" />
-                  <Label styleClass="menuText" text="StreetName" />
+                  <Label styleClass="menuText" text="Street name" />
                   <TextField fx:id="tfCustomerStreetName" />
                   <Label styleClass="menuText" text="Zipcode" />
                   <TextField fx:id="tfCustomerZipcode" />

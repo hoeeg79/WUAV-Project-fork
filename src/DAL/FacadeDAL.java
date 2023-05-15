@@ -55,6 +55,10 @@ public class FacadeDAL {
         techDocDAO.addTech(techDoc, user);
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException {
+        techDocDAO.removeTech(techDoc, user);
+    }
+
     public User login(String username) throws Exception {
         return loginDAO.login(username);
     }
@@ -77,6 +81,11 @@ public class FacadeDAL {
 
     public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
         return techDocDAO.addTechPictures(pictures, techDoc);
+    }
+
+
+    public void deletePicture(Pictures pictures) throws SQLException {
+        techDocDAO.deletePicture(pictures);
     }
 
     public void deleteTechdoc(TechDoc techDoc) throws SQLException {

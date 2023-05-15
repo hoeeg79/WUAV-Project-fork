@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
+<AnchorPane prefHeight="791.0" prefWidth="1219.0" stylesheets="@CustomerView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.CustomerViewController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -54,6 +54,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
                               <Button fx:id="btnCreateNewTech" mnemonicParsing="false" onAction="#handleCreateNew" text="Create New" />
+                              <Button fx:id="btnDeleteTechDoc" layoutX="186.0" layoutY="48.0" mnemonicParsing="false" onAction="#handleDeleteTechDoc" text="Delete" />
                               <Button fx:id="btnEditTechDoc" mnemonicParsing="false" onAction="#handleEditTechDoc" text="Edit" />
                               <Button fx:id="btnManageTech" mnemonicParsing="false" onAction="#handleManageTechs" text="Manage Techs" />
                            </children>

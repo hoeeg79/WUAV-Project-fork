@@ -25,6 +25,10 @@ import java.util.regex.Pattern;
 public class CustomerViewController extends BaseController{
 
     @FXML
+    private Button btnManageTech;
+    @FXML
+    private Button btnRemoveTech;
+    @FXML
     private Pane paneRight;
     @FXML
     private Pane addTechMenu;
@@ -74,11 +78,32 @@ public class CustomerViewController extends BaseController{
         addAlphabeticListener(tfCustomerName);
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
-        lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+        loadTechDocs();
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    private void loadTechDocs() throws SQLException {
+        lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+        lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
+            @Override
+            protected void updateItem(TechDoc item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.toString());
+                    if (item.isLocked()) {
+                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
     }
 
     @FXML
@@ -217,6 +242,59 @@ public class CustomerViewController extends BaseController{
         openTechDocEditor(btnEditTechDoc, techDoc);
     }
 
+    @FXML
+    private void handleManageTechs(ActionEvent actionEvent) {
+        techMenu();
+    }
+
+    @FXML
+    private void handleAddTechMenu(ActionEvent actionEvent) {
+        try {
+            User selectedTech = lvTechs.getSelectionModel().getSelectedItem();
+            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+            super.getTModel().addTech(techDoc, selectedTech);
+            fillTechs(techDoc);
+        } catch (Exception e) {
+            displayError(e);
+        }
+    }
+
+    @FXML
+    private void handleRemoveTechMenu(ActionEvent actionEvent) {
+        try {
+            User selectedTech = lvTechsWorking.getSelectionModel().getSelectedItem();
+            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+            super.getTModel().removeTech(techDoc, selectedTech);
+            fillTechs(techDoc);
+        } catch (Exception e) {
+            displayError(e);
+        }
+    }
+
+    @FXML
+    private void handleCancelAddTechMenu(ActionEvent actionEvent) {
+        techMenu();
+    }
+
+    @FXML
+    private void handleDeleteTechDoc(ActionEvent actionEvent) throws SQLException {
+        TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+        super.getTModel().deleteTechDoc(techDoc);
+        lvTechDocs.getItems().remove(techDoc);
+    }
+
+    private void addListener() {
+        Platform.runLater(() -> {
+            lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
+                try {
+                    fillTechs(newValue);
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            })));
+        });
+    }
+
     private void techMenu(){
         if (addTechMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
@@ -231,23 +309,6 @@ public class CustomerViewController extends BaseController{
             slideIn.setToX(0);
             slideIn.play();
         }
-    }
-
-    @FXML
-    private void handleManageTechs(ActionEvent actionEvent) {
-        techMenu();
-    }
-
-    private void addListener() {
-        Platform.runLater(() -> {
-            lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
-                try {
-                    fillTechs(newValue);
-                } catch (Exception e) {
-                    displayError(e);
-                }
-            })));
-        });
     }
 
     private void fillTechs(TechDoc techDoc) throws Exception {
@@ -282,30 +343,12 @@ public class CustomerViewController extends BaseController{
         Platform.runLater(thread);
     }
 
-    @FXML
-    private void handleAddTechMenu(ActionEvent actionEvent) {
-        try {
-            User selectedTech = lvTechs.getSelectionModel().getSelectedItem();
-            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
-            super.getTModel().addTech(techDoc, selectedTech);
-            fillTechs(techDoc);
-        } catch (Exception e) {
-            displayError(e);
-        }
-    }
-
-    @FXML
-    private void handleCancelAddTechMenu(ActionEvent actionEvent) {
-        techMenu();
-    }
-
-    public void handleRemoveTechMenu(ActionEvent actionEvent) {
-    }
-
     private void checkUser() {
         if (user.getUserType().getId() == 2) {
             btnEditCustomer.setVisible(false);
             btnAddTech.setVisible(false);
+            btnRemoveTech.setVisible(false);
+            btnManageTech.setVisible(false);
             btnCancelCustomer.setVisible(false);
             btnCreateCustomer.setVisible(false);
         } else if (user.getUserType().getId() == 1) {

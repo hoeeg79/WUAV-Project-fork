@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class TechDocModel {
     private final TechDocManager techDocManager;
@@ -30,6 +32,10 @@ public class TechDocModel {
         techDocManager.addTech(techDoc, user);
     }
 
+    public void removeTech(TechDoc techDoc, User user) throws SQLException {
+        techDocManager.removeTech(techDoc, user);
+    }
+
     public ObservableList<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
         techDocList.addAll(techDocManager.getTechDocs(customer, user));
         return techDocList;
@@ -45,10 +51,10 @@ public class TechDocModel {
         return newPicture;
     }
 
-//    public void deletePictures(Pictures pictures) throws SQLException {
-//        techDocManager.deletePictures(pictures);
-//        techPictures.remove(pictures);
-//    }
+    public void deletePictures(Pictures pictures) throws SQLException {
+        techDocManager.deletePictures(pictures);
+        techPictures.remove(pictures);
+    }
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         techDocManager.deleteTechDoc(techDoc);
@@ -77,4 +83,5 @@ public class TechDocModel {
     public void deleteDevice(Device device) throws SQLException {
         techDocManager.deleteDevice(device);
     }
+
 }

@@ -16,18 +16,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
+
 
     @FXML
     private TableView<Device> tvDevice;
@@ -37,6 +35,15 @@ public class TechDocEditorController extends BaseController {
     private TableColumn tcUsername;
     @FXML
     private TableColumn tcPassword;
+    public Button btnReadyForApproval;
+    @FXML
+    private Button btnDraw;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Label lblPictureDescription;
+    @FXML
+    private ImageView techDrawing;
     @FXML
     private Label lblNoPictures;
     @FXML
@@ -45,8 +52,6 @@ public class TechDocEditorController extends BaseController {
     private Button btnAddPicture;
     @FXML
     private Button btnDevice;
-    @FXML
-    private Button btnSave;
     @FXML
     private Button btnNextPicture;
     @FXML
@@ -79,12 +84,15 @@ public class TechDocEditorController extends BaseController {
         } else{
             fillDevice(super.getTModel());
         }
+        if (techDoc.getPictures() != null) {
+            lblNoPictures.setVisible(false);
+        }
     }
 
     @FXML
     private void handleClose(ActionEvent actionEvent) throws Exception {
         if (!isEdit) {
-            //super.getTModel().deleteTechDoc(techDoc); //IMPLEMENT THIS!
+            super.getTModel().deleteTechDoc(techDoc);
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
         Parent root = loader.load();
@@ -133,6 +141,9 @@ public class TechDocEditorController extends BaseController {
         initializeList();
         fillFields();
 
+        if (techDoc.isLocked()) {
+            lockFields();
+        }
     }
 
     private void initializeList() {
@@ -143,11 +154,22 @@ public class TechDocEditorController extends BaseController {
         taSetupDescription.setText(techDoc.getSetupDescription());
         tfTitle.setText(techDoc.getSetupName());
         taExtraInfo.setText(techDoc.getExtraInfo());
-        if (techDoc.getPictures() != null) {
-            imageList.addAll(techDoc.getPictures());
-            currentImageIndex = 0;
-        }
+        getPicturesFromTechDoc();
+        displayDrawing();
         displayCurrentImage();
+    }
+
+    private Boolean getPicturesFromTechDoc() {
+        if (techDoc.getPictures() != null) {
+            imageList.clear();
+            imageList.addAll(techDoc.getPictures());
+            if (currentImageIndex == -1) {
+                currentImageIndex = 0;
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setPicture(Pictures picture) {
@@ -183,27 +205,68 @@ public class TechDocEditorController extends BaseController {
         timer.schedule(task, 5000);
     }
 
-    public void handleAddPicture(ActionEvent actionEvent) throws SQLException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Picture");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Files", "*.png", "*.jpg", "*.jpeg"));
-        Stage stage = (Stage) btnAddPicture.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
+    public void handleDraw(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/DrawView.fxml"));
+            Parent root = loader.load();
 
-        if (selectedFile != null) {
-            picture = new Pictures(selectedFile.toURI().toString());
-            imageList.add(super.getTModel().addTechPictures(picture, techDoc));
-            Image image = new Image(picture.getFilePath());
+            DrawController controller = loader.getController();
+            controller.setup();
+            controller.setTechDoc(techDoc);
+            controller.editDrawing();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Technical Drawing");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.centerOnScreen();
+            stage.showAndWait();
+
+            super.getTModel().getTechDoc(techDoc);
+            displayDrawing();
+        } catch (Exception e) {
+            displayError(e);
+            e.printStackTrace();
+        }
+    }
+
+    private void displayDrawing() {
+        try {
+            if (techDoc.getFilePathDiagram() != null) {
+                Image drawing = new Image(techDoc.getFilePathDiagram());
+                techDrawing.setImage(drawing);
+            }
+        } catch (Exception ignored) {
+            techDrawing.setImage(null);
+        }
+    }
+
+    @FXML
+    private void handleAddPicture(ActionEvent actionEvent) throws Exception {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/PictureDescription.fxml"));
+        Parent root = loader.load();
+
+        PictureDescriptionController controller = loader.getController();
+        controller.setup();
+        controller.setTechDoc(techDoc);
+        stage.setScene(new Scene(root));
+        stage.setTitle("Add Description");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
+        stage.showAndWait();
+
+        techDoc = super.getTModel().getTechDoc(techDoc);
+        if (getPicturesFromTechDoc()) {
+            lblNoPictures.setVisible(false);
             if (currentImageIndex == -1) {
                 currentImageIndex = 0;
-                displayCurrentImage();
+            } else {
+                currentImageIndex = imageList.size() - 1;
             }
-            imageViewTechDoc.setImage(image);
-            imageViewTechDoc.setFitWidth(400);
-            imageViewTechDoc.setFitHeight(400);
-
-            lblNoPictures.setVisible(false);
+            displayCurrentImage();
         }
     }
 
@@ -213,22 +276,27 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setImage(currentImage);
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);
+            lblPictureDescription.setText(imageList.get(currentImageIndex).getDescription());
         }
     }
 
-    public void handleNextPicture(ActionEvent actionEvent) {
+    @FXML
+    private void handleNextPicture(ActionEvent actionEvent) {
         if (imageList.size() > 1) {
             currentImageIndex++;
             if (currentImageIndex >= imageList.size()) {
                 currentImageIndex = 0;
+                displayCurrentImage();
             }
             displayCurrentImage();
         }
     }
 
-    public void handleDeletePicture(ActionEvent actionEvent) {
+    @FXML
+    private void handleDeletePicture(ActionEvent actionEvent) throws SQLException {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             imageList.remove(currentImageIndex);
+            super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
             if (imageList.isEmpty()) {
                 currentImageIndex = -1;
                 imageViewTechDoc.setImage(null);
@@ -283,4 +351,22 @@ public class TechDocEditorController extends BaseController {
             displayError(e);
         }
     }
+
+    @FXML
+    private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
+        techDoc.setLocked(true);
+        super.getTModel().updateTechDoc(techDoc);
+        handleClose(actionEvent);
+    }
+
+    private void lockFields() {
+        tfTitle.setDisable(true);
+        taExtraInfo.setDisable(true);
+        taSetupDescription.setDisable(true);
+        btnAddPicture.setDisable(true);
+        btnDeletePicture.setDisable(true);
+        btnSave.setDisable(true);
+        btnDraw.setDisable(true);
+    }
 }
+

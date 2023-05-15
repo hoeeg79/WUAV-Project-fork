@@ -1,0 +1,36 @@
+#paneLeft {
+    -fx-background-color: #333333;
+}
+
+.button {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #ee6020;
+}
+
+.text-field {
+    -fx-background-radius: 0px;
+}
+
+.text-area {
+    -fx-background-radius: 0px;
+}
+
+.LeftLabels {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 5 5 0 0;
+    -fx-background-insets: 0 -5 0 -5;
+    -fx-text-fill: white;
+}
+
+#lblPicture, #lblDrawing {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0 -5 0 -5;
+    -fx-text-fill: white;
+    -fx-underline: true;
+}

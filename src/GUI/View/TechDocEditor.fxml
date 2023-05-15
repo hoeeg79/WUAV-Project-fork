@@ -5,48 +5,78 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="683.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
+<AnchorPane prefHeight="683.0" prefWidth="977.0" stylesheets="@TechDocEditor.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.TechDocEditorController">
    <children>
+      <Pane fx:id="paneLeft" prefHeight="768.0" prefWidth="124.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="BOTTOM_CENTER" maxWidth="124.0" prefHeight="683.0" prefWidth="124.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox fx:id="vbButtons" alignment="BOTTOM_CENTER" maxWidth="124.0" prefHeight="683.0" prefWidth="130.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="btnDeleteDevice" mnemonicParsing="false" onAction="#handleDeleteDevice" text="Delete device" />
                   <Button fx:id="btnDevice" mnemonicParsing="false" onAction="#handleOpenDevice" text="Device" />
-                  <Button mnemonicParsing="false" text="PDF" />
-                  <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSave" text="Vi ses på mandag" />
-                  <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Finalize" />
-                  <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close" />
-                  <Button layoutX="10.0" layoutY="85.0" mnemonicParsing="false" text="Draw">
+                  <Button fx:id="btnReadyForApproval" layoutX="10.0" layoutY="35.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleReadyForApproval" text="Finalize" />
+                  <Button fx:id="btnDraw" layoutX="10.0" layoutY="85.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw" />
+                  <Button minHeight="25.0" minWidth="60.0" mnemonicParsing="false" text="PDF" />
+                  <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                  <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close">
                      <VBox.margin>
                         <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </Button>
+                     </VBox.margin></Button>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" maxHeight="900.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Technical drawing" VBox.vgrow="ALWAYS" />
-                  <ImageView fitHeight="333.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
-                  <Label text="Picture" VBox.vgrow="ALWAYS" />
-                  <Button fx:id="btnAddPicture" mnemonicParsing="false" onAction="#handleAddPicture" prefHeight="26.0" prefWidth="104.0" text="Add Picture" />
-                  <Button fx:id="btnDeletePicture" mnemonicParsing="false" onAction="#handleDeletePicture" prefHeight="26.0" prefWidth="99.0" text="Delete Picture" />
-                  <Button fx:id="btnNextPicture" mnemonicParsing="false" onAction="#handleNextPicture" text="Next Picture" />
-                  <Label fx:id="lblNoPictures" text="There are no pictures selected yet!" />
+                  <Label fx:id="lblDrawing" alignment="CENTER" text="Technical drawing" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin></Label>
+                  <ImageView fx:id="techDrawing" fitHeight="333.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></ImageView>
+                  <Separator minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <Label fx:id="lblPicture" text="Pictures" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnAddPicture" mnemonicParsing="false" onAction="#handleAddPicture" prefHeight="25.0" prefWidth="90.0" text="Add Picture" />
+                        <Button fx:id="btnDeletePicture" mnemonicParsing="false" onAction="#handleDeletePicture" prefHeight="25.0" prefWidth="90.0" text="Delete Picture" />
+                        <Button fx:id="btnNextPicture" mnemonicParsing="false" onAction="#handleNextPicture" prefHeight="25.0" prefWidth="90.0" text="Next Picture" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="lblNoPictures" text="There are no pictures selected yet!">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Label>
                   <ImageView fx:id="imageViewTechDoc" fitHeight="259.0" fitWidth="451.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="lblPictureDescription" maxHeight="60.0" maxWidth="410.0" minHeight="60.0" minWidth="410.0" prefHeight="60.0" prefWidth="410.0" />
                </children></VBox>
             <VBox alignment="CENTER_LEFT" maxWidth="500.0" minWidth="100.0" prefHeight="200.0" prefWidth="120.0" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Title" />
+                  <Label styleClass="LeftLabels" text="Title">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" left="5.0" />
+                     </VBox.margin></Label>
                   <TextField fx:id="tfTitle" promptText="Name of document" />
-                  <Label layoutX="10.0" layoutY="10.0" text="Setup Description" />
+                  <Label layoutX="10.0" layoutY="10.0" styleClass="LeftLabels" text="Setup Description">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" left="5.0" />
+                     </VBox.margin></Label>
                   <TextArea fx:id="taSetupDescription" prefHeight="198.0" prefWidth="325.0" />
                   <Label layoutX="10.0" layoutY="52.0" text="Device/Logon info" />
                   <TableView fx:id="tvDevice" prefHeight="200.0" prefWidth="200.0">
@@ -59,7 +89,10 @@
                   <Label layoutX="10.0" layoutY="447.0" text="Extra info" />
                   <TextArea fx:id="taExtraInfo" layoutX="10.0" layoutY="474.0" prefHeight="80.0" prefWidth="273.0" />
                   <Label fx:id="lblSaveStatus" prefHeight="17.0" prefWidth="176.0" />
-               </children></VBox>
+               </children>
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></VBox>
          </children>
       </HBox>
       <ImageView fitHeight="102.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="581.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="797.0" AnchorPane.topAnchor="0.0" />
