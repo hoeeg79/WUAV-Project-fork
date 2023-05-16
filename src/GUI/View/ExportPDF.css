@@ -5,3 +5,21 @@
 .check-box {
     -fx-text-fill: white;
 }
+.check-box .box {
+    -fx-background-radius: 0px;
+    -fx-background-color: #e84910;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-background-color: #e84910;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #ee6020;
+}

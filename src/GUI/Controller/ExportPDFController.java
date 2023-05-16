@@ -1,8 +1,10 @@
 package GUI.Controller;
 
 import BE.Device;
+import BE.Pictures;
 import BE.TechDoc;
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -10,6 +12,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.HorizontalAlignment;
@@ -47,12 +50,29 @@ public class ExportPDFController extends BaseController {
 
     @Override
     public void setup() throws Exception {
-
+        disableBoxes();
     }
 
     private void disableBoxes() {
-        if (techDoc.getFilePathDiagram().isEmpty()) {
+        if (techDoc.getFilePathDiagram().isEmpty() || techDoc.getFilePathDiagram() == "") {
             cbDrawing.setDisable(true);
+        }
+
+        if (techDoc.getPictures().isEmpty()) {
+            cbPhotos.setDisable(true);
+        }
+
+        if (deviceList.isEmpty()) {
+            cbDevices.setDisable(true);
+        }
+
+        if (techDoc.getSetupDescription().isEmpty()) {
+            cbDescription.setSelected(false);
+            cbDescription.setDisable(true);
+        }
+
+        if (techDoc.getExtraInfo().isEmpty()) {
+            cbExtra.setDisable(true);
         }
     }
 
@@ -79,10 +99,11 @@ public class ExportPDFController extends BaseController {
             PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
             PdfFont italic = PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC);
+            PdfFont bolditalic = PdfFontFactory.createFont(StandardFonts.TIMES_BOLDITALIC);
 
             Image logo = new Image(ImageDataFactory.create("resources/Photatoes/logo.png"));
-            float scaleFactor = 0.20F;
-            logo.scaleAbsolute(logo.getImageWidth() * scaleFactor, logo.getImageHeight() * scaleFactor);
+            float logoScaleFactor = 0.20F;
+            logo.scaleAbsolute(logo.getImageWidth() * logoScaleFactor, logo.getImageHeight() * logoScaleFactor);
             logo.setHorizontalAlignment(HorizontalAlignment.LEFT);
 
             document.add(logo);
@@ -119,16 +140,34 @@ public class ExportPDFController extends BaseController {
             }
 
             if (cbDrawing.isSelected() && !techDoc.getFilePathDiagram().isEmpty()) {
+                Paragraph text = new Paragraph("Technical drawing");
+                text.setFontSize(14);
+                text.setFont(font);
                 Image drawing = new Image(ImageDataFactory.create(techDoc.getFilePathDiagram()));
+                drawing.setAutoScale(true);
+                drawing.setHorizontalAlignment(HorizontalAlignment.CENTER);
                 document.add(drawing);
             }
 
             if (cbPhotos.isSelected()) {
-
+                ArrayList<Pictures> pictures = (ArrayList<Pictures>) techDoc.getPictures();
+                Div pictureContainer = new Div();
+                Image picture;
+                for (Pictures p: pictures) {
+                    picture = new Image(ImageDataFactory.create(p.getFilePath()));
+                    picture.setAutoScale(true);
+                    pictureContainer.add(picture);
+                }
+                pictureContainer.setHorizontalAlignment(HorizontalAlignment.CENTER);
+                document.add(pictureContainer);
             }
 
             if (cbExtra.isSelected()) {
-
+                Paragraph extraInfo = new Paragraph();
+                extraInfo.add(techDoc.getExtraInfo());
+                extraInfo.setFont(italic);
+                extraInfo.setFontSize(14);
+                document.add(extraInfo);
             }
 
             document.close();
