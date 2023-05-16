@@ -21,7 +21,7 @@ public class TechDocDAO {
         int customerID = techDoc.getCustomerID();
         String extraInfo = techDoc.getExtraInfo();
 
-        String sql = "INSERT INTO TechDoc (setupname, setupDescription, CustomerID, extraInfo) VALUES (?,?,?,?);";
+        String sql = "INSERT INTO TechDoc (setupname, setupDescription, CustomerID, extraInfo, isLocked, approved) VALUES (?,?,?,?,?,?);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -30,6 +30,8 @@ public class TechDocDAO {
             stmt.setString(2, setupDescription);
             stmt.setInt(3, customerID);
             stmt.setString(4, extraInfo);
+            stmt.setBoolean(5,false);
+            stmt.setBoolean(6,false);
 
             stmt.executeUpdate();
 
@@ -44,6 +46,8 @@ public class TechDocDAO {
             TechDoc returnDoc = new TechDoc(id, title, customerID);
             returnDoc.setSetupDescription(setupDescription);
             returnDoc.setExtraInfo(extraInfo);
+            returnDoc.setLocked(false);
+            returnDoc.setApproved(false);
             return returnDoc;
 
         } catch (SQLException e) {
@@ -219,7 +223,6 @@ public class TechDocDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, techDoc.getId());
-            System.out.println(techDoc.getId());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
