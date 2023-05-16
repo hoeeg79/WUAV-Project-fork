@@ -368,9 +368,9 @@ public class TechDocEditorController extends BaseController {
     private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
     if (techDoc.isApproved()) {
         techDoc.setApproved(false);
-        techDoc.setLocked(false);
         btnReadyForApproval.setText("Finalize");
         unlockFields();
+        super.getTModel().updateTechDoc(techDoc);
         return;
     }
     else if (techDoc.isLocked()) {
