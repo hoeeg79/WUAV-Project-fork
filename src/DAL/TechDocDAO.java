@@ -210,8 +210,13 @@ public class TechDocDAO {
         }
     }
 
-    private void removeFromApproved(Connection conn, TechDoc techDoc) {
+    private void removeFromApproved(Connection conn, TechDoc techDoc) throws SQLException {
+        String sql = "DELETE FROM approved WHERE id = ?;";
 
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, techDoc.getId());
+
+        pstmt.executeUpdate();
     }
 
     private void addToApproved(Connection conn, TechDoc techDoc) throws SQLException {
