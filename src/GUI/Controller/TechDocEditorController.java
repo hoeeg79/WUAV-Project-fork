@@ -3,15 +3,6 @@ package GUI.Controller;
 import BE.*;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.properties.HorizontalAlignment;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,8 +43,6 @@ public class TechDocEditorController extends BaseController {
     private TableColumn tcPassword;
     @FXML
     private Button btnDeleteDevice;
-    @FXML
-    private Button btnReadyForApproval;
     @FXML
     private Button btnDraw;
     @FXML
@@ -90,6 +80,7 @@ public class TechDocEditorController extends BaseController {
     private boolean isEdit;
     private ObservableList<Pictures> imageList;
     private int currentImageIndex = -1;
+    private ArrayList<Device> deviceList = new ArrayList<>();
 
     @Override
     public void setup() throws Exception {
@@ -361,6 +352,7 @@ public class TechDocEditorController extends BaseController {
 
         tvDevice.getItems().clear();
         tvDevice.setItems(super.getTModel().getObservableDevices(techDoc));
+        deviceList.addAll(super.getTModel().getObservableDevices(techDoc));
     }
 
     private void refreshDevice() throws Exception{
@@ -419,6 +411,7 @@ public class TechDocEditorController extends BaseController {
         ExportPDFController controller = loader.getController();
         controller.setup();
         controller.setTechDoc(techDoc);
+        controller.setDeviceList(deviceList);
 
         stage.setScene(new Scene(root));
         stage.setTitle("Export PDF");

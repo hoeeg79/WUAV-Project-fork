@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Device;
 import BE.TechDoc;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -9,6 +10,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -22,6 +24,7 @@ import javax.swing.text.StyleConstants;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ExportPDFController extends BaseController {
 
@@ -40,17 +43,26 @@ public class ExportPDFController extends BaseController {
     @FXML
     private Button btnCancel;
     private TechDoc techDoc;
+    private ArrayList<Device> deviceList;
 
     @Override
     public void setup() throws Exception {
 
     }
 
-    public void handleExport(ActionEvent actionEvent) {
+    private void disableBoxes() {
+        if (techDoc.getFilePathDiagram().isEmpty()) {
+            cbDrawing.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleExport(ActionEvent actionEvent) {
         generatePdf();
     }
 
-    public void handleCancel(ActionEvent actionEvent) {
+    @FXML
+    private void handleCancel(ActionEvent actionEvent) {
         closeWindow(btnCancel);
     }
 
@@ -68,7 +80,7 @@ public class ExportPDFController extends BaseController {
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
             PdfFont italic = PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC);
 
-            com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(ImageDataFactory.create("resources/Photatoes/logo.png"));
+            Image logo = new Image(ImageDataFactory.create("resources/Photatoes/logo.png"));
             float scaleFactor = 0.20F;
             logo.scaleAbsolute(logo.getImageWidth() * scaleFactor, logo.getImageHeight() * scaleFactor);
             logo.setHorizontalAlignment(HorizontalAlignment.LEFT);
@@ -93,17 +105,55 @@ public class ExportPDFController extends BaseController {
             if (cbDescription.isSelected()) {
                 Paragraph description = new Paragraph(techDoc.getSetupDescription());
                 description.setFont(font);
-                description.setFontSize(15);
+                description.setFontSize(14);
                 document.add(description);
             }
 
+            if (cbDevices.isSelected()) {
+                Paragraph devices = new Paragraph();
+                devices.add("Device credentials:" + "\n");
+                devices.add(formatDevices());
+                devices.setFont(font);
+                devices.setFontSize(14);
+                document.add(devices);
+            }
 
+            if (cbDrawing.isSelected() && !techDoc.getFilePathDiagram().isEmpty()) {
+                Image drawing = new Image(ImageDataFactory.create(techDoc.getFilePathDiagram()));
+                document.add(drawing);
+            }
+
+            if (cbPhotos.isSelected()) {
+
+            }
+
+            if (cbExtra.isSelected()) {
+
+            }
 
             document.close();
 
         } catch (Exception e) {
             displayError(e);
         }
+    }
+
+    private String formatDevices() {
+        StringBuilder result = new StringBuilder();
+
+        for (Device d: deviceList) {
+            result.append("Name: ").append(d.getDevice())
+                    .append(", username: ").append(d.getUsername())
+                    .append(", password: ").append(d.getPassword())
+                    .append("\n");
+        }
+
+
+        return result.toString();
+    }
+
+    public void setDeviceList(ArrayList<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 
     public void setTechDoc(TechDoc techDoc) {

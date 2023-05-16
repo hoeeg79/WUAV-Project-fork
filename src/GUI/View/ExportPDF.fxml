@@ -12,10 +12,10 @@
       <Pane fx:id="leftPane" prefHeight="400.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <VBox layoutX="14.0" layoutY="14.0" spacing="10.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
-            <CheckBox fx:id="cbDescription" mnemonicParsing="false" text="Description" />
+            <CheckBox fx:id="cbDescription" mnemonicParsing="false" selected="true" text="Description" />
+            <CheckBox fx:id="cbDevices" layoutX="10.0" layoutY="44.0" mnemonicParsing="false" text="Device Credentials" />
             <CheckBox fx:id="cbDrawing" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Technical Drawing" />
             <CheckBox fx:id="cbPhotos" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" text="Photos" />
-            <CheckBox fx:id="cbDevices" layoutX="10.0" layoutY="44.0" mnemonicParsing="false" text="Device Credentials" />
             <CheckBox fx:id="cbExtra" layoutX="10.0" layoutY="61.0" mnemonicParsing="false" text="Extra info" />
          </children>
       </VBox>
