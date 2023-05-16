@@ -81,6 +81,7 @@ public class TechDocEditorController extends BaseController {
     public void setup() throws Exception {
         super.setTModel(new TechDocModel());
         lblNoPictures.setVisible(true);
+        setupTooltipDraw();
         if (!isEdit) {
             initializeList();
             generateTechDoc();
@@ -150,6 +151,9 @@ public class TechDocEditorController extends BaseController {
         else if (techDoc.isLocked()) {
             lockFields();
             btnReadyForApproval.setText("Approved");
+        }
+        else{
+            setupTooltipApproval();
         }
     }
 
@@ -403,9 +407,14 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(false);
     }
 
-    private void approval() throws Exception{
+    private void setupTooltipApproval() throws Exception{
         Tooltip tooltip = new Tooltip("Ready for approval");
         Tooltip.install(btnReadyForApproval, tooltip);
+    }
+
+    private void setupTooltipDraw() throws Exception{
+        Tooltip tooltip = new Tooltip("Opens the drawing application");
+        Tooltip.install(btnDraw, tooltip);
     }
 }
 
