@@ -368,5 +368,10 @@ public class TechDocEditorController extends BaseController {
         btnSave.setDisable(true);
         btnDraw.setDisable(true);
     }
+
+    private void approval() throws Exception{
+        Tooltip tooltip = new Tooltip("Ready for approval");
+        Tooltip.install(btnReadyForApproval, tooltip);
+    }
 }
 
