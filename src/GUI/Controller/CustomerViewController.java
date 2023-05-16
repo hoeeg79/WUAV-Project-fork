@@ -96,7 +96,7 @@ public class CustomerViewController extends BaseController{
                     setStyle("");
                 } else {
                     setText(techDoc.toString());
-                    if (techDoc.isLocked() && !techDoc.isApproved()) {
+                    if (techDoc.isLocked()) {
                         setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
                     } else {
                         setStyle("");

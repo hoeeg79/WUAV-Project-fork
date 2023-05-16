@@ -64,6 +64,7 @@ public class LoginController extends BaseController {
     private void handleLogin(ActionEvent actionEvent) throws Exception {
         login();
     }
+
     private void checkIfEnter(KeyEvent event) {
         try {
             if (event.getCode() == KeyCode.ENTER) {

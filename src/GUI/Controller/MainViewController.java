@@ -91,7 +91,6 @@ public class MainViewController extends BaseController implements Initializable 
             searchBar();
             clearCustomerMenu();
             checkUserType();
-            checkCustomers();
         } catch (Exception e) {
             displayError(e);
         }
@@ -234,7 +233,7 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
-    private void checkUserType() {
+    private void checkUserType() throws Exception {
         if (user.getUserType().getId() == 2) {
             btnCreateCustomersMenu.setVisible(false);
             btnDeleteCustomer.setVisible(false);
@@ -242,8 +241,10 @@ public class MainViewController extends BaseController implements Initializable 
         } else if (user.getUserType().getId() == 1) {
             btnCreateCustomersMenu.setVisible(false);
             btnDeleteCustomer.setVisible(false);
+            checkCustomers();
         } else {
             btnCreateUsers.setVisible(false);
+            checkCustomers();
         }
     }
 

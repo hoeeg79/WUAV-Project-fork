@@ -139,13 +139,13 @@ public class TechDocEditorController extends BaseController {
 
     public void setIsEdit(TechDoc techDoc) throws Exception {
         this.techDoc = techDoc;
-        System.out.println(this.techDoc);
         isEdit = true;
         initializeList();
         fillFields();
 
-        if (techDoc.isApproved() && techDoc.isLocked()) {
+        if (techDoc.isApproved()) {
             btnReadyForApproval.setText("Unlock");
+            lockFields();
         }
         else if (techDoc.isLocked()) {
             lockFields();
@@ -362,14 +362,16 @@ public class TechDocEditorController extends BaseController {
 
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
-    if (techDoc.isApproved() && techDoc.isLocked()) {
+    if (techDoc.isApproved()) {
         techDoc.setApproved(false);
         techDoc.setLocked(false);
         btnReadyForApproval.setText("Finalize");
         unlockFields();
+        return;
     }
     else if (techDoc.isLocked()) {
         techDoc.setApproved(true);
+        techDoc.setLocked(false);
     }
     else {
         techDoc.setLocked(true);
