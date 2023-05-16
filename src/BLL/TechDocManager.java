@@ -1,9 +1,6 @@
 package BLL;
 
-import BE.Customer;
-import BE.Pictures;
-import BE.TechDoc;
-import BE.User;
+import BE.*;
 import DAL.FacadeDAL;
 
 import java.sql.SQLException;
@@ -40,9 +37,11 @@ public class TechDocManager {
         return facadeDAL.addTechPictures(pictures, techDoc);
     }
 
+
     public void deletePictures(Pictures pictures) throws SQLException {
         facadeDAL.deletePicture(pictures);
     }
+
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         facadeDAL.deleteTechdoc(techDoc);
@@ -54,5 +53,17 @@ public class TechDocManager {
 
     public TechDoc getTechDoc(TechDoc techDoc) throws SQLException {
         return facadeDAL.getTechDoc(techDoc);
+    }
+
+    public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
+        return facadeDAL.addDevice(device, techDoc);
+    }
+
+    public List<Device> getDevices(TechDoc techDoc) throws Exception{
+        return facadeDAL.getDevices(techDoc);
+    }
+
+    public void deleteDevice(Device device) throws SQLException {
+        facadeDAL.deleteDevice(device);
     }
 }

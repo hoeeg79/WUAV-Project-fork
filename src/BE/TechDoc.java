@@ -9,7 +9,6 @@ public class TechDoc {
     private String setupDescription;
     private List<Pictures> pictures;
     private String extraInfo;
-    private String deviceLoginInfo;
     private int customerID;
     private boolean isLocked;
     private boolean approved;
@@ -61,13 +60,6 @@ public class TechDoc {
         this.extraInfo = extraInfo;
     }
 
-    public String getDeviceLoginInfo() {
-        return deviceLoginInfo;
-    }
-
-    public void setDeviceLoginInfo(String deviceLoginInfo) {
-        this.deviceLoginInfo = deviceLoginInfo;
-    }
 
     public int getCustomerID() {
         return customerID;

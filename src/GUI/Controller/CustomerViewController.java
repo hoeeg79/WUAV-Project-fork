@@ -89,14 +89,14 @@ public class CustomerViewController extends BaseController{
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
         lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
             @Override
-            protected void updateItem(TechDoc item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
+            protected void updateItem(TechDoc techDoc, boolean empty) {
+                super.updateItem(techDoc, empty);
+                if (empty || techDoc == null) {
                     setText(null);
                     setStyle("");
                 } else {
-                    setText(item.toString());
-                    if (item.isLocked()) {
+                    setText(techDoc.toString());
+                    if (techDoc.isLocked()) {
                         setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
                     } else {
                         setStyle("");
