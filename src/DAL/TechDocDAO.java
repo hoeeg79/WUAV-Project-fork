@@ -203,14 +203,14 @@ public class TechDocDAO {
             else if (techDoc.isLocked()) {
                 addToCustomerTechDocReady(conn, techDoc);
             } else if (!techDoc.isApproved()) {
-                removeFromApproved(conn, techDoc);
+                removeFromApproved(techDoc, conn);
             }
         } catch (SQLException e){
             throw new SQLException(e);
         }
     }
 
-    private void removeFromApproved(Connection conn, TechDoc techDoc) throws SQLException {
+    private void removeFromApproved(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM approved WHERE id = ?;";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -302,9 +302,7 @@ public class TechDocDAO {
 
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
-            deletePictureBasedOnTechDoc(techDoc, conn);
-            deleteDocLinkUser(techDoc, conn);
-            deleteSelectedTechDoc(techDoc, conn);
+            clearDoc(techDoc, conn);
         } catch (SQLException e) {
             throw new SQLException(e);
         }
@@ -455,6 +453,29 @@ public class TechDocDAO {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    }
 
+    public void expirationDate() throws SQLException{
+        try(Connection conn = dbc.getConnection()){
+
+            String sql = "SELECT * FROM Approved WHERE retentionDate < DATEADD(month, -48, GETDATE());";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()){
+                TechDoc tdDelete = new TechDoc(rs.getInt("id"),"To be deleted",-1 );
+                clearDoc(tdDelete, conn);
+            }
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
+    private void clearDoc(TechDoc techDoc, Connection conn) throws SQLException{
+        deletePictureBasedOnTechDoc(techDoc, conn);
+        deleteDocLinkUser(techDoc, conn);
+        removeFromApproved(techDoc, conn);
+        deleteSelectedTechDoc(techDoc, conn);
     }
 }

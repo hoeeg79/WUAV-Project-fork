@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
+import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -317,5 +318,10 @@ public class MainViewController extends BaseController implements Initializable 
                 }
             }
         });
+    }
+
+    protected void expirationDate() throws Exception {
+        super.setTModel(new TechDocModel());
+        super.getTModel().expirationDate();
     }
 }
