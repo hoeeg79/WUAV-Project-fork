@@ -66,4 +66,8 @@ public class TechDocManager {
     public void deleteDevice(Device device) throws SQLException {
         facadeDAL.deleteDevice(device);
     }
+
+    public void expirationDate() throws SQLException {
+        facadeDAL.expirationDate();
+    }
 }

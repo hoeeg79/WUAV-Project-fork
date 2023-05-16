@@ -49,6 +49,7 @@ public class LoginController extends BaseController {
             controller.setCModel(new CustomerModel());
             controller.setUser(user);
             controller.setup();
+            controller.expirationDate();
 
             primaryStage.setScene(scene);
             primaryStage.setTitle("Main View");

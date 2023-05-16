@@ -112,4 +112,8 @@ public class FacadeDAL {
     public void deleteDevice(Device device) throws SQLException {
         techDocDAO.deleteDevice(device);
     }
+
+    public void expirationDate() throws SQLException {
+        techDocDAO.expirationDate();
+    }
 }

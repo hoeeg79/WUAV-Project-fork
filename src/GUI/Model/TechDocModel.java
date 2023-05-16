@@ -84,4 +84,8 @@ public class TechDocModel {
         techDocManager.deleteDevice(device);
     }
 
+    public void expirationDate() throws SQLException {
+        techDocManager.expirationDate();
+    }
+
 }
