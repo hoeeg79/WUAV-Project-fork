@@ -21,7 +21,7 @@
                <children>
                   <Button fx:id="btnReadyForApproval" layoutX="10.0" layoutY="35.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleReadyForApproval" text="Finalize" />
                   <Button fx:id="btnDraw" layoutX="10.0" layoutY="85.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleDraw" text="Draw" />
-                  <Button minHeight="25.0" minWidth="60.0" mnemonicParsing="false" text="PDF" />
+                  <Button fx:id="btnPDF" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleExportPDF" text="PDF" />
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
                   <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleClose" text="Close">
                      <VBox.margin>

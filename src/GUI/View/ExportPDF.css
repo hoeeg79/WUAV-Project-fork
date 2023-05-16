@@ -1,0 +1,7 @@
+#leftPane {
+    -fx-background-color: #333333;
+}
+
+.check-box {
+    -fx-text-fill: white;
+}

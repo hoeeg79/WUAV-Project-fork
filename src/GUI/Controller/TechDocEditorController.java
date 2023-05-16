@@ -6,6 +6,15 @@ import BE.TechDoc;
 import BE.User;
 import GUI.Model.TechDocModel;
 import GUI.Model.UsersModel;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,13 +34,20 @@ import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
 
-    public Button btnReadyForApproval;
+    @FXML
+    private Button btnReadyForApproval;
+    @FXML
+    private Button btnPDF;
     @FXML
     private Button btnDraw;
     @FXML
@@ -320,4 +337,22 @@ public class TechDocEditorController extends BaseController {
         btnSave.setDisable(true);
         btnDraw.setDisable(true);
     }
+
+    public void handleExportPDF(ActionEvent actionEvent) throws Exception {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ExportPDF.fxml"));
+        Parent root = loader.load();
+
+        ExportPDFController controller = loader.getController();
+        controller.setup();
+        controller.setTechDoc(techDoc);
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("Export PDF");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
+        stage.show();
+    }
+
 }
