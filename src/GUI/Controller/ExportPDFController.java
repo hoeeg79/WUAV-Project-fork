@@ -12,11 +12,11 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Div;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -144,19 +144,20 @@ public class ExportPDFController extends BaseController {
                 text.setFontSize(14);
                 text.setFont(font);
                 Image drawing = new Image(ImageDataFactory.create(techDoc.getFilePathDiagram()));
-                drawing.setAutoScale(true);
+                drawing.scaleAbsolute(200, 150);
                 drawing.setHorizontalAlignment(HorizontalAlignment.CENTER);
                 document.add(drawing);
             }
 
             if (cbPhotos.isSelected()) {
                 ArrayList<Pictures> pictures = (ArrayList<Pictures>) techDoc.getPictures();
-                Div pictureContainer = new Div();
+                Table pictureContainer = new Table(pictures.size());
                 Image picture;
+                pictureContainer.setBorder(Border.NO_BORDER);
                 for (Pictures p: pictures) {
                     picture = new Image(ImageDataFactory.create(p.getFilePath()));
-                    picture.setAutoScale(true);
-                    pictureContainer.add(picture);
+                    picture.scaleAbsolute(200, 200);
+                    pictureContainer.addCell(createImageCell(picture));
                 }
                 pictureContainer.setHorizontalAlignment(HorizontalAlignment.CENTER);
                 document.add(pictureContainer);
@@ -164,17 +165,35 @@ public class ExportPDFController extends BaseController {
 
             if (cbExtra.isSelected()) {
                 Paragraph extraInfo = new Paragraph();
+                Paragraph extraTitle = new Paragraph();
+
+                extraTitle.add("Additional Info:");
+                extraTitle.setFont(bolditalic);
+                extraTitle.setFontSize(15);
+                document.add(extraTitle);
+
                 extraInfo.add(techDoc.getExtraInfo());
                 extraInfo.setFont(italic);
                 extraInfo.setFontSize(14);
                 document.add(extraInfo);
             }
 
+            //kunde addresse
+            //sted til at skriveunder
+
             document.close();
 
         } catch (Exception e) {
             displayError(e);
         }
+    }
+
+    private static Cell createImageCell(Image image) {
+        Cell cell = new Cell();
+        cell.setBorder(Border.NO_BORDER);
+        cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
+        cell.add(image.setAutoScale(true));
+        return cell;
     }
 
     private String formatDevices() {
