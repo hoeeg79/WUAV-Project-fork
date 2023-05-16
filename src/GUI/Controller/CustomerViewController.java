@@ -25,10 +25,6 @@ import java.util.regex.Pattern;
 public class CustomerViewController extends BaseController{
 
     @FXML
-    private Button btnManageTech;
-    @FXML
-    private Button btnRemoveTech;
-    @FXML
     private Pane paneRight;
     @FXML
     private Pane addTechMenu;
@@ -38,6 +34,12 @@ public class CustomerViewController extends BaseController{
     private ListView<User> lvTechs;
     @FXML
     private ListView<TechDoc> lvTechDocs;
+    @FXML
+    private Button btnDeleteTechDoc;
+    @FXML
+    private Button btnManageTech;
+    @FXML
+    private Button btnRemoveTech;
     @FXML
     private Button btnAddTech;
     @FXML
@@ -87,23 +89,6 @@ public class CustomerViewController extends BaseController{
 
     private void loadTechDocs() throws SQLException {
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
-        lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
-            @Override
-            protected void updateItem(TechDoc techDoc, boolean empty) {
-                super.updateItem(techDoc, empty);
-                if (empty || techDoc == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(techDoc.toString());
-                    if (techDoc.isLocked()) {
-                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
-                    } else {
-                        setStyle("");
-                    }
-                }
-            }
-        });
     }
 
     @FXML
@@ -355,11 +340,33 @@ public class CustomerViewController extends BaseController{
             btnEditCustomer.setVisible(false);
             btnCancelCustomer.setVisible(false);
             btnCreateCustomer.setVisible(false);
+            techDocHighlighter();
         } else {
             btnAddTech.setVisible(false);
             btnCreateNewTech.setVisible(false);
-            btnEditTechDoc.setVisible(false);
+            btnDeleteTechDoc.setVisible(false);
+            techDocHighlighter();
         }
+    }
+
+    private void techDocHighlighter() {
+        lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
+            @Override
+            protected void updateItem(TechDoc techDoc, boolean empty) {
+                super.updateItem(techDoc, empty);
+                if (empty || techDoc == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(techDoc.toString());
+                    if (techDoc.isLocked()) {
+                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
     }
 
     private void checkEmailPattern(TextField textField){
