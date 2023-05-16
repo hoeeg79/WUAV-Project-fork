@@ -4,8 +4,10 @@ import BE.*;
 import DAL.DatabaseConnector.DBConnector;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TechDocDAO {
     private final DBConnector dbc;
@@ -109,13 +111,12 @@ public class TechDocDAO {
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
                 boolean isLocked = rs.getBoolean("isLocked");
-                boolean approved = rs.getBoolean("approved");
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setLocked(isLocked);
-                techDoc.setApproved(approved);
+                techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
 
@@ -148,7 +149,6 @@ public class TechDocDAO {
                 String extraInfo = rs.getString("extraInfo");
                 String filepathDiagram = rs.getString("filepathDiagram");
                 boolean isLocked = rs.getBoolean("isLocked");
-                boolean approved = rs.getBoolean("approved");
 
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
@@ -157,7 +157,7 @@ public class TechDocDAO {
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setFilePathDiagram(filepathDiagram);
                 techDoc.setLocked(isLocked);
-                techDoc.setApproved(approved);
+                techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
 
@@ -167,9 +167,22 @@ public class TechDocDAO {
         return techDocs;
     }
 
+    private boolean checkIfApproved(Connection conn, int id) throws SQLException {
+        String sql = "SELECT * FROM approved WHERE id = " + id + ";";
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        if (rs.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
 
-        String sql = "  UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ?, approved = ? WHERE id = ?;";
+        String sql = "UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ? WHERE id = ?;";
 
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -178,21 +191,33 @@ public class TechDocDAO {
             stmt.setString(2, techDoc.getSetupDescription());
             stmt.setString(3, techDoc.getExtraInfo());
             stmt.setBoolean(4,techDoc.isLocked());
-            stmt.setBoolean(5, techDoc.isApproved());
-            stmt.setInt(6,techDoc.getId());
+            stmt.setInt(5,techDoc.getId());
 
 
             stmt.executeUpdate();
 
             if (techDoc.isApproved()) {
                 removeFromCustomerTechDocReady(conn, techDoc);
+                addToApproved(conn, techDoc);
             }
             else if (techDoc.isLocked()) {
                 addToCustomerTechDocReady(conn, techDoc);
+            } else if (!techDoc.isApproved()) {
+                removeFromApproved(conn, techDoc);
             }
         } catch (SQLException e){
             throw new SQLException(e);
         }
+    }
+
+    private void removeFromApproved(Connection conn, TechDoc techDoc) {
+    }
+
+    private void addToApproved(Connection conn, TechDoc techDoc) throws SQLException {
+        String sql = "INSERT INTO approved VALUES (?,GETDATE())";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, techDoc.getId());
     }
 
     private void removeFromCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
