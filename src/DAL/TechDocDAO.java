@@ -23,7 +23,7 @@ public class TechDocDAO {
         int customerID = techDoc.getCustomerID();
         String extraInfo = techDoc.getExtraInfo();
 
-        String sql = "INSERT INTO TechDoc (setupname, setupDescription, CustomerID, extraInfo, isLocked, approved) VALUES (?,?,?,?,?,?);";
+        String sql = "INSERT INTO TechDoc (setupname, setupDescription, CustomerID, extraInfo, isLocked) VALUES (?,?,?,?,?);";
 
         try (Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -33,7 +33,6 @@ public class TechDocDAO {
             stmt.setInt(3, customerID);
             stmt.setString(4, extraInfo);
             stmt.setBoolean(5,false);
-            stmt.setBoolean(6,false);
 
             stmt.executeUpdate();
 
