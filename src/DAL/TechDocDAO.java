@@ -211,6 +211,7 @@ public class TechDocDAO {
     }
 
     private void removeFromApproved(Connection conn, TechDoc techDoc) {
+
     }
 
     private void addToApproved(Connection conn, TechDoc techDoc) throws SQLException {
