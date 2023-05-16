@@ -261,27 +261,6 @@ public class MainViewController extends BaseController implements Initializable 
         tcStreetName.setCellValueFactory(new PropertyValueFactory<>("streetName"));
         tcZipcode.setCellValueFactory(new PropertyValueFactory<>("zipcode"));
         tcCity.setCellValueFactory(new PropertyValueFactory<>("city"));
-
-        tcName.setCellFactory(column -> new TableCell<Customer, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    Customer customer = getTableView().getItems().get(getIndex());
-                    setText(item);
-
-                    if (customer.isDocReadyForApproval()) {
-                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
-                    } else {
-                        setStyle("");
-                    }
-                }
-            }
-        });
     }
 
     private void refreshList() throws Exception {
@@ -292,6 +271,7 @@ public class MainViewController extends BaseController implements Initializable 
     private void checkCustomers() throws Exception {
         if (super.getCModel().checkCustomerForDocs()) {
             docsForApprovalNotifier();
+            customerHighlighter();
         }
     }
 
@@ -314,5 +294,28 @@ public class MainViewController extends BaseController implements Initializable 
             }
         });
         thread.start();
+    }
+
+    private void customerHighlighter() {
+        tcName.setCellFactory(column -> new TableCell<Customer, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    Customer customer = getTableView().getItems().get(getIndex());
+                    setText(item);
+
+                    if (customer.isDocReadyForApproval()) {
+                        setStyle("-fx-font-weight: bold;-fx-text-fill: red; -fx-font-size: 13");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
     }
 }
