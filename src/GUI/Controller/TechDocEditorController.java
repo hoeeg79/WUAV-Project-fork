@@ -411,6 +411,7 @@ public class TechDocEditorController extends BaseController {
         ExportPDFController controller = loader.getController();
         controller.setTechDoc(techDoc);
         controller.setDeviceList(deviceList);
+        controller.setCustomer(customer);
         controller.setup();
 
         stage.setScene(new Scene(root));

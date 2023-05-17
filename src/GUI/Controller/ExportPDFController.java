@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Customer;
 import BE.Device;
 import BE.Pictures;
 import BE.TechDoc;
@@ -9,28 +10,41 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javax.swing.*;
 import javax.swing.text.StyleConstants;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ExportPDFController extends BaseController {
 
+    @FXML
+    private ImageView imgPdf;
+    @FXML
+    private CheckBox cbForCustomer;
     @FXML
     private CheckBox cbDescription;
     @FXML
@@ -46,6 +60,7 @@ public class ExportPDFController extends BaseController {
     @FXML
     private Button btnCancel;
     private TechDoc techDoc;
+    private Customer customer;
     private ArrayList<Device> deviceList;
 
     @Override
@@ -54,7 +69,7 @@ public class ExportPDFController extends BaseController {
     }
 
     private void disableBoxes() {
-        if (techDoc.getFilePathDiagram().isEmpty() || techDoc.getFilePathDiagram() == "") {
+        if (techDoc.getFilePathDiagram() == null || techDoc.getFilePathDiagram().isEmpty()) {
             cbDrawing.setDisable(true);
         }
 
@@ -71,7 +86,7 @@ public class ExportPDFController extends BaseController {
             cbDescription.setDisable(true);
         }
 
-        if (techDoc.getExtraInfo().isEmpty()) {
+        if (techDoc.getExtraInfo() == null || techDoc.getExtraInfo().isEmpty()) {
             cbExtra.setDisable(true);
         }
     }
@@ -123,8 +138,19 @@ public class ExportPDFController extends BaseController {
             date.setTextAlignment(TextAlignment.RIGHT);
             document.add(date);
 
+            Paragraph customerInfo = new Paragraph();
+            customerInfo.add(customer.getName() + "\n");
+            customerInfo.add(customer.getStreetName() + "\n");
+            customerInfo.add(customer.getZipcode() + ", " +customer.getCity());
+            customerInfo.setTextAlignment(TextAlignment.LEFT);
+            customerInfo.setFont(font);
+            customerInfo.setFontSize(15);
+            document.add(customerInfo);
+
             if (cbDescription.isSelected()) {
-                Paragraph description = new Paragraph(techDoc.getSetupDescription());
+                Paragraph description = new Paragraph();
+                description.add("Description:" + "\n");
+                description.add(techDoc.getSetupDescription());
                 description.setFont(font);
                 description.setFontSize(14);
                 document.add(description);
@@ -178,12 +204,35 @@ public class ExportPDFController extends BaseController {
                 document.add(extraInfo);
             }
 
-            //kunde addresse
-            //sted til at skriveunder
+            if (cbForCustomer.isSelected()) {
+                PdfCanvas canvas = new PdfCanvas(pdfDoc.getPage(pdfDoc.getNumberOfPages()));
+                Rectangle pageSize = pdfDoc.getPage(pdfDoc.getNumberOfPages()).getPageSize();
+                float x = pageSize.getLeft() + document.getLeftMargin();
+                float y = pageSize.getBottom() + document.getBottomMargin();
+                float width = pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin();
+                canvas.setStrokeColorRgb(0, 0, 0).setLineWidth(1).moveTo(x, y).lineTo(x + width, y).stroke();
+                Paragraph signHere = new Paragraph("Sign Here:").setFixedPosition(pageSize.getLeft() + document.getLeftMargin(), y +5, 100);
+                document.add(signHere);
+            }
 
             document.close();
+            previewPdf(fileToSave);
 
         } catch (Exception e) {
+            displayError(e);
+        }
+    }
+
+    private void previewPdf(File pdf) {
+        try {
+            PDDocument document = PDDocument.load(pdf);
+            PDFRenderer renderer = new PDFRenderer(document);
+
+            BufferedImage image = renderer.renderImageWithDPI(0, 72);
+            javafx.scene.image.Image pdfImage = SwingFXUtils.toFXImage(image, null);
+            imgPdf.setImage(pdfImage);
+
+        } catch (IOException e) {
             displayError(e);
         }
     }
@@ -208,6 +257,10 @@ public class ExportPDFController extends BaseController {
 
 
         return result.toString();
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setDeviceList(ArrayList<Device> deviceList) {
