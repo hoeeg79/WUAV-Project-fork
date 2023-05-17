@@ -69,6 +69,12 @@ public class CustomerViewController extends BaseController{
     private Pattern emailPattern;
 
 
+    /**
+     * Setup is a method inherited from BaseController.
+     * It is used for instantiating models, locking fields and buttons, adding listeners, checking users,
+     * filling fields and adding listeners to textfields.
+     * @throws Exception
+     */
     @Override
     public void setup() throws Exception {
         lockFieldsAndButtons();
@@ -83,14 +89,24 @@ public class CustomerViewController extends BaseController{
         loadTechDocs();
     }
 
+    /**
+     * A setter for user
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Loads the customer and the user of a tech document into the list view.
+     */
     private void loadTechDocs() throws SQLException {
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
     }
 
+    /**
+     * A button used to save a customer with the information that have been inputted.
+     * @param actionEvent
+     */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
         if(!emailPattern.matcher(tfCustomerEmail.getText()).matches()) {
@@ -122,6 +138,10 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A cancel button that enables the edit customer button, and disables the edit fields.
+     * @param actionEvent
+     */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
         btnEditCustomer.setDisable(false);
@@ -129,6 +149,10 @@ public class CustomerViewController extends BaseController{
         lockFieldsAndButtons();
     }
 
+    /**
+     * A method used to disable all the text fields in the customer view controller,
+     * as well as the cancel customer and create customer button.
+     */
     private void lockFieldsAndButtons() {
         tfCustomerEmail.setDisable(true);
         tfCustomerPhoneNumber.setDisable(true);
@@ -139,6 +163,9 @@ public class CustomerViewController extends BaseController{
         btnCreateCustomer.setDisable(true);
     }
 
+    /**
+     * A method used to fill the fields with customer information.
+     */
     private void fillFields() {
         tfCustomerEmail.setText(customer.getEmail());
         tfCustomerName.setText(customer.getName());
@@ -147,6 +174,11 @@ public class CustomerViewController extends BaseController{
         tfCustomerZipcode.setText(customer.getZipcode());
     }
 
+    /**
+     * A method used to disable the edit customer button, and enable all the text fields,
+     * the cancel customer button and the create customer button.
+     * @param actionEvent
+     */
     @FXML
     private void handleEdit(ActionEvent actionEvent) {
         btnEditCustomer.setDisable(true);
@@ -159,6 +191,9 @@ public class CustomerViewController extends BaseController{
         btnCreateCustomer.setDisable(false);
     }
 
+    /**
+     * A button used to load the MainView window.
+     */
     @FXML
     private void handleHome(ActionEvent actionEvent) {
         try {
@@ -181,10 +216,16 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A setter for customer
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * A method used to open the TechDocEditor view.
+     */
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/TechDocEditor.fxml"));
@@ -215,23 +256,35 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A button used to open the tech doc editor.
+     */
     @FXML
     private void handleCreateNew(ActionEvent actionEvent) {
         openTechDocEditor(btnCreateNewTech, null);
     }
 
+    /**
+     * Gets the selected tech document from the list view
+     * Opens the selected tech document in the techDocEditor
+     */
     @FXML
     private void handleEditTechDoc(ActionEvent actionEvent) {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
-        System.out.println(techDoc);
         openTechDocEditor(btnEditTechDoc, techDoc);
     }
 
+    /**
+     * Uses the techMenu method on the manageTechs button5
+     */
     @FXML
     private void handleManageTechs(ActionEvent actionEvent) {
         techMenu();
     }
 
+    /**
+     * a button used to add a tech menu
+     */
     @FXML
     private void handleAddTechMenu(ActionEvent actionEvent) {
         try {
@@ -244,6 +297,9 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A button used to remove tech menu
+     */
     @FXML
     private void handleRemoveTechMenu(ActionEvent actionEvent) {
         try {
@@ -256,11 +312,17 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
         techMenu();
     }
 
+    /**
+     * A button used to delete tech documents
+     */
     @FXML
     private void handleDeleteTechDoc(ActionEvent actionEvent) throws SQLException {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
@@ -280,6 +342,9 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     *
+     */
     private void techMenu(){
         if (addTechMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
