@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.security.cert.Extension;
+
 public class CreateUsersController extends BaseController{
     @FXML
     private Button btnCancel;
@@ -54,11 +56,15 @@ public class CreateUsersController extends BaseController{
 
 
     @Override
-    public void setup() throws Exception {
-        super.setUModel(new UsersModel());
-        insertIntoTable();
-        btnSaveUser.setDisable(true);
-        beGoneButton();
+    public void setup() {
+        try {
+            super.setUModel(new UsersModel());
+            insertIntoTable();
+            btnSaveUser.setDisable(true);
+            beGoneButton();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     private void beGoneButton(){
@@ -134,23 +140,27 @@ public class CreateUsersController extends BaseController{
     }
 
     @FXML
-    private void handleSaveUser(ActionEvent actionEvent) throws Exception {
-        if (isEdit) {
-            editUser();
-            isEdit = false;
-            clearItAll();
-            txtUsernameUser.setDisable(false);
-            btnDeleteUser.setDisable(false);
-            userList.getItems().clear();
-            userList.setItems(getUModel().getObservableUsers());
-        } else if (checkUsername()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setContentText("The username you are trying to create already exists");
-            alert.showAndWait();
-        } else {
-            newUser();
-            clearItAll();
+    private void handleSaveUser(ActionEvent actionEvent) {
+        try {
+            if (isEdit) {
+                editUser();
+                isEdit = false;
+                clearItAll();
+                txtUsernameUser.setDisable(false);
+                btnDeleteUser.setDisable(false);
+                userList.getItems().clear();
+                userList.setItems(getUModel().getObservableUsers());
+            } else if (checkUsername()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setContentText("The username you are trying to create already exists");
+                alert.showAndWait();
+            } else {
+                newUser();
+                clearItAll();
+            }
+        } catch (Exception e) {
+            displayError(e);
         }
     }
 
@@ -177,35 +187,38 @@ public class CreateUsersController extends BaseController{
         userList.getSelectionModel().clearSelection();
     }
 
-    private void editUser() throws Exception {
-        User user = userList.getSelectionModel().getSelectedItem();
-        user.setName(txtNameUser.getText());
-        int userType = -1;
+    private void editUser() {
+        try {
+            User user = userList.getSelectionModel().getSelectedItem();
+            user.setName(txtNameUser.getText());
+            int userType = -1;
 
-        if(techChecker.isSelected()) {
-            userType = 2;
-        } else if (managerChecker.isSelected()) {
-            userType = 1;
-        } else if (salesChecker.isSelected()) {
-            userType = 3;
-        }
-        user.setUserTypeID(userType);
+            if (techChecker.isSelected()) {
+                userType = 2;
+            } else if (managerChecker.isSelected()) {
+                userType = 1;
+            } else if (salesChecker.isSelected()) {
+                userType = 3;
+            }
+            user.setUserTypeID(userType);
 
-        if (!txtConfirmPwUser.getText().isEmpty()) {
-            if (txtConfirmPwUser.equals(txtPasswordUser)){
-                String salt = BCrypt.gensalt(10);
-                String hashedPassword1 = BCrypt.hashpw(txtPasswordUser.getText(), salt);
-                user.setPassword(hashedPassword1);
+            if (!txtConfirmPwUser.getText().isEmpty()) {
+                if (txtConfirmPwUser.equals(txtPasswordUser)) {
+                    String salt = BCrypt.gensalt(10);
+                    String hashedPassword1 = BCrypt.hashpw(txtPasswordUser.getText(), salt);
+                    user.setPassword(hashedPassword1);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Passwords does not match");
+                    alert.setContentText("The supplied passwords does not match, please try again");
+                    alert.show();
+                    return;
+                }
             }
-            else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Passwords does not match");
-                alert.setContentText("The supplied passwords does not match, please try again");
-                alert.show();
-                return;
-            }
+            super.getUModel().updateUser(user);
+        } catch (Exception e) {
+            displayError(e);
         }
-        super.getUModel().updateUser(user);
     }
 
     private void newUser(){

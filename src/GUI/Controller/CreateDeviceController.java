@@ -28,22 +28,30 @@ public class CreateDeviceController extends BaseController {
      * Setup - a method from the basecontroller, used to initialize the TechDocModel
      */
     @Override
-    public void setup() throws Exception {
-        super.setTModel(new TechDocModel());
+    public void setup() {
+        try {
+            super.setTModel(new TechDocModel());
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
      * A method used to handle the create device button, when pressed it will create a new device
      */
-    public void handleCreateDevice(ActionEvent actionEvent) throws SQLException {
-        String name = tfDevice.getText();
-        String username = tfUsername.getText();
-        String password = tfPassword.getText();
+    public void handleCreateDevice(ActionEvent actionEvent)  {
+        try {
+            String name = tfDevice.getText();
+            String username = tfUsername.getText();
+            String password = tfPassword.getText();
 
-        Device device = new Device(name, username, password);
-        super.getTModel().addDevice(device, techDoc);
-        clearDeviceMenu();
-        closeWindow(btnCreate);
+            Device device = new Device(name, username, password);
+            super.getTModel().addDevice(device, techDoc);
+            clearDeviceMenu();
+            closeWindow(btnCreate);
+        } catch (SQLException e) {
+            displayError(e);
+        }
     }
 
     /**
