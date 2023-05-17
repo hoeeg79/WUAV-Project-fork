@@ -30,10 +30,16 @@ public class LoginController extends BaseController {
     private Label lblWarning;
     private final LoginModel loginModel;
 
+    /**
+     * The constructor, used to instantiate LoginModel.
+     */
     public LoginController() throws Exception {
         loginModel = new LoginModel();
     }
 
+    /**
+     * A method that loads the MainView fxml.
+     */
     private void login() {
         try {
             String username = tfUsername.getText();
@@ -61,11 +67,17 @@ public class LoginController extends BaseController {
         }
     }
 
+    /**
+     * A button that runs the login() method.
+     */
     @FXML
     private void handleLogin(ActionEvent actionEvent) throws Exception {
         login();
     }
 
+    /**
+     * A method that logs you in by pressing enter.
+     */
     private void checkIfEnter(KeyEvent event) {
         try {
             if (event.getCode() == KeyCode.ENTER) {
@@ -77,16 +89,26 @@ public class LoginController extends BaseController {
         }
     }
 
+    /**
+     * A key event that logs you in if you press enter while in the password text field.
+     */
     @FXML
     private void handlePasswordCheckKey(KeyEvent keyEvent) {
         checkIfEnter(keyEvent);
     }
 
+    /**
+     * a key event that logs you in if you press enter while in the username text field.
+     */
     @FXML
     private void handleUsernameCheckKey(KeyEvent keyEvent) {
         checkIfEnter(keyEvent);
     }
 
+    /**
+     * A method inherited from BaseController.
+     * @throws Exception
+     */
     @Override
     public void setup() throws Exception {
 

@@ -69,6 +69,11 @@ public class CustomerViewController extends BaseController{
     private Pattern emailPattern;
 
 
+    /**
+     * Setup is a method inherited from BaseController.
+     * It is used for instantiating models, locking fields and buttons, adding listeners, checking users,
+     * filling fields and adding listeners to textfields.
+     */
     @Override
     public void setup() throws Exception {
         lockFieldsAndButtons();
@@ -84,14 +89,23 @@ public class CustomerViewController extends BaseController{
         btnEditTechDoc.setDisable(true);
     }
 
+    /**
+     * A setter for user
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Loads the customer and the user of a tech document into the list view.
+     */
     private void loadTechDocs() throws SQLException {
         lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
     }
 
+    /**
+     * A button used to save a customer with the information that have been inputted.
+     */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
         if(!emailPattern.matcher(tfCustomerEmail.getText()).matches()) {
@@ -123,6 +137,9 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A cancel button that enables the edit customer button, and disables the edit fields.
+     */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
         btnEditCustomer.setDisable(false);
@@ -130,6 +147,10 @@ public class CustomerViewController extends BaseController{
         lockFieldsAndButtons();
     }
 
+    /**
+     * A method used to disable all the text fields in the customer view controller,
+     * as well as the cancel customer and create customer button.
+     */
     private void lockFieldsAndButtons() {
         tfCustomerEmail.setDisable(true);
         tfCustomerPhoneNumber.setDisable(true);
@@ -140,6 +161,9 @@ public class CustomerViewController extends BaseController{
         btnCreateCustomer.setDisable(true);
     }
 
+    /**
+     * A method used to fill the fields with customer information.
+     */
     private void fillFields() {
         tfCustomerEmail.setText(customer.getEmail());
         tfCustomerName.setText(customer.getName());
@@ -148,6 +172,10 @@ public class CustomerViewController extends BaseController{
         tfCustomerZipcode.setText(customer.getZipcode());
     }
 
+    /**
+     * A method used to disable the edit customer button, and enable all the text fields,
+     * the cancel customer button and the create customer button.
+     */
     @FXML
     private void handleEdit(ActionEvent actionEvent) {
         btnEditCustomer.setDisable(true);
@@ -160,6 +188,9 @@ public class CustomerViewController extends BaseController{
         btnCreateCustomer.setDisable(false);
     }
 
+    /**
+     * A button used to load the MainView window.
+     */
     @FXML
     private void handleHome(ActionEvent actionEvent) {
         try {
@@ -182,10 +213,16 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A setter for customer
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * A method used to open the TechDocEditor view.
+     */
     private void openTechDocEditor(Button btn, TechDoc techDoc){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/TechDocEditor.fxml"));
@@ -216,22 +253,35 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * A button used to open the tech doc editor.
+     */
     @FXML
     private void handleCreateNew(ActionEvent actionEvent) {
         openTechDocEditor(btnCreateNewTech, null);
     }
 
+    /**
+     * Gets the selected tech document from the list view
+     * Opens the selected tech document in the techDocEditor
+     */
     @FXML
     private void handleEditTechDoc(ActionEvent actionEvent) {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
         openTechDocEditor(btnEditTechDoc, techDoc);
     }
 
+    /**
+     * Uses the techMenu method on the manageTechs button5
+     */
     @FXML
     private void handleManageTechs(ActionEvent actionEvent) {
         techMenu();
     }
 
+    /**
+     * a button used to add a technician to a tech document in the tech menu.
+     */
     @FXML
     private void handleAddTechMenu(ActionEvent actionEvent) {
         try {
@@ -244,6 +294,9 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Turns the tech menu pane invisible.
+     */
     @FXML
     private void handleRemoveTechMenu(ActionEvent actionEvent) {
         try {
@@ -256,11 +309,17 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Closes the tech menu
+     */
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
         techMenu();
     }
 
+    /**
+     * A button used to delete tech documents
+     */
     @FXML
     private void handleDeleteTechDoc(ActionEvent actionEvent) throws SQLException {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
@@ -268,6 +327,9 @@ public class CustomerViewController extends BaseController{
         lvTechDocs.getItems().remove(techDoc);
     }
 
+    /**
+     * Adds a listener to the selected item property of lvTechDocs listview.
+     */
     private void addListener() {
         Platform.runLater(() -> {
             lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
@@ -285,6 +347,9 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     * If the tech menu is visible, it will slide out, else it will display the tech menu.
+     */
     private void techMenu(){
         if (addTechMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), addTechMenu);
@@ -301,6 +366,10 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Creates two lists, a list of technicians that have access to the tech document, and a list of poeple
+     * that does not have access to the tech document.
+     */
     private void fillTechs(TechDoc techDoc) throws Exception {
 
         ObservableList<User> linkedTechList = FXCollections.observableArrayList();
@@ -333,6 +402,9 @@ public class CustomerViewController extends BaseController{
         Platform.runLater(thread);
     }
 
+    /**
+     * Checks the user type, and disable functions according to who can access what.
+     */
     private void checkUser() {
         if (user.getUserType().getId() == 2) {
             btnEditCustomer.setVisible(false);
@@ -354,6 +426,10 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Sets the color of the text to a bold red font, if the tech document is locked.
+     * If it is unlocked, it removes the styling.
+     */
     private void techDocHighlighter() {
         lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
             @Override
@@ -374,10 +450,16 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     * States that an email pattern containts the given letters, numbers and signs.
+     */
     private void checkEmailPattern(TextField textField){
         emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
     }
 
+    /**
+     * adds a listener to the text property, ensuring only numbers are allowed
+     */
     private void addNumericalListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("\\d*")){
@@ -389,6 +471,9 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     * Adds a listener to the text property, ensuring only letters are allowed
+     */
     private void addAlphabeticListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[a-æøåA-ÆØÅ]*")){
