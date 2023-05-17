@@ -14,6 +14,12 @@ public class LoginDAO {
         dbc = new DBConnector();
     }
 
+    /**
+     * A method that uses an SQL query to retrieve us users with a specified username, that are not softdeleted.
+     * @param username
+     * @return
+     * @throws Exception
+     */
     protected User login(String username) throws Exception {
         String sql = "SELECT * FROM [User] WHERE username=? AND softDeleted != 1;";
         try (Connection conn = dbc.getConnection()){
@@ -38,6 +44,14 @@ public class LoginDAO {
             throw new Exception(e);
         }
     }
+
+    /**
+     * A method that uses an SQL query to get the usertypes on a specified id.
+     * @param conn
+     * @param userTypeId
+     * @return
+     * @throws SQLException
+     */
     private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
         try {
             String sqlGetUserType = "SELECT * FROM Usertype WHERE id = ?;";
