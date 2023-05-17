@@ -21,6 +21,9 @@ public class UsersDAO {
         dbConnector = new DBConnector();
     }
 
+    /**
+     * A method that creates a user in the user table in the database.
+     */
     public User createUser(User user) throws SQLException {
 
         String username = user.getUsername();
@@ -59,6 +62,9 @@ public class UsersDAO {
 
     }
 
+    /**
+     * A method that deletes a user from the user table in the database.
+     */
     public void deleteUser(User user) throws SQLException {
         try (Connection conn = dbConnector.getConnection()) {
 
@@ -74,6 +80,9 @@ public class UsersDAO {
 
     }
 
+    /**
+     * A method that returns a list of users where softDeleted is not 1.
+     */
     public List<User> returnUsers() throws SQLException {
         ArrayList<User> allUsers = new ArrayList<>();
 
@@ -103,6 +112,9 @@ public class UsersDAO {
         return allUsers;
     }
 
+    /**
+     * A method that updates the user table on a specified id.
+     */
     public void updateUser(User user) throws SQLException{
         try(Connection conn = dbConnector.getConnection()){
 
@@ -120,6 +132,9 @@ public class UsersDAO {
         }
     }
 
+    /**
+     * A method that gets a list of linked users associated with a tech document.
+     */
     public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException{
         String sql = "SELECT u.* FROM DocLinkUser dl INNER JOIN [User] u ON u.id = dl.UserID WHERE dl.TechDocID = ?;";
 
@@ -151,6 +166,9 @@ public class UsersDAO {
         return links;
     }
 
+    /**
+     * A method that gets a user type on a specified id, using an SQL query.
+     */
     private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
         try {
             String sqlGetUserType = "SELECT * FROM Usertype WHERE id = ?";
