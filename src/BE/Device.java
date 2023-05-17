@@ -50,4 +50,9 @@ public class Device {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + device + ", username: " + username + ", password: " + password;
+    }
 }

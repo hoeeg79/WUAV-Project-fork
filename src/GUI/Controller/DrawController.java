@@ -174,8 +174,8 @@ public class DrawController extends BaseController implements Initializable {
         enableButtons();
         disableButton(btnEraser);
     }
-
-    public void handleSelectIcon() {
+    @FXML
+    private void handleSelectIcon() {
         unselectAll();
         imageSelected = true;
         enableButtons();
