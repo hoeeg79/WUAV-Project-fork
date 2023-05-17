@@ -73,7 +73,6 @@ public class CustomerViewController extends BaseController{
      * Setup is a method inherited from BaseController.
      * It is used for instantiating models, locking fields and buttons, adding listeners, checking users,
      * filling fields and adding listeners to textfields.
-     * @throws Exception
      */
     @Override
     public void setup() throws Exception {
@@ -106,7 +105,6 @@ public class CustomerViewController extends BaseController{
 
     /**
      * A button used to save a customer with the information that have been inputted.
-     * @param actionEvent
      */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
@@ -141,7 +139,6 @@ public class CustomerViewController extends BaseController{
 
     /**
      * A cancel button that enables the edit customer button, and disables the edit fields.
-     * @param actionEvent
      */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
@@ -178,7 +175,6 @@ public class CustomerViewController extends BaseController{
     /**
      * A method used to disable the edit customer button, and enable all the text fields,
      * the cancel customer button and the create customer button.
-     * @param actionEvent
      */
     @FXML
     private void handleEdit(ActionEvent actionEvent) {
@@ -284,7 +280,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * a button used to add a tech menu
+     * a button used to add a technician to a tech document in the tech menu.
      */
     @FXML
     private void handleAddTechMenu(ActionEvent actionEvent) {
@@ -299,7 +295,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * A button used to remove tech menu
+     * Turns the tech menu pane invisible.
      */
     @FXML
     private void handleRemoveTechMenu(ActionEvent actionEvent) {
@@ -314,7 +310,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     *
+     * Closes the tech menu
      */
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
@@ -331,6 +327,9 @@ public class CustomerViewController extends BaseController{
         lvTechDocs.getItems().remove(techDoc);
     }
 
+    /**
+     * Adds a listener to the selected item property of lvTechDocs listview.
+     */
     private void addListener() {
         Platform.runLater(() -> {
             lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
@@ -349,7 +348,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     *
+     * If the tech menu is visible, it will slide out, else it will display the tech menu.
      */
     private void techMenu(){
         if (addTechMenu.isVisible()) {
@@ -367,6 +366,10 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Creates two lists, a list of technicians that have access to the tech document, and a list of poeple
+     * that does not have access to the tech document.
+     */
     private void fillTechs(TechDoc techDoc) throws Exception {
 
         ObservableList<User> linkedTechList = FXCollections.observableArrayList();
@@ -399,6 +402,9 @@ public class CustomerViewController extends BaseController{
         Platform.runLater(thread);
     }
 
+    /**
+     * Checks the user type, and disable functions according to who can access what.
+     */
     private void checkUser() {
         if (user.getUserType().getId() == 2) {
             btnEditCustomer.setVisible(false);
@@ -420,6 +426,10 @@ public class CustomerViewController extends BaseController{
         }
     }
 
+    /**
+     * Sets the color of the text to a bold red font, if the tech document is locked.
+     * If it is unlocked, it removes the styling.
+     */
     private void techDocHighlighter() {
         lvTechDocs.setCellFactory(param -> new ListCell<TechDoc>() {
             @Override
@@ -440,10 +450,16 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     * States that an email pattern containts the given letters, numbers and signs.
+     */
     private void checkEmailPattern(TextField textField){
         emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
     }
 
+    /**
+     * adds a listener to the text property, ensuring only numbers are allowed
+     */
     private void addNumericalListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("\\d*")){
@@ -455,6 +471,9 @@ public class CustomerViewController extends BaseController{
         });
     }
 
+    /**
+     * Adds a listener to the text property, ensuring only letters are allowed
+     */
     private void addAlphabeticListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[a-æøåA-ÆØÅ]*")){
