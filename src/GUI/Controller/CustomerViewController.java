@@ -224,7 +224,6 @@ public class CustomerViewController extends BaseController{
     @FXML
     private void handleEditTechDoc(ActionEvent actionEvent) {
         TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
-        System.out.println(techDoc);
         openTechDocEditor(btnEditTechDoc, techDoc);
     }
 

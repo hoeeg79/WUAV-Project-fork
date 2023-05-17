@@ -136,7 +136,6 @@ public class TechDocDAO {
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setLocked(isLocked);
-                System.out.println("sout fra approval checker i DAL på: " + setupName);
                 techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
@@ -181,7 +180,6 @@ public class TechDocDAO {
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setFilePathDiagram(filepathDiagram);
                 techDoc.setLocked(isLocked);
-                System.out.println("sout fra approval checker i DAL på: " + setupName);
                 techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
@@ -202,10 +200,8 @@ public class TechDocDAO {
         ResultSet rs = stmt.executeQuery(sql);
 
         if (rs.next()) {
-            System.out.println("check on techdoc: " + true);
             return true;
         } else {
-            System.out.println("check on techdoc: " + false);
             return false;
         }
     }
