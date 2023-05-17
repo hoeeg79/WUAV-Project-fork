@@ -148,7 +148,8 @@ public class TechDocEditorController extends BaseController {
         isEdit = true;
         initializeList();
         fillFields();
-
+        System.out.println("islocked= " + techDoc.isLocked());
+        System.out.println("isapproved= " + techDoc.isApproved());
         if (techDoc.isApproved()) {
             btnReadyForApproval.setText("Unlock");
             lockFields();
@@ -382,11 +383,15 @@ public class TechDocEditorController extends BaseController {
     else if (techDoc.isLocked()) {
         techDoc.setApproved(true);
         techDoc.setLocked(false);
+        techDoc.setApproved(true);
     }
     else {
         techDoc.setLocked(true);
     }
 
+        System.out.println("fra controller tjek af approved:");
+        System.out.println(techDoc.isApproved());
+        System.out.println();
     super.getTModel().updateTechDoc(techDoc);
     handleClose(actionEvent);
     }

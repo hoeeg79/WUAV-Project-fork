@@ -136,6 +136,7 @@ public class TechDocDAO {
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
                 techDoc.setLocked(isLocked);
+                System.out.println("sout fra approval checker i DAL på: " + setupName);
                 techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
@@ -180,6 +181,7 @@ public class TechDocDAO {
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setFilePathDiagram(filepathDiagram);
                 techDoc.setLocked(isLocked);
+                System.out.println("sout fra approval checker i DAL på: " + setupName);
                 techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
             }
@@ -200,8 +202,10 @@ public class TechDocDAO {
         ResultSet rs = stmt.executeQuery(sql);
 
         if (rs.next()) {
+            System.out.println("check on techdoc: " + true);
             return true;
         } else {
+            System.out.println("check on techdoc: " + false);
             return false;
         }
     }
@@ -224,7 +228,6 @@ public class TechDocDAO {
             stmt.setBoolean(4,techDoc.isLocked());
             stmt.setInt(5,techDoc.getId());
 
-
             stmt.executeUpdate();
 
             if (techDoc.isApproved()) {
@@ -233,7 +236,7 @@ public class TechDocDAO {
             }
             else if (techDoc.isLocked()) {
                 addToCustomerTechDocReady(conn, techDoc);
-            } else if (!techDoc.isApproved()) {
+            } else {
                 removeFromApproved(techDoc, conn);
             }
         } catch (SQLException e){
@@ -257,10 +260,12 @@ public class TechDocDAO {
      * A method that adds a tech document id to approved, and sets the date of when it got approved.
      */
     private void addToApproved(Connection conn, TechDoc techDoc) throws SQLException {
-        String sql = "INSERT INTO approved VALUES (?,GETDATE())";
+        String sql = "INSERT INTO approved VALUES (?,GETDATE());";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, techDoc.getId());
+
+        stmt.executeUpdate();
     }
 
     /**
