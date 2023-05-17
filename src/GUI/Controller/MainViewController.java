@@ -24,9 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.security.spec.ECField;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainViewController extends BaseController implements Initializable {
@@ -79,6 +77,13 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private Pane createCustomerMenu;
     private User user;
+    private boolean txtInCustomerName;
+    private boolean txtInCustomerEmail;
+    private boolean txtInCustomerPhoneNumber;
+    private boolean txtInCustomerStreetName;
+    private boolean txtInCustomerZipcode;
+    private boolean txtInCustomerCity;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -92,6 +97,9 @@ public class MainViewController extends BaseController implements Initializable 
             searchBar();
             clearCustomerMenu();
             checkUserType();
+            btnCreateCustomer.setDisable(true);
+            checkCreateCustomerFields();
+            checkCustomerAddressFields();
         } catch (Exception e) {
             displayError(e);
         }
@@ -135,6 +143,7 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerPhonenumber.clear();
         tfCustomerStreetName.clear();
         tfCustomerZipcode.clear();
+        tfCustomerCity.clear();
     }
 
     private void customerMenu() {
@@ -323,5 +332,88 @@ public class MainViewController extends BaseController implements Initializable 
     protected void expirationDate() throws Exception {
         super.setTModel(new TechDocModel());
         super.getTModel().expirationDate();
+    }
+    private void checkCreateCustomerFields() {
+        tfCustomerName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerName = true;
+            } else {
+                txtInCustomerName = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerEmail = true;
+            } else {
+                txtInCustomerEmail = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerPhonenumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerPhoneNumber = true;
+            } else {
+                txtInCustomerPhoneNumber = false;
+            }
+            enableTheButtons();
+        });
+    }
+
+    private boolean checksForGeneralInfo() {
+        if (txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private void checkCustomerAddressFields() {
+        tfCustomerStreetName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerStreetName = true;
+            } else {
+                txtInCustomerStreetName = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerZipcode.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerZipcode = true;
+            } else {
+                txtInCustomerZipcode = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerCity.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerCity = true;
+            } else {
+                txtInCustomerCity = false;
+            }
+            enableTheButtons();
+        });
+    }
+
+    private boolean checksForAddress() {
+        if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void enableTheButtons() {
+        if (checksForGeneralInfo() && checksForAddress()) {
+            btnCreateCustomer.setDisable(false);
+        }
+        else {
+            btnCreateCustomer.setDisable(true);
+        }
     }
 }
