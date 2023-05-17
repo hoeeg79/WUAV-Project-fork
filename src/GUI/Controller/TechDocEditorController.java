@@ -96,6 +96,7 @@ public class TechDocEditorController extends BaseController {
         if (techDoc.getPictures() != null) {
             lblNoPictures.setVisible(false);
         }
+        enablePdfBtn();
     }
 
     @FXML
@@ -370,6 +371,14 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    private void enablePdfBtn(){
+        if (techDoc.isLocked() || techDoc.isApproved()){
+            btnPDF.setDisable(false);
+        } else {
+            btnPDF.setDisable(true);
+        }
+    }
+
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) throws Exception {
     if (techDoc.isApproved()) {
@@ -377,6 +386,7 @@ public class TechDocEditorController extends BaseController {
         btnReadyForApproval.setText("Finalize");
         unlockFields();
         super.getTModel().updateTechDoc(techDoc);
+        enablePdfBtn();
         return;
     }
     else if (techDoc.isLocked()) {

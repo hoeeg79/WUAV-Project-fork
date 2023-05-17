@@ -10,6 +10,10 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="microsoft.sqlserver.mssql.jdbc" level="project" />
     <orderEntry type="library" name="apache.pdfbox" level="project" />
+<<<<<<< Updated upstream
+=======
+    <orderEntry type="library" name="itextpdf.svg1" level="project" />
+>>>>>>> Stashed changes
     <orderEntry type="library" name="itextpdf.svg" level="project" />
   </component>
 </module>

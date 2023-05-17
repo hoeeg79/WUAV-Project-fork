@@ -23,7 +23,7 @@
                <children>
                   <Button fx:id="btnDraw" layoutX="10.0" layoutY="85.0" maxWidth="95.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleDraw" prefWidth="95.0" text="Draw" />
                   <Button fx:id="btnReadyForApproval" layoutX="10.0" layoutY="35.0" maxWidth="95.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleReadyForApproval" prefWidth="95.0" text="Finalize" />
-                  <Button maxWidth="95.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleExportPDF" prefWidth="95.0" text="PDF" />
+                  <Button fx:id="btnPDF" maxWidth="95.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleExportPDF" prefWidth="95.0" text="PDF" />
                   <Button fx:id="btnSave" layoutX="10.0" layoutY="10.0" maxWidth="95.0" minHeight="25.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleSave" prefWidth="95.0" text="Save" />
                   <Button fx:id="btnClose" layoutX="10.0" layoutY="60.0" maxWidth="95.0" minHeight="25.0" minWidth="95.0" mnemonicParsing="false" onAction="#handleClose" prefWidth="95.0" text="Close">
                      <VBox.margin>
