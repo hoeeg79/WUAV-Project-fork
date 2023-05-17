@@ -55,6 +55,24 @@ public class CustomerDAO {
         }
     }
 
+    public boolean checkCustomer(Customer customer) throws SQLException {
+        String name = customer.getName();
+
+        try (Connection conn = dbc.getConnection()){
+            String sql = "SELECT * FROM Customer WHERE name = ?;";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+
+            ResultSet rs = stmt.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException e) {
+            throw new SQLException();
+        }
+    }
+
 
     /**
      * A method that returns a list of customers from the database, with the given conditions in the SQL query.

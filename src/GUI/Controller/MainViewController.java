@@ -25,6 +25,7 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 
 public class MainViewController extends BaseController implements Initializable {
@@ -83,6 +84,7 @@ public class MainViewController extends BaseController implements Initializable 
     private boolean txtInCustomerStreetName;
     private boolean txtInCustomerZipcode;
     private boolean txtInCustomerCity;
+    private Pattern emailPattern;
 
 
     @Override
@@ -100,6 +102,8 @@ public class MainViewController extends BaseController implements Initializable 
             btnCreateCustomer.setDisable(true);
             checkCreateCustomerFields();
             checkCustomerAddressFields();
+            createEmailPattern(tfCustomerEmail);
+            addNumericalListener(tfCustomerPhonenumber);
         } catch (Exception e) {
             displayError(e);
         }
@@ -126,10 +130,24 @@ public class MainViewController extends BaseController implements Initializable 
 
         Customer customer = new Customer(name, email, tlf, streetName, zipcode, city);
 
-        super.getCModel().createCustomer(customer);
-        clearCustomerMenu();
-        customerMenu();
-        refreshList();
+        if (!checkEmailPattern(customer)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Email is wrong");
+            alert.setContentText("Please supply a correct email address");
+            alert.show();
+            return;
+        }
+
+        if (!super.getCModel().createCustomer(customer)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Customer Exist");
+            alert.setContentText("Customer Already Exists, please give it a different name");
+            alert.show();
+        } else {
+            clearCustomerMenu();
+            customerMenu();
+        }
+        //refreshList();
     }
 
     @FXML
@@ -415,5 +433,24 @@ public class MainViewController extends BaseController implements Initializable 
         else {
             btnCreateCustomer.setDisable(true);
         }
+    }
+
+    private boolean checkEmailPattern(Customer customer) {
+        return emailPattern.matcher(customer.getEmail()).matches();
+    }
+
+    private void createEmailPattern(TextField textField){
+        emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    }
+
+    private void addNumericalListener(TextField textField){
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")){
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            if(newValue.length() >= 8){
+                textField.setText(newValue.substring(0, 8));
+            }
+        });
     }
 }

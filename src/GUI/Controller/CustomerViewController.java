@@ -81,6 +81,7 @@ public class CustomerViewController extends BaseController{
         super.setCModel(new CustomerModel());
         super.setTModel(new TechDocModel());
         loadTechDocs();
+        btnEditTechDoc.setDisable(true);
     }
 
     public void setUser(User user) {
@@ -271,6 +272,11 @@ public class CustomerViewController extends BaseController{
     private void addListener() {
         Platform.runLater(() -> {
             lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    btnEditTechDoc.setDisable(false);
+                } else {
+                    btnEditTechDoc.setDisable(true);
+                }
                 try {
                     fillTechs(newValue);
                 } catch (Exception e) {
@@ -372,7 +378,6 @@ public class CustomerViewController extends BaseController{
     private void checkEmailPattern(TextField textField){
         emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
     }
-
 
     private void addNumericalListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {

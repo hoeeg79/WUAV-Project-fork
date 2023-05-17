@@ -19,6 +19,10 @@ public class FacadeDAL {
     }
 
     public Customer createCustomer(Customer customer) throws SQLException {
+        if (customerDAO.checkCustomer(customer)) {
+            return null;
+        }
+
         return customerDAO.createCustomer(customer);
     }
 
