@@ -5,7 +5,6 @@ import BE.Device;
 import BE.Pictures;
 import BE.TechDoc;
 import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -30,8 +29,6 @@ import javafx.stage.FileChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-import javax.swing.*;
-import javax.swing.text.StyleConstants;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +65,9 @@ public class ExportPDFController extends BaseController {
         disableBoxes();
     }
 
+    /**
+     * Disables choice boxes if they fulfill the conditions.
+     */
     private void disableBoxes() {
         if (techDoc.getFilePathDiagram() == null || techDoc.getFilePathDiagram().isEmpty()) {
             cbDrawing.setDisable(true);
@@ -101,21 +101,28 @@ public class ExportPDFController extends BaseController {
         closeWindow(btnCancel);
     }
 
+    /**
+     * Generates a Pdf file depending on what checkboxes have been selected.
+     */
     private void generatePdf() {
         try {
+            //Opens file chooser to select a destination for the document.
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
             fileChooser.setInitialFileName(techDoc.getSetupName());
 
+            //Creates the document.
             File fileToSave = fileChooser.showSaveDialog(btnExport.getScene().getWindow());
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(fileToSave));
             Document document = new Document(pdfDoc, PageSize.A4);
 
+            //Prepping fonts to be used in the document.
             PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
             PdfFont italic = PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC);
             PdfFont bolditalic = PdfFontFactory.createFont(StandardFonts.TIMES_BOLDITALIC);
 
+            //Adds WUAV logo to the document.
             Image logo = new Image(ImageDataFactory.create("resources/Photatoes/logo.png"));
             float logoScaleFactor = 0.20F;
             logo.scaleAbsolute(logo.getImageWidth() * logoScaleFactor, logo.getImageHeight() * logoScaleFactor);
@@ -123,12 +130,14 @@ public class ExportPDFController extends BaseController {
 
             document.add(logo);
 
+            //Adds the title of the tech-doc to the document
             Paragraph title = new Paragraph(techDoc.getSetupName());
             title.setFont(bold);
             title.setFontSize(18);
             title.setTextAlignment(TextAlignment.CENTER);
             document.add(title);
 
+            //Adds the current date to the document.
             LocalDateTime currentTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String formattedDate = currentTime.format(formatter);
@@ -138,6 +147,7 @@ public class ExportPDFController extends BaseController {
             date.setTextAlignment(TextAlignment.RIGHT);
             document.add(date);
 
+            //Adds the customers name and address to the document.
             Paragraph customerInfo = new Paragraph();
             customerInfo.add(customer.getName() + "\n");
             customerInfo.add(customer.getStreetName() + "\n");
@@ -147,6 +157,7 @@ public class ExportPDFController extends BaseController {
             customerInfo.setFontSize(15);
             document.add(customerInfo);
 
+            //Adds the description to the document if selected.
             if (cbDescription.isSelected()) {
                 Paragraph description = new Paragraph();
                 description.add("Description:" + "\n");
@@ -156,6 +167,7 @@ public class ExportPDFController extends BaseController {
                 document.add(description);
             }
 
+            //Adds the devices and formats them to the document if selected.
             if (cbDevices.isSelected()) {
                 Paragraph devices = new Paragraph();
                 devices.add("Device credentials:" + "\n");
@@ -165,6 +177,7 @@ public class ExportPDFController extends BaseController {
                 document.add(devices);
             }
 
+            //Adds the technical drawing if selected.
             if (cbDrawing.isSelected() && !techDoc.getFilePathDiagram().isEmpty()) {
                 Paragraph text = new Paragraph("Technical drawing");
                 text.setFontSize(14);
@@ -175,7 +188,8 @@ public class ExportPDFController extends BaseController {
                 document.add(drawing);
             }
 
-            if (cbPhotos.isSelected()) {
+            //Adds the photos to a table to the document if selected.
+            if (cbPhotos.isSelected() && techDoc.getPictures() != null) {
                 ArrayList<Pictures> pictures = (ArrayList<Pictures>) techDoc.getPictures();
                 Table pictureContainer = new Table(pictures.size());
                 Image picture;
@@ -189,6 +203,7 @@ public class ExportPDFController extends BaseController {
                 document.add(pictureContainer);
             }
 
+            //Adds the extra info to the document if selected.
             if (cbExtra.isSelected()) {
                 Paragraph extraInfo = new Paragraph();
                 Paragraph extraTitle = new Paragraph();
@@ -204,6 +219,7 @@ public class ExportPDFController extends BaseController {
                 document.add(extraInfo);
             }
 
+            //Adds a sign line to the document if selected.
             if (cbForCustomer.isSelected()) {
                 PdfCanvas canvas = new PdfCanvas(pdfDoc.getPage(pdfDoc.getNumberOfPages()));
                 Rectangle pageSize = pdfDoc.getPage(pdfDoc.getNumberOfPages()).getPageSize();
@@ -215,6 +231,7 @@ public class ExportPDFController extends BaseController {
                 document.add(signHere);
             }
 
+            //Finishes the document.
             document.close();
             previewPdf(fileToSave);
 
@@ -223,6 +240,10 @@ public class ExportPDFController extends BaseController {
         }
     }
 
+    /**
+     * Previews the pdf provided to the user.
+     * @param pdf Pdf to be previewed.
+     */
     private void previewPdf(File pdf) {
         try {
             PDDocument document = PDDocument.load(pdf);
@@ -237,6 +258,11 @@ public class ExportPDFController extends BaseController {
         }
     }
 
+    /**
+     * Generates a cell that contains an image without a border.
+     * @param image Image to be shown.
+     * @return Returns generated cell.
+     */
     private static Cell createImageCell(Image image) {
         Cell cell = new Cell();
         cell.setBorder(Border.NO_BORDER);
@@ -245,6 +271,10 @@ public class ExportPDFController extends BaseController {
         return cell;
     }
 
+    /**
+     * Formats a device to a comprehensive string.
+     * @return Formatted device string.
+     */
     private String formatDevices() {
         StringBuilder result = new StringBuilder();
 

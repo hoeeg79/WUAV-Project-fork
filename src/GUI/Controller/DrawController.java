@@ -13,7 +13,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +21,6 @@ import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +90,9 @@ public class DrawController extends BaseController implements Initializable {
         cbBrushSize.getSelectionModel().select(0);
     }
 
+    /**
+     * Checks if the techDoc has a drawing connected to it.
+     */
     public void editDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
@@ -103,12 +104,18 @@ public class DrawController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Gets the file from the combobox and makes it a image ready to be drawn.
+     */
     private void setIcon() {
         int iconIndex = cbIcons.getSelectionModel().getSelectedIndex();
         File file = imageFiles.get(iconIndex);
         image = new Image(file.toURI().toString());
     }
 
+    /**
+     * Adds image files names to combobox.
+     */
     private void addIcons() {
         imageFiles = getImageFiles("resources/Icons");
         List<String> iconNames = new ArrayList<>();
@@ -123,6 +130,11 @@ public class DrawController extends BaseController implements Initializable {
         cbIcons.setItems(icons);
     }
 
+    /**
+     * Iterates through folder to get all image files.
+     * @param folderPath Path to folder with image files.
+     * @return List of image files.
+     */
     private List<File> getImageFiles(String folderPath) {
         File folder = new File(folderPath);
         File[] files = folder.listFiles();
@@ -139,11 +151,19 @@ public class DrawController extends BaseController implements Initializable {
         return imageFiles;
     }
 
+    /**
+     * Checks if the file is a image file.
+     * @param file File to check.
+     * @return True if it is a png, jpg or jpeg file.
+     */
     private boolean isImageFile(File file) {
         String fileName = file.getName().toLowerCase();
         return fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg");
     }
 
+    /**
+     * Unselects all tools.
+     */
     private void unselectAll() {
         brushSelected = false;
         lineSelected = false;
@@ -182,12 +202,20 @@ public class DrawController extends BaseController implements Initializable {
         disableButton(btnIcon);
     }
 
+    /**
+     * Adds the brush sizes for the combobox for brush sizes.
+     */
     private void addBrushSizes() {
         Integer[] ints = {10, 12, 14, 16, 18, 20, 25, 30};
         ObservableList<Integer> brushSizes =  FXCollections.observableArrayList(ints);
         cbBrushSize.setItems(brushSizes);
     }
 
+    /**
+     * Opens a file chooser for a destination to save the drawing and
+     * then sets the filepath for the drawing to the tech-doc.
+     * @param actionEvent
+     */
     public void handleSave(ActionEvent actionEvent) {
         try {
             FileChooser fileChooser = new FileChooser();
@@ -210,6 +238,10 @@ public class DrawController extends BaseController implements Initializable {
         closeWindow(btnBrush);
     }
 
+    /**
+     * Begins to draw depending on what the user have selected.
+     * @param e
+     */
     @FXML
     private void mousePressed(MouseEvent e) {
         if (lineSelected) {
@@ -220,6 +252,10 @@ public class DrawController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Draws depending on what the user have selected.
+     * @param e
+     */
     @FXML
     private void mouseDragged(MouseEvent e) {
         if (lineSelected) {
@@ -236,6 +272,10 @@ public class DrawController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Finished drawing depending on what the user have selected.
+     * @param e
+     */
     @FXML
     private void mouseReleased(MouseEvent e) {
         if (lineSelected) {
@@ -246,6 +286,11 @@ public class DrawController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Erases part of the canvas when mouse is dragged.
+     * Size is dependant of selected brush size.
+     * @param e
+     */
     private void eraserDragged(MouseEvent e) {
         double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
         double x = e.getX() - size/2;
@@ -255,6 +300,10 @@ public class DrawController extends BaseController implements Initializable {
         brushTool.clearRect(x, y, size, size);
     }
 
+    /**
+     * Gets the starting coordinates for the line.
+     * @param e
+     */
     private void linePressed(MouseEvent e) {
         startX = e.getX();
         startY = e.getY();
@@ -264,6 +313,10 @@ public class DrawController extends BaseController implements Initializable {
         tempBrushTool.setStroke(colorPicker.getValue());
     }
 
+    /**
+     * Draws a temporary line on a separate canvas to show the line being drawn.
+     * @param e
+     */
     private void lineDrag(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
@@ -272,6 +325,10 @@ public class DrawController extends BaseController implements Initializable {
 
     }
 
+    /**
+     * Draws the line on the canvas while clearing the temporary canvas.
+     * @param e
+     */
     private void lineReleased(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
@@ -279,6 +336,10 @@ public class DrawController extends BaseController implements Initializable {
         tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
     }
 
+    /**
+     * Draws a dot when mouse is being dragged.
+     * @param e
+     */
     private void brushDragged(MouseEvent e) {
         double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
         double x = e.getX() - size/2;
@@ -288,11 +349,19 @@ public class DrawController extends BaseController implements Initializable {
         brushTool.fillRoundRect(x, y, size, size, size, size);
     }
 
+    /**
+     * Gets the starting coordinates for the image to be drawn.
+     * @param e
+     */
     private void imagePressed(MouseEvent e) {
         startX = e.getX();
         startY = e.getY();
     }
 
+    /**
+     * Draws a temporary image on a separate canvas to show the image being drawn when dragged.
+     * @param e
+     */
     private void imageDrag(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
@@ -309,6 +378,10 @@ public class DrawController extends BaseController implements Initializable {
         tempBrushTool.drawImage(image, x, y, scaledWidth, scaledHeight);
     }
 
+    /**
+     * Draws the image on the canvas when released and clears the temporary canvas.
+     * @param e
+     */
     private void imageReleased(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
@@ -325,10 +398,17 @@ public class DrawController extends BaseController implements Initializable {
         tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
     }
 
+    /**
+     * Disables button.
+     * @param b Button to be disabled.
+     */
     private void disableButton(Button b) {
         b.setDisable(true);
     }
 
+    /**
+     * Enables all buttons.
+     */
     private void enableButtons() {
         btnEraser.setDisable(false);
         btnIcon.setDisable(false);

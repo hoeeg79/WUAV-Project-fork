@@ -76,7 +76,10 @@
                         <Insets bottom="-10.0" left="5.0" />
                      </VBox.margin></Label>
                   <TextArea fx:id="taSetupDescription" prefHeight="198.0" prefWidth="325.0" wrapText="true" />
-                  <Label layoutX="10.0" layoutY="52.0" text="Device/Logon info" />
+                  <Label layoutX="10.0" layoutY="52.0" styleClass="LeftLabels" text="Device/Logon info">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" left="5.0" />
+                     </VBox.margin></Label>
                   <TableView fx:id="tvDevice" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="tcDevice" prefWidth="96.0" text="Device" />
@@ -90,7 +93,10 @@
                         <Button fx:id="btnDeleteDevice" maxWidth="95.0" mnemonicParsing="false" onAction="#handleDeleteDevice" prefHeight="25.0" prefWidth="95.0" text="Delete device" />
                      </children>
                   </HBox>
-                  <Label layoutX="10.0" layoutY="447.0" text="Extra info" />
+                  <Label layoutX="10.0" layoutY="447.0" styleClass="LeftLabels" text="Extra info">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" left="5.0" />
+                     </VBox.margin></Label>
                   <TextArea fx:id="taExtraInfo" layoutX="10.0" layoutY="474.0" prefHeight="80.0" prefWidth="273.0" />
                   <Label fx:id="lblSaveStatus" prefHeight="17.0" prefWidth="176.0" />
                </children>
