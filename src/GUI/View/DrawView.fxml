@@ -18,17 +18,17 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnBrush" focusTraversable="false" mnemonicParsing="false" onAction="#handleSelectBrush" text="Brush" />
-                  <Button fx:id="btnLine" focusTraversable="false" mnemonicParsing="false" onAction="#handleSelectLine" text="Line" />
-                  <Button fx:id="btnEraser" focusTraversable="false" mnemonicParsing="false" onAction="#handleSelectEraser" text="Eraser" />
-                  <Button fx:id="btnIcon" focusTraversable="false" mnemonicParsing="false" onAction="#handleSelectIcon" text="Icon" />
-                  <ComboBox fx:id="cbIcons" focusTraversable="false" prefWidth="150.0" promptText="Select icon" />
-                  <Button mnemonicParsing="false" onAction="#handleSave" text="Save">
+                  <Button fx:id="btnBrush" focusTraversable="false" minWidth="60.0" mnemonicParsing="false" onAction="#handleSelectBrush" prefHeight="26.0" prefWidth="60.0" text="Brush" />
+                  <Button fx:id="btnLine" focusTraversable="false" minWidth="60.0" mnemonicParsing="false" onAction="#handleSelectLine" prefHeight="26.0" prefWidth="60.0" text="Line" />
+                  <Button fx:id="btnEraser" focusTraversable="false" minWidth="60.0" mnemonicParsing="false" onAction="#handleSelectEraser" prefHeight="26.0" prefWidth="60.0" text="Eraser" />
+                  <Button fx:id="btnIcon" focusTraversable="false" minWidth="60.0" mnemonicParsing="false" onAction="#handleSelectIcon" prefHeight="26.0" prefWidth="60.0" text="Icon" />
+                  <ComboBox fx:id="cbIcons" focusTraversable="false" minWidth="110.0" prefWidth="150.0" promptText="Select icon" />
+                  <Button minWidth="60.0" mnemonicParsing="false" onAction="#handleSave" text="Save">
                      <HBox.margin>
-                        <Insets left="305.0" />
+                        <Insets left="210.0" />
                      </HBox.margin>
                   </Button>
-                  <Button layoutX="381.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                  <Button layoutX="381.0" layoutY="10.0" minWidth="60.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">

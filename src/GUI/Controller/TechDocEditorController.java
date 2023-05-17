@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,12 +23,16 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TechDocEditorController extends BaseController {
 
-
+    @FXML
+    private Button btnReadyForApproval;
+    @FXML
+    private Button btnPDF;
     @FXML
     private TableView<Device> tvDevice;
     @FXML
@@ -37,8 +43,6 @@ public class TechDocEditorController extends BaseController {
     private TableColumn tcPassword;
     @FXML
     private Button btnDeleteDevice;
-    @FXML
-    private Button btnReadyForApproval;
     @FXML
     private Button btnDraw;
     @FXML
@@ -76,6 +80,7 @@ public class TechDocEditorController extends BaseController {
     private boolean isEdit;
     private ObservableList<Pictures> imageList;
     private int currentImageIndex = -1;
+    private ArrayList<Device> deviceList = new ArrayList<>();
 
     @Override
     public void setup() throws Exception {
@@ -347,6 +352,7 @@ public class TechDocEditorController extends BaseController {
 
         tvDevice.getItems().clear();
         tvDevice.setItems(super.getTModel().getObservableDevices(techDoc));
+        deviceList.addAll(super.getTModel().getObservableDevices(techDoc));
     }
 
     private void refreshDevice() throws Exception{
@@ -397,6 +403,25 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(true);
     }
 
+    public void handleExportPDF(ActionEvent actionEvent) throws Exception {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ExportPDF.fxml"));
+        Parent root = loader.load();
+
+        ExportPDFController controller = loader.getController();
+        controller.setTechDoc(techDoc);
+        controller.setDeviceList(deviceList);
+        controller.setCustomer(customer);
+        controller.setup();
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("Export PDF");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.centerOnScreen();
+        stage.show();
+    }
+
     private void unlockFields() {
         tfTitle.setDisable(false);
         taExtraInfo.setDisable(false);
@@ -419,4 +444,5 @@ public class TechDocEditorController extends BaseController {
         Tooltip.install(btnDraw, tooltip);
     }
 }
+
 
