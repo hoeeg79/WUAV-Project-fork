@@ -21,8 +21,15 @@ public class CustomerModel {
         customerList = FXCollections.observableArrayList();
     }
 
-    public void createCustomer(Customer customer) throws SQLException {
-        customerManager.createCustomer(customer);
+    public boolean createCustomer(Customer customer) throws SQLException {
+        Customer newCustomer = customerManager.createCustomer(customer);
+        if (newCustomer == null) {
+            return false;
+        }
+        else {
+            customerList.add(newCustomer);
+            return true;
+        }
     }
 
     public void deleteCustomer(Customer customer) throws SQLException {

@@ -1,17 +1,12 @@
 package GUI.Controller;
 
 import BE.User;
-import BE.UserType;
 import BLL.BCrypt;
 import GUI.Model.UsersModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.sql.SQLException;
 
 public class CreateUsersController extends BaseController{
     @FXML
@@ -31,7 +26,7 @@ public class CreateUsersController extends BaseController{
     @FXML
     private Button btnSaveUser;
     @FXML
-    private Button deleteUser;
+    private Button btnDeleteUser;
     @FXML
     private Button btnClose;
     @FXML
@@ -76,12 +71,12 @@ public class CreateUsersController extends BaseController{
             }
         });
 
-        deleteUser.setDisable(true);
+        btnDeleteUser.setDisable(true);
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                deleteUser.setDisable(false);
+                btnDeleteUser.setDisable(false);
             } else {
-                deleteUser.setDisable(true);
+                btnDeleteUser.setDisable(true);
             }
         });
 
@@ -138,17 +133,19 @@ public class CreateUsersController extends BaseController{
         }
     }
 
-    public void handleSaveUser(ActionEvent actionEvent) throws Exception {
+    @FXML
+    private void handleSaveUser(ActionEvent actionEvent) throws Exception {
         if (isEdit) {
             editUser();
             isEdit = false;
             clearItAll();
             txtUsernameUser.setDisable(false);
+            btnDeleteUser.setDisable(false);
             userList.getItems().clear();
             userList.setItems(getUModel().getObservableUsers());
-        } else if (checkThatHoe()) {
+        } else if (checkUsername()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Stupid");
+            alert.setTitle("Warning");
             alert.setContentText("The username you are trying to create already exists");
             alert.showAndWait();
         } else {
@@ -157,7 +154,7 @@ public class CreateUsersController extends BaseController{
         }
     }
 
-    private boolean checkThatHoe(){
+    private boolean checkUsername(){
         for (User user : userList.getItems()) {
             if (txtUsernameUser.getText().equals(user.getUsername())){
                 return true;
@@ -171,32 +168,41 @@ public class CreateUsersController extends BaseController{
         txtPasswordUser.clear();
         txtNameUser.clear();
         txtUsernameUser.clear();
+        txtUsernameUser.setDisable(false);
         txtPasswordUser.clear();
         txtConfirmPwUser.clear();
         salesChecker.setSelected(false);
         managerChecker.setSelected(false);
         techChecker.setSelected(false);
+        userList.getSelectionModel().clearSelection();
     }
 
     private void editUser() throws Exception {
         User user = userList.getSelectionModel().getSelectedItem();
         user.setName(txtNameUser.getText());
-        int userType = -1;   {
-            if(techChecker.isSelected()) {
-                userType = 2;
-            } else if (managerChecker.isSelected()) {
-                userType = 1;
-            } else if (salesChecker.isSelected()) {
-                userType = 3;
-            }
-            user.setUserTypeID(userType);
-        };
-        isEdit = true;
+        int userType = -1;
+
+        if(techChecker.isSelected()) {
+            userType = 2;
+        } else if (managerChecker.isSelected()) {
+            userType = 1;
+        } else if (salesChecker.isSelected()) {
+            userType = 3;
+        }
+        user.setUserTypeID(userType);
+
         if (!txtConfirmPwUser.getText().isEmpty()) {
             if (txtConfirmPwUser.equals(txtPasswordUser)){
                 String salt = BCrypt.gensalt(10);
                 String hashedPassword1 = BCrypt.hashpw(txtPasswordUser.getText(), salt);
                 user.setPassword(hashedPassword1);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Passwords does not match");
+                alert.setContentText("The supplied passwords does not match, please try again");
+                alert.show();
+                return;
             }
         }
         super.getUModel().updateUser(user);
@@ -235,7 +241,8 @@ public class CreateUsersController extends BaseController{
     }
 
 
-    public void handleDeleteUser(ActionEvent actionEvent) {
+    @FXML
+    private void handleDeleteUser(ActionEvent actionEvent) {
         try {
             User user = userList.getSelectionModel().getSelectedItem();
             super.getUModel().deleteUser(user);
@@ -244,7 +251,8 @@ public class CreateUsersController extends BaseController{
         }
     }
 
-    public void handleCancelWindow(ActionEvent actionEvent) {
+    @FXML
+    private void handleCloseWindow(ActionEvent actionEvent) {
         closeWindow(btnClose);
     }
 
@@ -255,7 +263,9 @@ public class CreateUsersController extends BaseController{
         userList.setItems(super.getUModel().getObservableUsers());
     }
 
-    public void handleEditUsers(ActionEvent actionEvent) {
+    @FXML
+    private void handleEditUsers(ActionEvent actionEvent) {
+        btnDeleteUser.setDisable(true);
         isEdit = true;
         User selectedUser = userList.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
@@ -289,7 +299,8 @@ public class CreateUsersController extends BaseController{
         }
     }
 
-    public void handleCancelItAll(ActionEvent actionEvent) {
+    @FXML
+    private void handleCancel(ActionEvent actionEvent) {
         clearItAll();
     }
 }

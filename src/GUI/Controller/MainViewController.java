@@ -24,9 +24,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.security.spec.ECField;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 
 public class MainViewController extends BaseController implements Initializable {
@@ -79,6 +78,14 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private Pane createCustomerMenu;
     private User user;
+    private boolean txtInCustomerName;
+    private boolean txtInCustomerEmail;
+    private boolean txtInCustomerPhoneNumber;
+    private boolean txtInCustomerStreetName;
+    private boolean txtInCustomerZipcode;
+    private boolean txtInCustomerCity;
+    private Pattern emailPattern;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -92,6 +99,11 @@ public class MainViewController extends BaseController implements Initializable 
             searchBar();
             clearCustomerMenu();
             checkUserType();
+            btnCreateCustomer.setDisable(true);
+            checkCreateCustomerFields();
+            checkCustomerAddressFields();
+            createEmailPattern(tfCustomerEmail);
+            addNumericalListener(tfCustomerPhonenumber);
         } catch (Exception e) {
             displayError(e);
         }
@@ -118,10 +130,24 @@ public class MainViewController extends BaseController implements Initializable 
 
         Customer customer = new Customer(name, email, tlf, streetName, zipcode, city);
 
-        super.getCModel().createCustomer(customer);
-        clearCustomerMenu();
-        customerMenu();
-        refreshList();
+        if (!checkEmailPattern(customer)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Email is wrong");
+            alert.setContentText("Please supply a correct email address");
+            alert.show();
+            return;
+        }
+
+        if (!super.getCModel().createCustomer(customer)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Customer Exist");
+            alert.setContentText("Customer Already Exists, please give it a different name");
+            alert.show();
+        } else {
+            clearCustomerMenu();
+            customerMenu();
+        }
+        //refreshList();
     }
 
     @FXML
@@ -135,6 +161,7 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerPhonenumber.clear();
         tfCustomerStreetName.clear();
         tfCustomerZipcode.clear();
+        tfCustomerCity.clear();
     }
 
     private void customerMenu() {
@@ -323,5 +350,107 @@ public class MainViewController extends BaseController implements Initializable 
     protected void expirationDate() throws Exception {
         super.setTModel(new TechDocModel());
         super.getTModel().expirationDate();
+    }
+    private void checkCreateCustomerFields() {
+        tfCustomerName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerName = true;
+            } else {
+                txtInCustomerName = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerEmail = true;
+            } else {
+                txtInCustomerEmail = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerPhonenumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerPhoneNumber = true;
+            } else {
+                txtInCustomerPhoneNumber = false;
+            }
+            enableTheButtons();
+        });
+    }
+
+    private boolean checksForGeneralInfo() {
+        if (txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private void checkCustomerAddressFields() {
+        tfCustomerStreetName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerStreetName = true;
+            } else {
+                txtInCustomerStreetName = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerZipcode.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerZipcode = true;
+            } else {
+                txtInCustomerZipcode = false;
+            }
+            enableTheButtons();
+        });
+
+        tfCustomerCity.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txtInCustomerCity = true;
+            } else {
+                txtInCustomerCity = false;
+            }
+            enableTheButtons();
+        });
+    }
+
+    private boolean checksForAddress() {
+        if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void enableTheButtons() {
+        if (checksForGeneralInfo() && checksForAddress()) {
+            btnCreateCustomer.setDisable(false);
+        }
+        else {
+            btnCreateCustomer.setDisable(true);
+        }
+    }
+
+    private boolean checkEmailPattern(Customer customer) {
+        return emailPattern.matcher(customer.getEmail()).matches();
+    }
+
+    private void createEmailPattern(TextField textField){
+        emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    }
+
+    private void addNumericalListener(TextField textField){
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")){
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            if(newValue.length() >= 8){
+                textField.setText(newValue.substring(0, 8));
+            }
+        });
     }
 }
