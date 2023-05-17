@@ -14,6 +14,9 @@ public class TechDocDAO {
         dbc = new DBConnector();
     }
 
+    /**
+     * A method used to create tech documents in the database.
+     */
     public TechDoc createTechDoc(TechDoc techDoc) throws SQLException {
         //Prepare variables from customer in parameter
         String title = techDoc.getSetupName();
@@ -54,6 +57,12 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method used to add a tech document to a user
+     * @param techDoc
+     * @param user
+     * @throws SQLException
+     */
     public void addTech(TechDoc techDoc, User user) throws SQLException {
         String sql = "INSERT INTO DocLinkUser VALUES(?,?);";
 
@@ -69,6 +78,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method used to remove a tech document from a user.
+     */
     public void removeTech(TechDoc techDoc, User user) throws SQLException{
         String sql = "DELETE FROM DocLinkUser WHERE UserID = ? AND TechDocID = ?";
 
@@ -84,6 +96,10 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method used to get a list of tech documents. If user type 2, get a specific tech document.
+     * Else it will return getAllTechDocs.
+     */
     public List<TechDoc> getTechDocs(Customer customer, User user) throws SQLException {
         if (user.getUserType().getId() == 2) {
             return getSpecificTechDocs(customer,user);
@@ -92,6 +108,13 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that gets a list of tech documents on a specified customer id.
+     * Ordered by whether the document is locked or not.
+     * @param customer
+     * @return
+     * @throws SQLException
+     */
     private List<TechDoc> getAllTechDocs(Customer customer) throws SQLException {
         ArrayList<TechDoc> techDocs = new ArrayList<>();
 
@@ -123,6 +146,9 @@ public class TechDocDAO {
         return techDocs;
     }
 
+    /**
+     * A method that gets a specific tech documents list from the database.
+     */
     private List<TechDoc> getSpecificTechDocs(Customer customer, User user) throws SQLException {
         ArrayList<TechDoc> techDocs = new ArrayList<>();
 
@@ -164,6 +190,9 @@ public class TechDocDAO {
         return techDocs;
     }
 
+    /**
+     * A method that checks if the specified id is approved.
+     */
     private boolean checkIfApproved(Connection conn, int id) throws SQLException {
         String sql = "SELECT * FROM approved WHERE id = " + id + ";";
 
@@ -177,6 +206,11 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that updates a tech document on a specified id.
+     * @param techDoc
+     * @throws SQLException
+     */
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
 
         String sql = "UPDATE TechDoc SET setupname = ?, setupDescription = ?, extraInfo = ?, isLocked = ? WHERE id = ?;";
@@ -207,6 +241,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that removes a tech document from approved on a specified id.
+     */
     private void removeFromApproved(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM approved WHERE id = ?;";
 
@@ -216,6 +253,9 @@ public class TechDocDAO {
         pstmt.executeUpdate();
     }
 
+    /**
+     * A method that adds a tech document id to approved, and sets the date of when it got approved.
+     */
     private void addToApproved(Connection conn, TechDoc techDoc) throws SQLException {
         String sql = "INSERT INTO approved VALUES (?,GETDATE())";
 
@@ -223,6 +263,9 @@ public class TechDocDAO {
         stmt.setInt(1, techDoc.getId());
     }
 
+    /**
+     * A method that removes a tech document id from the CustomerTechDocReady table
+     */
     private void removeFromCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
         String sql = "DELETE FROM CustomerTechDocReady WHERE techDocID = ?;";
 
@@ -232,6 +275,9 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    /**
+     * A method that adds a tech document customerID and id to the customertechDocReady table
+     */
     private void addToCustomerTechDocReady(Connection conn, TechDoc techDoc) throws SQLException {
         String sql = "INSERT INTO CustomerTechDocReady VALUES(?,?)";
 
@@ -242,6 +288,9 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    /**
+     * A method that gets a list of tech pictures from a specified id.
+     */
     public List<Pictures> getTechPictures(TechDoc techDoc) throws SQLException {
         List<Pictures> picturesList = new ArrayList<>();
 
@@ -270,6 +319,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that adds a tech picture to a tech document
+     */
     public Pictures addTechPictures(Pictures pictures, TechDoc techDoc) throws SQLException {
         String sql = "INSERT INTO Pictures (filepath, pictureDescription, techDocID) VALUES (?,?,?);";
 
@@ -297,6 +349,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that deletes a tech document.
+     */
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
             clearDoc(techDoc, conn);
@@ -305,7 +360,9 @@ public class TechDocDAO {
         }
     }
 
-
+    /**
+     * A method that gets a tech document on a specified id.
+     */
     public TechDoc getTechdoc(TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
             String sql = "SELECT * FROM TechDoc WHERE id = " + techDoc.getId() + ";";
@@ -334,6 +391,9 @@ public class TechDocDAO {
         return null;
     }
 
+    /**
+     * A method that adds a device to the device table and links it up with a specific tech document.
+     */
     public Device addDevice(Device device, TechDoc techDoc) throws SQLException {
 
         String name = device.getDevice();
@@ -364,6 +424,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that returns a list of devices on a specified tech document id
+     */
     public List<Device> returnDevices(TechDoc techDoc) throws SQLException{
         ArrayList<Device> allDevices = new ArrayList<>();
 
@@ -390,6 +453,9 @@ public class TechDocDAO {
         return allDevices;
     }
 
+    /**
+     * A method that deletes a device from the device table.
+     */
     public void deleteDevice(Device device) throws SQLException {
         try(Connection conn = dbc.getConnection()) {
             String sql = "DELETE FROM Device WHERE deviceId = ?;";
@@ -403,6 +469,9 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that deletes a picture from the picture table.
+     */
     public void deletePicture(Pictures pictures) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
 
@@ -417,12 +486,19 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that deletes from techDoc on a specified id. Used to bypass foreign key constraints.
+     */
     private void deleteSelectedTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM TechDoc WHERE id = ?;";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, techDoc.getId());
         stmt.executeUpdate();
     }
+
+    /**
+     * A method that deletes from DocLinkUser on a specified TechDocId. Used to bypass foreign key constraints.
+     */
     private void deleteDocLinkUser(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM DocLinkUser WHERE TechDocID = ?;";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -430,6 +506,9 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    /**
+     * A method that deletes from Pictures on a specified techDocId. Used to bypass foreign key constraints.
+     */
     private void deletePictureBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM Pictures WHERE techDocID = ?;";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -437,6 +516,9 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    /**
+     * A method that updates the file path of a drawing in the TechDoc table.
+     */
     public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
         try (Connection conn = dbc.getConnection()) {
             String sql = "UPDATE TechDoc SET filepathDiagram = ? WHERE id = ?;";
@@ -451,6 +533,10 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method that checks if the retentionDate of a tech document in approved is older than 48 months
+     * If it is older, the tech document will be removed.
+     */
     public void expirationDate() throws SQLException{
         try(Connection conn = dbc.getConnection()){
 
@@ -468,6 +554,13 @@ public class TechDocDAO {
         }
     }
 
+    /**
+     * A method used to call all the methods that are used to bypass foreign key constraints,
+     * so we can properly delete a tech document.
+     * @param techDoc
+     * @param conn
+     * @throws SQLException
+     */
     private void clearDoc(TechDoc techDoc, Connection conn) throws SQLException{
         deletePictureBasedOnTechDoc(techDoc, conn);
         deleteDocLinkUser(techDoc, conn);

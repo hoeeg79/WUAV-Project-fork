@@ -56,6 +56,9 @@ public class CustomerDAO {
     }
 
 
+    /**
+     * A method that returns a list of customers from the database, with the given conditions in the SQL query.
+     */
     public List<Customer> returnCustomers() throws Exception{
         ArrayList<Customer> allCustomers = new ArrayList<>();
 
@@ -74,6 +77,9 @@ public class CustomerDAO {
         return allCustomers;
     }
 
+    /**
+     * A method that returns a list of specific customers using an SQL query
+     */
     private List<Customer> returnSpecificCustomers(Connection conn, boolean checker, String sql) throws SQLException {
         List<Customer> customers = new ArrayList<>();
 
@@ -139,6 +145,12 @@ public class CustomerDAO {
             throw new SQLException("Could not update customer", e);
         }
     }
+
+    /**
+     * A method that checks if the city associated with the customers zipcode exists in the database.
+     * If the zipcode does not exist, it will call the zipInsert method
+     *
+     */
     private void zipCheck(Customer customer) throws SQLException {
         try(Connection conn = dbc.getConnection()){
             String sql = "SELECT * FROM City Where zipcode = ?;";
@@ -154,6 +166,11 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * A method that inserts city and zipcode into the City table.
+     * @param customer
+     * @throws SQLException
+     */
     private void zipInsert(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
             String sql = "INSERT INTO City (city, zipcode) VALUES (?,?);";
