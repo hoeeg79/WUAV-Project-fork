@@ -92,6 +92,11 @@ public class MainViewController extends BaseController implements Initializable 
 
     }
 
+    /**
+     * A method inherited from the baseController class, used to instantiate models
+     * and call methods from the class.
+     * @throws Exception
+     */
     @Override
     public void setup() throws Exception {
         try {
@@ -113,12 +118,21 @@ public class MainViewController extends BaseController implements Initializable 
         this.user = user;
     }
 
+    /**
+     * a button that opens/closes the customer menu and clears the text fields.
+     * @param actionEvent
+     */
     @FXML
     private void handleCreateCustomersMenu(ActionEvent actionEvent) {
         customerMenu();
         clearCustomerMenu();
     }
 
+    /**
+     * A button used to create customers, with the specified information.
+     * @param actionEvent
+     * @throws Exception
+     */
     @FXML
     private void handleCreateCustomer(ActionEvent actionEvent) throws Exception {
         String name = tfCustomerName.getText();
@@ -150,11 +164,18 @@ public class MainViewController extends BaseController implements Initializable 
         //refreshList();
     }
 
+    /**
+     * A button used to close the customer menu.
+     * @param actionEvent
+     */
     @FXML
     private void handleCancelCustomer(ActionEvent actionEvent) {
         customerMenu();
     }
 
+    /**
+     * A method used to clear the text fields of the customer menu.
+     */
     private void clearCustomerMenu(){
         tfCustomerName.clear();
         tfCustomerEmail.clear();
@@ -164,6 +185,9 @@ public class MainViewController extends BaseController implements Initializable 
         tfCustomerCity.clear();
     }
 
+    /**
+     * A method used to slide the customer menu in or out, making it visible or invisible.
+     */
     private void customerMenu() {
         if (createCustomerMenu.isVisible()) {
             TranslateTransition slideOut = new TranslateTransition(Duration.seconds(0.5), createCustomerMenu);
@@ -181,6 +205,9 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A button that opens the create user view.
+     */
     @FXML
     public void handleCreateUsers(ActionEvent actionEvent) throws Exception {
         Stage stage = new Stage();
@@ -198,6 +225,9 @@ public class MainViewController extends BaseController implements Initializable 
         stage.show();
     }
 
+    /**
+     * A method that adds a listener to the search bar.
+     */
     private void searchBar(){
         tfSearchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             try{
@@ -208,6 +238,9 @@ public class MainViewController extends BaseController implements Initializable 
         }));
     }
 
+    /**
+     * A method used to open the customer view.
+     */
     private void setSceneSelectCompany(Button btn, Customer customer){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CustomerView.fxml"));
@@ -236,17 +269,28 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A button used to delete a customer.
+     */
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) throws Exception {
         super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
         refreshList();
     }
 
+    /**
+     * A button used to open the customer view.
+     * @param actionEvent
+     */
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
         setSceneSelectCompany(btnOpenCustomer, tvMain.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * A logout button, in case you want to change user.
+     * @param actionEvent
+     */
     @FXML
     private void handleLogOut(ActionEvent actionEvent) {
         try {
@@ -261,6 +305,10 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * Checks which user type is logged into the program, enabling or disabling buttons dependent on access.
+     * @throws Exception
+     */
     private void checkUserType() throws Exception {
         if (user.getUserType().getId() == 2) {
             btnCreateCustomersMenu.setVisible(false);
@@ -276,12 +324,17 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * a method that calls two other methods. One for filling the table columns, and the other to refresh the lists.
+     */
     private void loadList(CustomerModel model) throws Exception {
         prepareCells();
-
         refreshList();
     }
 
+    /**
+     * Fills the main view table column with name, email, phone number, street name, zipcode and city.
+     */
     private void prepareCells() {
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -291,11 +344,20 @@ public class MainViewController extends BaseController implements Initializable 
         tcCity.setCellValueFactory(new PropertyValueFactory<>("city"));
     }
 
+    /**
+     * A method used to refresh lists.
+     * @throws Exception
+     */
     private void refreshList() throws Exception {
         tvMain.getItems().clear();
         tvMain.setItems(super.getCModel().getObservableCustomers());
     }
 
+    /**
+     * a method that calls the customer model check customer for docs
+     * After that it calls the two methods docsForApprovalNotifier, and customerHighlighter.
+     * @throws Exception
+     */
     private void checkCustomers() throws Exception {
         if (super.getCModel().checkCustomerForDocs()) {
             docsForApprovalNotifier();
@@ -303,6 +365,10 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A notification that says if there are documents ready for approval
+     * @throws Exception
+     */
     private void docsForApprovalNotifier() throws Exception {
         Thread thread = new Thread(() -> {
             try {
@@ -324,6 +390,9 @@ public class MainViewController extends BaseController implements Initializable 
         thread.start();
     }
 
+    /**
+     * A method that highlights a document that is ready for approval. Once it have been approved it removes the highlight.
+     */
     private void customerHighlighter() {
         tcName.setCellFactory(column -> new TableCell<Customer, String>() {
             @Override
@@ -347,10 +416,18 @@ public class MainViewController extends BaseController implements Initializable 
         });
     }
 
+    /**
+     * A method that calls the expiration date method from the tech documents model.
+     */
     protected void expirationDate() throws Exception {
         super.setTModel(new TechDocModel());
         super.getTModel().expirationDate();
     }
+
+    /**
+     * A method that adds a listener to the customer name, email and phoneNumber fields,
+     * returns true if they are not empty, else return false.
+     */
     private void checkCreateCustomerFields() {
         tfCustomerName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
@@ -380,6 +457,9 @@ public class MainViewController extends BaseController implements Initializable 
         });
     }
 
+    /**
+     * A method that checks Customer name, email and phoneNumber, returns false if there is nothing in the fields
+     */
     private boolean checksForGeneralInfo() {
         if (txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber) {
             return true;
@@ -389,6 +469,9 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A method that adds a listener to all the address fields, returns false if empty, else true.
+     */
     private void checkCustomerAddressFields() {
         tfCustomerStreetName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
@@ -418,6 +501,10 @@ public class MainViewController extends BaseController implements Initializable 
         });
     }
 
+    /**
+     * Returns true if the text fields for streetname, zipcode and city are filled, else it will return false
+     * @return
+     */
     private boolean checksForAddress() {
         if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {
             return true;
@@ -426,6 +513,9 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * Enables or disables a button dependent on whether checksForGenelInfo & checksForAddress are true or not.
+     */
     private void enableTheButtons() {
         if (checksForGeneralInfo() && checksForAddress()) {
             btnCreateCustomer.setDisable(false);
@@ -435,14 +525,23 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A boolean that checks if the emailPattern matches the email from Customer.
+     */
     private boolean checkEmailPattern(Customer customer) {
         return emailPattern.matcher(customer.getEmail()).matches();
     }
 
+    /**
+     * States that an email pattern containts the given letters, numbers and signs.
+     */
     private void createEmailPattern(TextField textField){
         emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", Pattern.CASE_INSENSITIVE);
     }
 
+    /**
+     * adds a listener to the text property, ensuring only numbers are allowed
+     */
     private void addNumericalListener(TextField textField){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("\\d*")){
