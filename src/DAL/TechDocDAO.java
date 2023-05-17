@@ -4,10 +4,8 @@ import BE.*;
 import DAL.DatabaseConnector.DBConnector;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class TechDocDAO {
     private final DBConnector dbc;
@@ -387,7 +385,6 @@ public class TechDocDAO {
                 allDevices.add(devices);
             }
         }catch(SQLException e){
-            e.printStackTrace();
             throw new SQLException("Could not get Devices from database", e);
         }
         return allDevices;
