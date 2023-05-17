@@ -175,7 +175,7 @@ public class ExportPDFController extends BaseController {
                 document.add(drawing);
             }
 
-            if (cbPhotos.isSelected()) {
+            if (cbPhotos.isSelected() && techDoc.getPictures() != null) {
                 ArrayList<Pictures> pictures = (ArrayList<Pictures>) techDoc.getPictures();
                 Table pictureContainer = new Table(pictures.size());
                 Image picture;

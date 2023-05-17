@@ -34,3 +34,12 @@
     -fx-text-fill: white;
     -fx-underline: true;
 }
+
+.table-view .column-header{
+    -fx-background-color: #e84910;
+}
+
+.table-view .label{
+    -fx-background-color: #e84910;
+    -fx-text-fill: white;
+}

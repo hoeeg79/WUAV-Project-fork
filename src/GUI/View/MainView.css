@@ -58,20 +58,6 @@ AnchorPane{
     -fx-text-fill: white;
 }
 
-.customerList .list-cell
-{
-    -fx-font-size: 20px;
-    -fx-background-position: center;
-    -fx-background-repeat: stretch;
-    -fx-border-width: 1;
-    -fx-pref-width: 160;
-    -fx-pref-height: 130;
-}
-
-#cellPane .cellImage:hover {
-    -fx-background-image: null;
-}
-
 .button {
     -fx-background-color: #e84910;
     -fx-background-radius: 0px;
@@ -82,10 +68,6 @@ AnchorPane{
     -fx-background-color: #ee6020;
 }
 
-.list-view{
-    -fx-border-color: #333333;
-}
-
 .label {
     -fx-background-color: #e84910;
     -fx-background-radius: 5 5 0 0;
@@ -94,5 +76,5 @@ AnchorPane{
 }
 
 #docApprovalNotification {
-    -fx-border-color: black;
+    -fx-border-color: #333333;
 }
