@@ -104,7 +104,6 @@ public class LoginController extends BaseController {
 
     /**
      * A method inherited from BaseController.
-     * @throws Exception
      */
     @Override
     public void setup() throws Exception {
