@@ -103,6 +103,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button that closes the techDocEditor view, and opens CustomerView instead.
+     */
     @FXML
     private void handleClose(ActionEvent actionEvent) {
         try {
@@ -127,6 +130,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button used to save a tech document.
+     */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
         if (isEdit) {
@@ -140,6 +146,9 @@ public class TechDocEditorController extends BaseController {
         clearSavedLabelText();
     }
 
+    /**
+     * A method that generates a new tech document.
+     */
     private void generateTechDoc() {
         try {
             TechDoc newDoc = new TechDoc("not saved yet", customer.getId());
@@ -149,6 +158,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method that gets the information on different text fields and updates a tech document.
+     */
     private void doEditOfDoc() {
         try {
             techDoc.setSetupName(tfTitle.getText());
@@ -160,6 +172,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     *
+     * @param techDoc
+     */
     public void setIsEdit(TechDoc techDoc) {
         try {
             this.techDoc = techDoc;
@@ -180,10 +196,16 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method that initializes imageList.
+     */
     private void initializeList() {
         imageList = FXCollections.observableArrayList();
     }
 
+    /**
+     * A method used to fill out fields.
+     */
     private void fillFields() {
         taSetupDescription.setText(techDoc.getSetupDescription());
         tfTitle.setText(techDoc.getSetupName());
@@ -193,6 +215,9 @@ public class TechDocEditorController extends BaseController {
         displayCurrentImage();
     }
 
+    /**
+     * A method that gets the picture of a specified tech document.
+     */
     private Boolean getPicturesFromTechDoc() {
         if (techDoc.getPictures() != null) {
             imageList.clear();
@@ -206,18 +231,30 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A setter for pictures.
+     */
     public void setPicture(Pictures picture) {
         this.picture = picture;
     }
 
+    /**
+     * A setter for customers.
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * A setter for users.
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * A method used to add a tech document to a user.
+     */
     private void addTech(TechDoc techDoc, User user) {
         try {
             super.getTModel().addTech(techDoc, user);
@@ -239,6 +276,9 @@ public class TechDocEditorController extends BaseController {
         timer.schedule(task, 5000);
     }
 
+    /**
+     * A button used to open the DrawView.
+     */
     @FXML
     private void handleDraw(ActionEvent actionEvent) {
         try {
@@ -267,6 +307,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to display a drawing if one exists.
+     */
     private void displayDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
@@ -278,6 +321,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button used to open the PictureDescription view.
+     */
     @FXML
     private void handleAddPicture(ActionEvent actionEvent) {
         try {
@@ -311,6 +357,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to display the current image.
+     */
     private void displayCurrentImage() {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
@@ -321,6 +370,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to go to the next picture in the imageList.
+     */
     @FXML
     private void handleNextPicture(ActionEvent actionEvent) {
         if (imageList.size() > 1) {
@@ -333,6 +385,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button used to delete a picture from the imageList.
+     */
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
         try {
@@ -355,6 +410,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button used to open the Create Device view.
+     */
     @FXML
     private void handleOpenDevice(ActionEvent actionEvent) {
         try {
@@ -379,6 +437,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to fill out the device table view, with the specified columns.
+     */
     private void fillDevice(TechDocModel model) {
         try {
             tcDevice.setCellValueFactory(new PropertyValueFactory<>("device"));
@@ -393,6 +454,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to refresh the device list.
+     */
     private void refreshDevice() {
         try {
             tvDevice.getItems().clear();
@@ -402,6 +466,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A button used to delete a specified device from a specific tech document.
+     */
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
         try {
@@ -413,6 +480,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method that sets btnPDF to disabled if a tech document is approved.
+     */
     private void enablePdfBtn(){
         if (techDoc.isLocked() || techDoc.isApproved()){
             btnPDF.setDisable(false);
@@ -421,6 +491,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to update the approval status and lock the tech document.
+     */
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) {
         try {
@@ -446,6 +519,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to lock fields.
+     */
     private void lockFields() {
         tfTitle.setDisable(true);
         taExtraInfo.setDisable(true);
@@ -458,6 +534,9 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(true);
     }
 
+    /**
+     * A method used to open the ExportPDF view.
+     */
     @FXML
     private void handleExportPDF(ActionEvent actionEvent) {
         try {
@@ -483,6 +562,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method used to unlock fields.
+     */
     private void unlockFields() {
         tfTitle.setDisable(false);
         taExtraInfo.setDisable(false);
@@ -495,11 +577,17 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(false);
     }
 
+    /**
+     * A method used to put a tooltip over the finalize button.
+     */
     private void setupTooltipApproval() {
         Tooltip tooltip = new Tooltip("Locks the document for approval");
         Tooltip.install(btnReadyForApproval, tooltip);
     }
 
+    /**
+     * A method used to put a tooltip over the draw button.
+     */
     private void setupTooltipDraw() {
         Tooltip tooltip = new Tooltip("Opens the drawing application");
         Tooltip.install(btnDraw, tooltip);
