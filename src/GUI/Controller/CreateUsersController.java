@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.swing.*;
 import java.security.cert.Extension;
 
 public class CreateUsersController extends BaseController{
@@ -257,8 +258,15 @@ public class CreateUsersController extends BaseController{
     @FXML
     private void handleDeleteUser(ActionEvent actionEvent) {
         try {
-            User user = userList.getSelectionModel().getSelectedItem();
-            super.getUModel().deleteUser(user);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + userList.getSelectionModel().getSelectedItem() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                User user = userList.getSelectionModel().getSelectedItem();
+                super.getUModel().deleteUser(user);
+            }
         } catch (Exception e) {
             displayError(e);
         }

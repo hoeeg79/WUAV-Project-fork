@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -336,21 +337,28 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
         try {
-            if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
-                imageList.remove(currentImageIndex);
-                super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
-                if (imageList.isEmpty()) {
-                    currentImageIndex = -1;
-                    imageViewTechDoc.setImage(null);
-                    lblNoPictures.setVisible(true);
-                } else {
-                    if (currentImageIndex >= imageList.size()) {
-                        currentImageIndex = 0;
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete the current picture?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
+                    imageList.remove(currentImageIndex);
+                    super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
+                    if (imageList.isEmpty()) {
+                        currentImageIndex = -1;
+                        imageViewTechDoc.setImage(null);
+                        lblNoPictures.setVisible(true);
+                    } else {
+                        if (currentImageIndex >= imageList.size()) {
+                            currentImageIndex = 0;
+                        }
+                        displayCurrentImage();
                     }
-                    displayCurrentImage();
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             displayError(e);
         }
     }
@@ -405,20 +413,23 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
         try {
-            Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
-            super.getTModel().deleteDevice(deleteDevice);
-            refreshDevice();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + tvDevice.getSelectionModel().getSelectedItem().getDevice() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
+                super.getTModel().deleteDevice(deleteDevice);
+                refreshDevice();
+            }
         } catch (Exception e) {
             displayError(e);
         }
     }
 
     private void enablePdfBtn(){
-        if (techDoc.isLocked() || techDoc.isApproved()){
-            btnPDF.setDisable(false);
-        } else {
-            btnPDF.setDisable(true);
-        }
+        btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
     }
 
     @FXML

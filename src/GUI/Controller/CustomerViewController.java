@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -339,10 +340,21 @@ public class CustomerViewController extends BaseController{
      * A button used to delete tech documents
      */
     @FXML
-    private void handleDeleteTechDoc(ActionEvent actionEvent) throws SQLException {
-        TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
-        super.getTModel().deleteTechDoc(techDoc);
-        lvTechDocs.getItems().remove(techDoc);
+    private void handleDeleteTechDoc(ActionEvent actionEvent) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + lvTechDocs.getSelectionModel().getSelectedItem().getSetupName() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+                super.getTModel().deleteTechDoc(techDoc);
+                lvTechDocs.getItems().remove(techDoc);
+            }
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**

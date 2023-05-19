@@ -23,6 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -289,8 +290,15 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) {
         try {
-            super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
-            refreshList();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + tvMain.getSelectionModel().getSelectedItem().getName() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
+                refreshList();
+            }
         } catch (Exception e) {
             displayError(e);
         }
