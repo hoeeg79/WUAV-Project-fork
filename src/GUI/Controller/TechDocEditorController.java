@@ -81,7 +81,7 @@ public class TechDocEditorController extends BaseController {
     private boolean isEdit;
     private ObservableList<Pictures> imageList;
     private int currentImageIndex = -1;
-    private ArrayList<Device> deviceList = new ArrayList<>();
+    private final ArrayList<Device> deviceList = new ArrayList<>();
 
     @Override
     public void setup() {

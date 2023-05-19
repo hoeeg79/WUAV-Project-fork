@@ -6,15 +6,13 @@ import BLL.CustomerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.sql.SQLException;
 
 public class CustomerModel {
-    private CustomerManager customerManager;
-    private ObservableList<Customer> customerList;
+    private final CustomerManager customerManager;
+    private final ObservableList<Customer> customerList;
 
     public CustomerModel() throws Exception {
         customerManager = new CustomerManager();

@@ -2,17 +2,15 @@ package BLL;
 
 import BE.Customer;
 import BLL.util.CustomerSearch;
-import DAL.CustomerDAO;
 import DAL.FacadeDAL;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class CustomerManager {
 
-    private FacadeDAL facadeDAL;
-    private CustomerSearch customerSearch = new CustomerSearch();
+    private final FacadeDAL facadeDAL;
+    private final CustomerSearch customerSearch = new CustomerSearch();
 
     /**
      * Constructor for the CustomerManager class. It creates a new instance of FacadeDAL.

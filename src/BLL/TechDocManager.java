@@ -11,7 +11,6 @@ public class TechDocManager {
 
     /**
      * Constructor used to create a new instance of FacadeDAL.
-     * @throws Exception
      */
     public TechDocManager() throws Exception {
         facadeDAL = new FacadeDAL();
@@ -70,7 +69,7 @@ public class TechDocManager {
      * A method that deletes a techDoc object from the database.
      */
     public void deleteTechDoc(TechDoc techDoc) throws SQLException {
-        facadeDAL.deleteTechdoc(techDoc);
+        facadeDAL.deleteTechDoc(techDoc);
     }
 
     /**

@@ -97,7 +97,6 @@ public class MainViewController extends BaseController implements Initializable 
     /**
      * A method inherited from the baseController class, used to instantiate models
      * and call methods from the class.
-     * @throws Exception
      */
     @Override
     public void setup() {
@@ -122,7 +121,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * a button that opens/closes the customer menu and clears the text fields.
-     * @param actionEvent
      */
     @FXML
     private void handleCreateCustomersMenu(ActionEvent actionEvent) {
@@ -132,8 +130,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to create customers, with the specified information.
-     * @param actionEvent
-     * @throws Exception
      */
     @FXML
     private void handleCreateCustomer(ActionEvent actionEvent) {
@@ -173,7 +169,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to close the customer menu.
-     * @param actionEvent
      */
     @FXML
     private void handleCancelCustomer(ActionEvent actionEvent) {
@@ -306,7 +301,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to open the customer view.
-     * @param actionEvent
      */
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
@@ -315,7 +309,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A logout button, in case you want to change user.
-     * @param actionEvent
      */
     @FXML
     private void handleLogOut(ActionEvent actionEvent) {
@@ -547,7 +540,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * Returns true if the text fields for streetname, zipcode and city are filled, else it will return false
-     * @return
      */
     private boolean checksForAddress() {
         if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {

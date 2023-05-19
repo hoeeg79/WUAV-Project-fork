@@ -1,13 +1,11 @@
 package BLL;
 
-import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import DAL.FacadeDAL;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class UsersManager {
     private final FacadeDAL facadeDAL;

@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class FacadeDAL {
-    private CustomerDAO customerDAO;
-    private UsersDAO usersDAO;
-    private TechDocDAO techDocDAO;
-    private LoginDAO loginDAO;
+    private final CustomerDAO customerDAO;
+    private final UsersDAO usersDAO;
+    private final TechDocDAO techDocDAO;
+    private final LoginDAO loginDAO;
 
     public FacadeDAL() throws Exception {
         customerDAO = new CustomerDAO();
@@ -92,7 +92,7 @@ public class FacadeDAL {
         techDocDAO.deletePicture(pictures);
     }
 
-    public void deleteTechdoc(TechDoc techDoc) throws SQLException {
+    public void deleteTechDoc(TechDoc techDoc) throws SQLException {
         techDocDAO.deleteTechDoc(techDoc);
     }
 
