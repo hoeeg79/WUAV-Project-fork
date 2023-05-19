@@ -105,7 +105,8 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button that closes the techDocEditor view, and opens CustomerView instead.
+     * Changes the view back to the customer view.
+     * @param actionEvent
      */
     @FXML
     private void handleClose(ActionEvent actionEvent) {
@@ -132,7 +133,8 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to save a tech document.
+     * Saves the document and connects the user to the document if it's new.
+     * @param actionEvent
      */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
@@ -148,7 +150,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method that generates a new tech document.
+     * Generates a new temporary document.
      */
     private void generateTechDoc() {
         try {
@@ -160,7 +162,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method that gets the information on different text fields and updates a tech document.
+     * Updates the document with the values from the text-fields.
      */
     private void doEditOfDoc() {
         try {
@@ -174,7 +176,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     *
+     * Sets the document to edit mode.
      * @param techDoc
      */
     public void setIsEdit(TechDoc techDoc) {
@@ -198,14 +200,14 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method that initializes imageList.
+     * Initializes the image-list.
      */
     private void initializeList() {
         imageList = FXCollections.observableArrayList();
     }
 
     /**
-     * A method used to fill out fields.
+     * Fills out the fields with the values of the document.
      */
     private void fillFields() {
         taSetupDescription.setText(techDoc.getSetupDescription());
@@ -217,7 +219,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method that gets the picture of a specified tech document.
+     * Checks if there are any picture to the document and then gets them.
      */
     private Boolean getPicturesFromTechDoc() {
         if (techDoc.getPictures() != null) {
@@ -254,7 +256,9 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to add a tech document to a user.
+     * Links a tech to the document.
+     * @param techDoc techDoc to be linked.
+     * @param user User to be linked.
      */
     private void addTech(TechDoc techDoc, User user) {
         try {
@@ -265,6 +269,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Clears the save status label after a delay.
+     */
     private void clearSavedLabelText() {
         Timer timer = new Timer();
 
@@ -278,7 +285,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to open the DrawView.
+     * Opens a new window with the draw view fxml.
      */
     @FXML
     private void handleDraw(ActionEvent actionEvent) {
@@ -309,7 +316,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to display a drawing if one exists.
+     * Displays the technical drawing if it has one.
      */
     private void displayDrawing() {
         try {
@@ -323,7 +330,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to open the PictureDescription view.
+     * Opens a new window with the picture description fxml to add pictures to the document.
      */
     @FXML
     private void handleAddPicture(ActionEvent actionEvent) {
@@ -359,7 +366,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to display the current image.
+     * Displays the first image in the image-list if there is any.
      */
     private void displayCurrentImage() {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
@@ -372,7 +379,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to go to the next picture in the imageList.
+     * Changes the image to the next one in the image-list.
      */
     @FXML
     private void handleNextPicture(ActionEvent actionEvent) {
@@ -387,7 +394,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to delete a picture from the imageList.
+     * Deletes the current image shown with a confirmation box.
      */
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
@@ -419,7 +426,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to open the Create Device view.
+     * Opens a new window with the create device view fxml to create new devices to the documents.
      */
     @FXML
     private void handleOpenDevice(ActionEvent actionEvent) {
@@ -446,7 +453,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to fill out the device table view, with the specified columns.
+     * Fills out the device table view, with the specified columns.
      */
     private void fillDevice(TechDocModel model) {
         try {
@@ -463,7 +470,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to refresh the device list.
+     * Clears and populates the device-list.
      */
     private void refreshDevice() {
         try {
@@ -475,7 +482,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A button used to delete a specified device from a specific tech document.
+     * Deletes the currently selected device with a confirmation box.
      */
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
@@ -496,14 +503,14 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method that sets btnPDF to disabled if a tech document is approved.
+     * Disables the pdf button if the document is approved.
      */
     private void enablePdfBtn(){
         btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
     }
 
     /**
-     * A method used to update the approval status and lock the tech document.
+     * Updates the approval status and locks the tech document.
      */
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) {
@@ -531,7 +538,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to lock fields.
+     * Disables the text-fields and buttons.
      */
     private void lockFields() {
         tfTitle.setDisable(true);
@@ -546,7 +553,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to open the ExportPDF view.
+     * Opens a new window with the export pdf fxml to export the document as a pdf.
      */
     @FXML
     private void handleExportPDF(ActionEvent actionEvent) {
@@ -574,7 +581,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to unlock fields.
+     * Enables the text-fields and buttons.
      */
     private void unlockFields() {
         tfTitle.setDisable(false);
@@ -589,7 +596,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to put a tooltip over the finalize button.
+     * Sets the tooltip to the finalize button.
      */
     private void setupTooltipApproval() {
         Tooltip tooltip = new Tooltip("Locks the document for approval");
@@ -597,7 +604,7 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
-     * A method used to put a tooltip over the draw button.
+     * Sets the tooltip for the draw button.
      */
     private void setupTooltipDraw() {
         Tooltip tooltip = new Tooltip("Opens the drawing application");
