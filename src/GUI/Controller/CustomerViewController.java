@@ -75,18 +75,22 @@ public class CustomerViewController extends BaseController{
      * filling fields and adding listeners to textfields.
      */
     @Override
-    public void setup() throws Exception {
-        lockFieldsAndButtons();
-        addListener();
-        checkUser();
-        fillFields();
-        checkEmailPattern(tfCustomerEmail);
-        addNumericalListener(tfCustomerPhoneNumber);
-        addAlphabeticListener(tfCustomerName);
-        super.setCModel(new CustomerModel());
-        super.setTModel(new TechDocModel());
-        loadTechDocs();
-        btnEditTechDoc.setDisable(true);
+    public void setup() {
+        try {
+            lockFieldsAndButtons();
+            addListener();
+            checkUser();
+            fillFields();
+            checkEmailPattern(tfCustomerEmail);
+            addNumericalListener(tfCustomerPhoneNumber);
+            addAlphabeticListener(tfCustomerName);
+            super.setCModel(new CustomerModel());
+            super.setTModel(new TechDocModel());
+            loadTechDocs();
+            btnEditTechDoc.setDisable(true);
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -99,8 +103,12 @@ public class CustomerViewController extends BaseController{
     /**
      * Loads the customer and the user of a tech document into the list view.
      */
-    private void loadTechDocs() throws SQLException {
-        lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+    private void loadTechDocs() {
+        try {
+            lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+        } catch (SQLException e) {
+            displayError(e);
+        }
     }
 
     /**

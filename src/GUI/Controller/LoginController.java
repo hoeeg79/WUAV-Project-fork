@@ -38,7 +38,7 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * A method that loads the MainView fxml.
+     * A method that loads the MainView fxml if the login credentials are correct.
      */
     private void login() {
         try {

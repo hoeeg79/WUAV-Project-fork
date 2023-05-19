@@ -91,11 +91,19 @@ public class ExportPDFController extends BaseController {
         }
     }
 
+    /**
+     * Handler for a button to generate a pdf and preview it.
+     * @param actionEvent
+     */
     @FXML
     private void handleExport(ActionEvent actionEvent) {
         generatePdf();
     }
 
+    /**
+     * Handler for a button to close the window.
+     * @param actionEvent
+     */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
         closeWindow(btnCancel);
@@ -260,7 +268,7 @@ public class ExportPDFController extends BaseController {
 
     /**
      * Generates a cell that contains an image without a border.
-     * @param image Image to be shown.
+     * @param image Image to be shown in cell.
      * @return Returns generated cell.
      */
     private static Cell createImageCell(Image image) {

@@ -30,8 +30,12 @@ public class PictureDescriptionController extends BaseController{
     private TechDoc techDoc;
 
     @Override
-    public void setup() throws Exception {
-        super.setTModel(new TechDocModel());
+    public void setup() {
+        try {
+            super.setTModel(new TechDocModel());
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     @FXML
@@ -40,11 +44,15 @@ public class PictureDescriptionController extends BaseController{
     }
 
     @FXML
-    private void handleSaveDescription(ActionEvent actionEvent) throws SQLException {
-        picture = new Pictures(selectedFile.toURI().toString());
-        picture.setDescription(txtPictureDescription.getText());
-        super.getTModel().addTechPictures(picture, techDoc);
-        closeWindow(btnSaveDescription);
+    private void handleSaveDescription(ActionEvent actionEvent) {
+        try {
+            picture = new Pictures(selectedFile.toURI().toString());
+            picture.setDescription(txtPictureDescription.getText());
+            super.getTModel().addTechPictures(picture, techDoc);
+            closeWindow(btnSaveDescription);
+        } catch (SQLException e) {
+            displayError(e);
+        }
     }
 
     @FXML

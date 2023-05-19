@@ -40,6 +40,10 @@ public abstract class BaseController {
         this.TModel = TModel;
     }
 
+    /**
+     * Display a throwable as an error.
+     * @param t Error to be shown.
+     */
     public void displayError(Throwable t) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Something went wrong");
@@ -47,6 +51,10 @@ public abstract class BaseController {
         alert.showAndWait();
     }
 
+    /**
+     * Closes the window where the provided button is in.
+     * @param btn
+     */
     public void closeWindow(Button btn) {
         Stage stage = (Stage) btn.getScene().getWindow();
         stage.close();
