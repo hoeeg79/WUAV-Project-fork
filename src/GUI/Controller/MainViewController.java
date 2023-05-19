@@ -229,6 +229,7 @@ public class MainViewController extends BaseController implements Initializable 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
             displayError(e);
