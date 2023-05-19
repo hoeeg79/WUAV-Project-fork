@@ -18,7 +18,7 @@ public class UsersManager {
     }
 
     /**
-     * A method that takes in a user object and users facadeDAL to create a new user in the database
+     * A method that creates a user object in the database.
      */
     public User createUser(User user) throws SQLException {
         return facadeDAL.createUser(user);
@@ -32,16 +32,22 @@ public class UsersManager {
     }
 
     /**
-     * A method that takes in a user object and users facadeDAL to delete a user in the database
+     * A method that deletes a user object in the database.
      */
     public void deleteUser(User user) throws SQLException {
         facadeDAL.deleteUser(user);
     }
 
+    /**
+     * A method that updates a user object in the database.
+     */
     public void updateUser(User user) throws SQLException {
         facadeDAL.updateUser(user);
     }
 
+    /**
+     * A method that gets a list of linked users associated with a techDoc.
+     */
     public List<User> getLinkedUsers(TechDoc techDoc) throws SQLException {
         return facadeDAL.getLinkedUsers(techDoc);
     }

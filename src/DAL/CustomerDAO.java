@@ -55,6 +55,9 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * A method that selects all customers with a specified name in our database.
+     */
     public boolean checkCustomer(Customer customer) throws SQLException {
         String name = customer.getName();
 
@@ -183,8 +186,6 @@ public class CustomerDAO {
 
     /**
      * A method that inserts city and zipcode into the City table.
-     * @param customer
-     * @throws SQLException
      */
     private void zipInsert(Customer customer) throws SQLException{
         try(Connection conn = dbc.getConnection()){
