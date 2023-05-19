@@ -80,7 +80,7 @@ public class TechDocEditorController extends BaseController {
     private boolean isEdit;
     private ObservableList<Pictures> imageList;
     private int currentImageIndex = -1;
-    private ArrayList<Device> deviceList = new ArrayList<>();
+    private final ArrayList<Device> deviceList = new ArrayList<>();
 
     @Override
     public void setup() throws Exception {
@@ -444,12 +444,12 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(false);
     }
 
-    private void setupTooltipApproval() throws Exception{
+    private void setupTooltipApproval() {
         Tooltip tooltip = new Tooltip("Ready for approval");
         Tooltip.install(btnReadyForApproval, tooltip);
     }
 
-    private void setupTooltipDraw() throws Exception{
+    private void setupTooltipDraw() {
         Tooltip tooltip = new Tooltip("Opens the drawing application");
         Tooltip.install(btnDraw, tooltip);
     }

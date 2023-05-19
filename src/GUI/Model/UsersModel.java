@@ -1,6 +1,5 @@
 package GUI.Model;
 
-import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import BLL.UsersManager;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class UsersModel {
 
-    private UsersManager usersManager;
+    private final UsersManager usersManager;
     private ObservableList<User> userList;
 
     public UsersModel() throws Exception {
