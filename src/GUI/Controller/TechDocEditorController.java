@@ -256,6 +256,7 @@ public class TechDocEditorController extends BaseController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.showAndWait();
 
             super.getTModel().getTechDoc(techDoc);
@@ -292,6 +293,7 @@ public class TechDocEditorController extends BaseController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.showAndWait();
 
             techDoc = super.getTModel().getTechDoc(techDoc);
@@ -369,6 +371,7 @@ public class TechDocEditorController extends BaseController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.showAndWait();
             refreshDevice();
         } catch (Exception e) {
@@ -473,6 +476,7 @@ public class TechDocEditorController extends BaseController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
             displayError(e);
