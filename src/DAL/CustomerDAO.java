@@ -114,11 +114,8 @@ public class CustomerDAO {
             String city = rs.getString("city");
 
             Customer customer = new Customer(id, name, email, phoneNumber, streetName, zipcode, city);
-            if (checker) {
-                customer.setDocReadyForApproval(true);
-            } else {
-                customer.setDocReadyForApproval(false);
-            }
+            customer.setDocReadyForApproval(checker);
+
             customers.add(customer);
         }
         return customers;
