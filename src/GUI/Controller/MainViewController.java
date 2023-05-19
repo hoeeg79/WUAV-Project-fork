@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -97,7 +98,7 @@ public class MainViewController extends BaseController implements Initializable 
      * and call methods from the class.
      */
     @Override
-    public void setup() throws Exception {
+    public void setup() {
         try {
             loadList(super.getCModel());
             searchBar();
@@ -130,34 +131,39 @@ public class MainViewController extends BaseController implements Initializable 
      * A button used to create customers, with the specified information.
      */
     @FXML
-    private void handleCreateCustomer(ActionEvent actionEvent) throws Exception {
-        String name = tfCustomerName.getText();
-        String email = tfCustomerEmail.getText();
-        String tlf = tfCustomerPhonenumber.getText();
-        String streetName = tfCustomerStreetName.getText();
-        String zipcode = tfCustomerZipcode.getText();
-        String city = tfCustomerCity.getText();
+    private void handleCreateCustomer(ActionEvent actionEvent) {
+        try {
+            String name = tfCustomerName.getText();
+            String email = tfCustomerEmail.getText();
+            String tlf = tfCustomerPhonenumber.getText();
+            String streetName = tfCustomerStreetName.getText();
+            String zipcode = tfCustomerZipcode.getText();
+            String city = tfCustomerCity.getText();
 
-        Customer customer = new Customer(name, email, tlf, streetName, zipcode, city);
+            Customer customer = new Customer(name, email, tlf, streetName, zipcode, city);
 
-        if (!checkEmailPattern(customer)) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Email is wrong");
-            alert.setContentText("Please supply a correct email address");
-            alert.show();
-            return;
+            if (!checkEmailPattern(customer)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Email is wrong");
+                alert.setContentText("Please supply a correct email address");
+                alert.show();
+                return;
+            }
+
+            if (!super.getCModel().createCustomer(customer)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Customer Exist");
+                alert.setContentText("Customer Already Exists, please give it a different name");
+                alert.show();
+            } else {
+                clearCustomerMenu();
+                customerMenu();
+            }
+            //refreshList();
         }
-
-        if (!super.getCModel().createCustomer(customer)) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Customer Exist");
-            alert.setContentText("Customer Already Exists, please give it a different name");
-            alert.show();
-        } else {
-            clearCustomerMenu();
-            customerMenu();
+        catch (Exception e) {
+            displayError(e);
         }
-        //refreshList();
     }
 
     /**
@@ -204,20 +210,25 @@ public class MainViewController extends BaseController implements Initializable 
      * A button that opens the create user view.
      */
     @FXML
-    public void handleCreateUsers(ActionEvent actionEvent) throws Exception {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateUsersView.fxml"));
-        Parent root = loader.load();
+    public void handleCreateUsers(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/CreateUsersView.fxml"));
+            Parent root = loader.load();
 
-        CreateUsersController controller = loader.getController();
-        controller.setup();
+            CreateUsersController controller = loader.getController();
+            controller.setup();
 
-        stage.setScene(new Scene(root));
-        stage.setTitle("Create User");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
-        stage.centerOnScreen();
-        stage.show();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Create User");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.centerOnScreen();
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -248,12 +259,15 @@ public class MainViewController extends BaseController implements Initializable 
             controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
-            double currentWidth = currentStage.getWidth();
-            double currentHeight = currentStage.getHeight();
+            double currentStageWidth = currentStage.getWidth();
+            double currentStageHeight = currentStage.getHeight();
 
             currentStage.setScene(new Scene(root));
-            currentStage.setWidth(currentWidth);
-            currentStage.setHeight(currentHeight);
+            if (!currentStage.isFullScreen()) {
+                currentStage.setWidth(currentStageWidth);
+                currentStage.setHeight(currentStageHeight);
+                currentStage.centerOnScreen();
+            }
 
             currentStage.show();
 
@@ -268,9 +282,13 @@ public class MainViewController extends BaseController implements Initializable 
      * A button used to delete a customer.
      */
     @FXML
-    private void handleDeleteCustomer(ActionEvent actionEvent) throws Exception {
-        super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
-        refreshList();
+    private void handleDeleteCustomer(ActionEvent actionEvent) {
+        try {
+            super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
+            refreshList();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -301,27 +319,35 @@ public class MainViewController extends BaseController implements Initializable 
     /**
      * Checks which user type is logged into the program, enabling or disabling buttons dependent on access.
      */
-    private void checkUserType() throws Exception {
-        if (user.getUserType().getId() == 2) {
-            btnCreateCustomersMenu.setVisible(false);
-            btnDeleteCustomer.setVisible(false);
-            btnCreateUsers.setVisible(false);
-        } else if (user.getUserType().getId() == 1) {
-            btnCreateCustomersMenu.setVisible(false);
-            btnDeleteCustomer.setVisible(false);
-            checkCustomers();
-        } else {
-            btnCreateUsers.setVisible(false);
-            checkCustomers();
+    private void checkUserType() {
+        try {
+            if (user.getUserType().getId() == 2) {
+                btnCreateCustomersMenu.setVisible(false);
+                btnDeleteCustomer.setVisible(false);
+                btnCreateUsers.setVisible(false);
+            } else if (user.getUserType().getId() == 1) {
+                btnCreateCustomersMenu.setVisible(false);
+                btnDeleteCustomer.setVisible(false);
+                checkCustomers();
+            } else {
+                btnCreateUsers.setVisible(false);
+                checkCustomers();
+            }
+        } catch (Exception e) {
+            displayError(e);
         }
     }
 
     /**
      * a method that calls two other methods. One for filling the table columns, and the other to refresh the lists.
      */
-    private void loadList(CustomerModel model) throws Exception {
-        prepareCells();
-        refreshList();
+    private void loadList(CustomerModel model) {
+        try {
+            prepareCells();
+            refreshList();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -339,19 +365,29 @@ public class MainViewController extends BaseController implements Initializable 
     /**
      * A method used to refresh lists.
      */
-    private void refreshList() throws Exception {
-        tvMain.getItems().clear();
-        tvMain.setItems(super.getCModel().getObservableCustomers());
+    private void refreshList() {
+        try {
+            tvMain.getItems().clear();
+            tvMain.setItems(super.getCModel().getObservableCustomers());
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
      * a method that calls the customer model check customer for docs
      * After that it calls the two methods docsForApprovalNotifier, and customerHighlighter.
      */
-    private void checkCustomers() throws Exception {
-        if (super.getCModel().checkCustomerForDocs()) {
-            docsForApprovalNotifier();
-            customerHighlighter();
+    private void checkCustomers() {
+        try {
+            if (super.getCModel().checkCustomerForDocs()) {
+
+                docsForApprovalNotifier();
+                customerHighlighter();
+
+            }
+        } catch (Exception e) {
+            displayError(e);
         }
     }
 
@@ -408,9 +444,13 @@ public class MainViewController extends BaseController implements Initializable 
     /**
      * A method that calls the expiration date method from the tech documents model.
      */
-    protected void expirationDate() throws Exception {
-        super.setTModel(new TechDocModel());
-        super.getTModel().expirationDate();
+    protected void expirationDate() {
+        try {
+            super.setTModel(new TechDocModel());
+            super.getTModel().expirationDate();
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**

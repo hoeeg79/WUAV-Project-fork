@@ -75,18 +75,22 @@ public class CustomerViewController extends BaseController{
      * filling fields and adding listeners to textfields.
      */
     @Override
-    public void setup() throws Exception {
-        lockFieldsAndButtons();
-        addListener();
-        checkUser();
-        fillFields();
-        checkEmailPattern(tfCustomerEmail);
-        addNumericalListener(tfCustomerPhoneNumber);
-        addAlphabeticListener(tfCustomerName);
-        super.setCModel(new CustomerModel());
-        super.setTModel(new TechDocModel());
-        loadTechDocs();
-        btnEditTechDoc.setDisable(true);
+    public void setup() {
+        try {
+            lockFieldsAndButtons();
+            addListener();
+            checkUser();
+            fillFields();
+            checkEmailPattern(tfCustomerEmail);
+            addNumericalListener(tfCustomerPhoneNumber);
+            addAlphabeticListener(tfCustomerName);
+            super.setCModel(new CustomerModel());
+            super.setTModel(new TechDocModel());
+            loadTechDocs();
+            btnEditTechDoc.setDisable(true);
+        } catch (Exception e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -99,8 +103,12 @@ public class CustomerViewController extends BaseController{
     /**
      * Loads the customer and the user of a tech document into the list view.
      */
-    private void loadTechDocs() throws SQLException {
-        lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+    private void loadTechDocs() {
+        try {
+            lvTechDocs.setItems(super.getTModel().getTechDocs(customer, user));
+        } catch (SQLException e) {
+            displayError(e);
+        }
     }
 
     /**
@@ -203,8 +211,15 @@ public class CustomerViewController extends BaseController{
             controller.setup();
 
             Stage currentStage = (Stage) btnHome.getScene().getWindow();
+            double currentStageWidth = currentStage.getWidth();
+            double currentStageHeight = currentStage.getHeight();
+
             currentStage.setScene(new Scene(root));
-            currentStage.centerOnScreen();
+            if (!currentStage.isFullScreen()) {
+                currentStage.setWidth(currentStageWidth);
+                currentStage.setHeight(currentStageHeight);
+                currentStage.centerOnScreen();
+            }
             currentStage.show();
 
         } catch (Exception e) {
@@ -237,12 +252,15 @@ public class CustomerViewController extends BaseController{
             controller.setup();
 
             Stage currentStage = (Stage) btn.getScene().getWindow();
-            double currentWidth = currentStage.getWidth();
-            double currentHeight = currentStage.getHeight();
+            double currentStageWidth = currentStage.getWidth();
+            double currentStageHeight = currentStage.getHeight();
 
             currentStage.setScene(new Scene(root));
-            currentStage.setWidth(currentWidth);
-            currentStage.setHeight(currentHeight);
+            if (!currentStage.isFullScreen()) {
+                currentStage.setWidth(currentStageWidth);
+                currentStage.setHeight(currentStageHeight);
+                currentStage.centerOnScreen();
+            }
 
             currentStage.show();
 

@@ -39,7 +39,8 @@ public class CreateDeviceController extends BaseController {
     /**
      * A method used to handle the create device button, when pressed it will create a new device
      */
-    public void handleCreateDevice(ActionEvent actionEvent)  {
+    @FXML
+    private void handleCreateDevice(ActionEvent actionEvent)  {
         try {
             String name = tfDevice.getText();
             String username = tfUsername.getText();
@@ -73,7 +74,8 @@ public class CreateDeviceController extends BaseController {
     /**
      * A method used to handle the cancel button, when pressed it will close the window.
      */
-    public void handleCancel(ActionEvent actionEvent) {
+    @FXML
+    private void handleCancel(ActionEvent actionEvent) {
         closeWindow(btnCancel);
     }
 }
