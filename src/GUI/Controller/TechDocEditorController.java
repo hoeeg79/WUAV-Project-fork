@@ -104,6 +104,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Changes the view back to the customer view.
+     * @param actionEvent
+     */
     @FXML
     private void handleClose(ActionEvent actionEvent) {
         try {
@@ -128,6 +132,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Saves the document and connects the user to the document if it's new.
+     * @param actionEvent
+     */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
         if (isEdit) {
@@ -141,6 +149,9 @@ public class TechDocEditorController extends BaseController {
         clearSavedLabelText();
     }
 
+    /**
+     * Generates a new temporary document.
+     */
     private void generateTechDoc() {
         try {
             TechDoc newDoc = new TechDoc("not saved yet", customer.getId());
@@ -150,6 +161,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Updates the document with the values from the text-fields.
+     */
     private void doEditOfDoc() {
         try {
             techDoc.setSetupName(tfTitle.getText());
@@ -161,6 +175,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Sets the document to edit mode.
+     * @param techDoc
+     */
     public void setIsEdit(TechDoc techDoc) {
         try {
             this.techDoc = techDoc;
@@ -181,10 +199,16 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the image-list.
+     */
     private void initializeList() {
         imageList = FXCollections.observableArrayList();
     }
 
+    /**
+     * Fills out the fields with the values of the document.
+     */
     private void fillFields() {
         taSetupDescription.setText(techDoc.getSetupDescription());
         tfTitle.setText(techDoc.getSetupName());
@@ -194,6 +218,10 @@ public class TechDocEditorController extends BaseController {
         displayCurrentImage();
     }
 
+    /**
+     * Checks if there are any picture to the document.
+     * @return
+     */
     private Boolean getPicturesFromTechDoc() {
         if (techDoc.getPictures() != null) {
             imageList.clear();
@@ -219,6 +247,11 @@ public class TechDocEditorController extends BaseController {
         this.user = user;
     }
 
+    /**
+     * Links a tech to the document.
+     * @param techDoc
+     * @param user
+     */
     private void addTech(TechDoc techDoc, User user) {
         try {
             super.getTModel().addTech(techDoc, user);
@@ -228,6 +261,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Clears the save status label after a delay.
+     */
     private void clearSavedLabelText() {
         Timer timer = new Timer();
 
@@ -240,6 +276,10 @@ public class TechDocEditorController extends BaseController {
         timer.schedule(task, 5000);
     }
 
+    /**
+     * Opens a new window with the draw view fxml.
+     * @param actionEvent
+     */
     @FXML
     private void handleDraw(ActionEvent actionEvent) {
         try {
@@ -268,6 +308,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Displays the technical drawing if it has one.
+     */
     private void displayDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
@@ -279,6 +322,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Opens a new window with the picture description fxml to add pictures to the document.
+     * @param actionEvent
+     */
     @FXML
     private void handleAddPicture(ActionEvent actionEvent) {
         try {
@@ -312,6 +359,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Displays the first image in the image-list if there is any.
+     */
     private void displayCurrentImage() {
         if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
             Image currentImage = new Image(imageList.get(currentImageIndex).getFilePath());
@@ -322,6 +372,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Changes the image to the next one in the image-list.
+     * @param actionEvent
+     */
     @FXML
     private void handleNextPicture(ActionEvent actionEvent) {
         if (imageList.size() > 1) {
@@ -334,6 +388,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Deletes the current image shown with a confirmation box.
+     * @param actionEvent
+     */
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
         try {
@@ -363,6 +421,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Opens a new window with the create device view fxml to create new devices to the documents.
+     * @param actionEvent
+     */
     @FXML
     private void handleOpenDevice(ActionEvent actionEvent) {
         try {
@@ -387,6 +449,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Filles the device-list if there is any connected to the document.
+     * @param model
+     */
     private void fillDevice(TechDocModel model) {
         try {
             tcDevice.setCellValueFactory(new PropertyValueFactory<>("device"));
@@ -401,6 +467,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Clears and populates the device-list.
+     */
     private void refreshDevice() {
         try {
             tvDevice.getItems().clear();
@@ -410,6 +479,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Deletes the currently selected device with a confirmation box.
+     * @param actionEvent
+     */
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
         try {
@@ -428,10 +501,18 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Disables the pdf button if the document is locked or approved.
+     */
     private void enablePdfBtn(){
         btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
     }
 
+    /**
+     * If the document is approved the document the text-fields gets unlocked.
+     * If the document is locked it gets approved otherwise it gets locked.
+     * @param actionEvent
+     */
     @FXML
     private void handleReadyForApproval(ActionEvent actionEvent) {
         try {
@@ -457,6 +538,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Disables the text-fields and most buttons.
+     */
     private void lockFields() {
         tfTitle.setDisable(true);
         taExtraInfo.setDisable(true);
@@ -469,6 +553,10 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(true);
     }
 
+    /**
+     * Opens a new window with the export pdf fxml to export the document as a pdf.
+     * @param actionEvent
+     */
     @FXML
     private void handleExportPDF(ActionEvent actionEvent) {
         try {
@@ -494,6 +582,9 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * Enables the text-fields and buttons.
+     */
     private void unlockFields() {
         tfTitle.setDisable(false);
         taExtraInfo.setDisable(false);
@@ -506,11 +597,17 @@ public class TechDocEditorController extends BaseController {
         btnDeleteDevice.setDisable(false);
     }
 
+    /**
+     * Sets the tooltip to the finalize button.
+     */
     private void setupTooltipApproval() {
         Tooltip tooltip = new Tooltip("Locks the document for approval");
         Tooltip.install(btnReadyForApproval, tooltip);
     }
 
+    /**
+     * Sets the tooltip for the draw button.
+     */
     private void setupTooltipDraw() {
         Tooltip tooltip = new Tooltip("Opens the drawing application");
         Tooltip.install(btnDraw, tooltip);

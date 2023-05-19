@@ -371,7 +371,7 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     /**
-     * A method used to refresh lists.
+     * A method used to refresh the customer list.
      */
     private void refreshList() {
         try {
@@ -424,7 +424,7 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     /**
-     * A method that highlights a document that is ready for approval. Once it have been approved it removes the highlight.
+     * A method that highlights a customer if there is a document ready for approval.
      */
     private void customerHighlighter() {
         tcName.setCellFactory(column -> new TableCell<Customer, String>() {
@@ -467,29 +467,17 @@ public class MainViewController extends BaseController implements Initializable 
      */
     private void checkCreateCustomerFields() {
         tfCustomerName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerName = true;
-            } else {
-                txtInCustomerName = false;
-            }
+            txtInCustomerName = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerEmail = true;
-            } else {
-                txtInCustomerEmail = false;
-            }
+            txtInCustomerEmail = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerPhonenumber.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerPhoneNumber = true;
-            } else {
-                txtInCustomerPhoneNumber = false;
-            }
+            txtInCustomerPhoneNumber = !newValue.isEmpty();
             enableTheButtons();
         });
     }
@@ -498,12 +486,7 @@ public class MainViewController extends BaseController implements Initializable 
      * A method that checks Customer name, email and phoneNumber, returns false if there is nothing in the fields
      */
     private boolean checksForGeneralInfo() {
-        if (txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber;
     }
 
     /**
@@ -511,29 +494,17 @@ public class MainViewController extends BaseController implements Initializable 
      */
     private void checkCustomerAddressFields() {
         tfCustomerStreetName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerStreetName = true;
-            } else {
-                txtInCustomerStreetName = false;
-            }
+            txtInCustomerStreetName = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerZipcode.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerZipcode = true;
-            } else {
-                txtInCustomerZipcode = false;
-            }
+            txtInCustomerZipcode = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerCity.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerCity = true;
-            } else {
-                txtInCustomerCity = false;
-            }
+            txtInCustomerCity = !newValue.isEmpty();
             enableTheButtons();
         });
     }
@@ -542,23 +513,14 @@ public class MainViewController extends BaseController implements Initializable 
      * Returns true if the text fields for streetname, zipcode and city are filled, else it will return false
      */
     private boolean checksForAddress() {
-        if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {
-            return true;
-        } else {
-            return false;
-        }
+        return txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity;
     }
 
     /**
      * Enables or disables a button dependent on whether checksForGenelInfo & checksForAddress are true or not.
      */
     private void enableTheButtons() {
-        if (checksForGeneralInfo() && checksForAddress()) {
-            btnCreateCustomer.setDisable(false);
-        }
-        else {
-            btnCreateCustomer.setDisable(true);
-        }
+        btnCreateCustomer.setDisable(!checksForGeneralInfo() || !checksForAddress());
     }
 
     /**
