@@ -129,19 +129,15 @@ public class TechDocEditorController extends BaseController {
 
     @FXML
     private void handleSave(ActionEvent actionEvent) {
-        try {
-            if (isEdit) {
-                doEditOfDoc();
-            } else {
-                isEdit = true;
-                doEditOfDoc();
-                addTech(techDoc, user);
-            }
-            lblSaveStatus.setText("Saved successfully!");
-            clearSavedLabelText();
-        } catch (SQLException e) {
-            displayError(e);
+        if (isEdit) {
+            doEditOfDoc();
+        } else {
+            isEdit = true;
+            doEditOfDoc();
+            addTech(techDoc, user);
         }
+        lblSaveStatus.setText("Saved successfully!");
+        clearSavedLabelText();
     }
 
     private void generateTechDoc() {
