@@ -81,30 +81,8 @@ public class UsersDAO {
      * A method that returns a list of users where softDeleted is not 1.
      */
     public List<User> returnUsers() throws SQLException {
-        ArrayList<User> allUsers = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE softDeleted != 1;";
-
-        try (Connection conn = dbConnector.getConnection()) {
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                String name = rs.getString("name");
-                int userTypeID = rs.getInt("userTypeID");
-
-                UserType userType = getUserType(conn, userTypeID);
-
-                User user = new User(id, username, password, name, userType);
-                allUsers.add(user);
-            }
-
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
+        List<User> allUsers = userQuery(sql);
         return allUsers;
     }
 
@@ -133,31 +111,7 @@ public class UsersDAO {
      */
     public List<User> getLinkedUsers(TechDoc techdoc) throws SQLException{
         String sql = "SELECT u.* FROM DocLinkUser dl INNER JOIN [User] u ON u.id = dl.UserID WHERE dl.TechDocID = ?;";
-
-        List<User> links = FXCollections.observableArrayList();
-
-        try (Connection conn = dbConnector.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, techdoc.getId());
-            ResultSet rs = stmt.executeQuery();
-
-            while(rs.next()) {
-                int id = rs.getInt("id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                String name = rs.getString("name");
-                int userTypeID = rs.getInt("userTypeID");
-
-                UserType userType = getUserType(conn, userTypeID);
-
-                User user = new User(id, username, password, name, userType);
-                links.add(user);
-            }
-
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
+        List<User> links = userQuery(sql, techdoc.getId());
         return links;
     }
 
@@ -180,5 +134,38 @@ public class UsersDAO {
         } catch (SQLException e){
             throw new SQLException("Could not retrieve user type", e);
         }
+    }
+
+    /**
+     * A method used to remove duplicate code from returnUsers and getLinkedUsers.
+     */
+    private List<User> userQuery(String sql, Object... params) throws SQLException {
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = dbConnector.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            for (int i = 0; i < params.length; i++){
+                stmt.setObject(i + 1, params[i]);
+            }
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String name = rs.getString("name");
+                int userTypeID = rs.getInt("userTypeID");
+
+                UserType userType = getUserType(conn, userTypeID);
+
+                User user = new User(id, username, password, name, userType);
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return users;
     }
 }
