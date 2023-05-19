@@ -88,6 +88,7 @@ public class CustomerViewController extends BaseController{
             super.setTModel(new TechDocModel());
             loadTechDocs();
             btnEditTechDoc.setDisable(true);
+            btnDeleteTechDoc.setDisable(true);
         } catch (Exception e) {
             displayError(e);
         }
@@ -353,8 +354,10 @@ public class CustomerViewController extends BaseController{
             lvTechDocs.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     btnEditTechDoc.setDisable(false);
+                    btnDeleteTechDoc.setDisable(false);
                 } else {
                     btnEditTechDoc.setDisable(true);
+                    btnDeleteTechDoc.setDisable(true);
                 }
                 try {
                     fillTechs(newValue);
