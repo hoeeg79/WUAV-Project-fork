@@ -3,12 +3,11 @@ package DAL;
 import BE.User;
 import BE.UserType;
 import DAL.DatabaseConnector.DBConnector;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.*;
 
 public class LoginDAO {
-    private DBConnector dbc;
+    private final DBConnector dbc;
 
     protected LoginDAO() throws Exception {
         dbc = new DBConnector();
@@ -16,9 +15,6 @@ public class LoginDAO {
 
     /**
      * A method that uses an SQL query to retrieve us users with a specified username, that are not softdeleted.
-     * @param username
-     * @return
-     * @throws Exception
      */
     protected User login(String username) throws Exception {
         String sql = "SELECT * FROM [User] WHERE username=? AND softDeleted != 1;";
@@ -47,10 +43,6 @@ public class LoginDAO {
 
     /**
      * A method that uses an SQL query to get the usertypes on a specified id.
-     * @param conn
-     * @param userTypeId
-     * @return
-     * @throws SQLException
      */
     private UserType getUserType(Connection conn, int userTypeId) throws SQLException {
         try {

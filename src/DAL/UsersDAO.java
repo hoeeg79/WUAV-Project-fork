@@ -1,6 +1,5 @@
 package DAL;
 
-import BE.Customer;
 import BE.TechDoc;
 import BE.User;
 import BE.UserType;
@@ -9,9 +8,7 @@ import javafx.collections.FXCollections;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UsersDAO {
 
@@ -85,10 +82,9 @@ public class UsersDAO {
      */
     public List<User> returnUsers() throws SQLException {
         ArrayList<User> allUsers = new ArrayList<>();
+        String sql = "SELECT * FROM [User] WHERE softDeleted != 1;";
 
         try (Connection conn = dbConnector.getConnection()) {
-
-            String sql = "SELECT * FROM [User] WHERE softDeleted != 1;";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -144,8 +140,8 @@ public class UsersDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, techdoc.getId());
-
             ResultSet rs = stmt.executeQuery();
+
             while(rs.next()) {
                 int id = rs.getInt("id");
                 String username = rs.getString("username");
@@ -156,7 +152,6 @@ public class UsersDAO {
                 UserType userType = getUserType(conn, userTypeID);
 
                 User user = new User(id, username, password, name, userType);
-
                 links.add(user);
             }
 

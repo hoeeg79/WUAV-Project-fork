@@ -2,15 +2,13 @@ package BLL;
 
 import BE.User;
 import DAL.FacadeDAL;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 public class LoginManager {
 
-    private FacadeDAL facadeDAL;
+    private final FacadeDAL facadeDAL;
 
     /**
      * Constructor used to create a new instance of FacadeDAL
-     * @throws Exception
      */
     public LoginManager() throws Exception {
         facadeDAL = new FacadeDAL();
