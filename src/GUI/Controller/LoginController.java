@@ -58,7 +58,7 @@ public class LoginController extends BaseController {
             controller.expirationDate();
 
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Main View");
+            primaryStage.setTitle("WUAV Documentation System");
             primaryStage.centerOnScreen();
             primaryStage.show();
 
