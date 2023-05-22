@@ -489,6 +489,13 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    private void deleteDeviceBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM Device WHERE techDocID = ?;";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, techDoc.getId());
+        pstmt.executeUpdate();
+    }
+
     /**
      * A method that updates the file path of a drawing in the TechDoc table.
      */
@@ -534,6 +541,7 @@ public class TechDocDAO {
     private void clearDoc(TechDoc techDoc, Connection conn) throws SQLException{
         deletePictureBasedOnTechDoc(techDoc, conn);
         deleteDocLinkUser(techDoc, conn);
+        deleteDeviceBasedOnTechDoc(techDoc, conn);
         removeFromApproved(techDoc, conn);
         deleteSelectedTechDoc(techDoc, conn);
     }
