@@ -538,6 +538,9 @@ public class TechDocDAO {
         deleteSelectedTechDoc(techDoc, conn);
     }
 
+    /**
+     * A method used to avoid duplicate code.
+     */
     private void techStatement(String sql, User user, TechDoc techDoc) throws SQLException{
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
