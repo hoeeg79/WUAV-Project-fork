@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -317,7 +318,8 @@ public class TechDocEditorController extends BaseController {
     private void displayDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
-                Image drawing = new Image(techDoc.getFilePathDiagram());
+                File file = new File(techDoc.getFilePathDiagram());
+                Image drawing = new Image(String.valueOf(file.toURI()));
                 techDrawing.setImage(drawing);
             }
         } catch (Exception ignored) {
