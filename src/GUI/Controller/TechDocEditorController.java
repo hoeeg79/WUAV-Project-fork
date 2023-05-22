@@ -22,7 +22,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -94,8 +93,10 @@ public class TechDocEditorController extends BaseController {
             if (!isEdit) {
                 initializeList();
                 generateTechDoc();
+                disableButtons();
+                
             } else {
-                fillDevice(super.getTModel());
+                fillDevice();
             }
             if (techDoc.getPictures() != null) {
                 lblNoPictures.setVisible(false);
@@ -104,6 +105,39 @@ public class TechDocEditorController extends BaseController {
         } catch (Exception e) {
             displayError(e);
         }
+    }
+
+    /**
+     * Disables the pdf button if the document is approved.
+     */
+    private void enablePdfBtn(){
+        btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
+    }
+
+    /**
+     * Disables buttons that shouldn't be used before a document have been saved once.
+     */
+    private void disableButtons() {
+        btnDevice.setDisable(true);
+        btnDeleteDevice.setDisable(true);
+        btnAddPicture.setDisable(true);
+        btnDeletePicture.setDisable(true);
+        btnNextPicture.setDisable(true);
+        btnDraw.setDisable(true);
+        btnReadyForApproval.setDisable(true);
+    }
+
+    /**
+     * Enables buttons that can be used after a document have been saved once.
+     */
+    private void enableButtons() {
+        btnDevice.setDisable(false);
+        btnDeleteDevice.setDisable(false);
+        btnAddPicture.setDisable(false);
+        btnDeletePicture.setDisable(false);
+        btnNextPicture.setDisable(false);
+        btnDraw.setDisable(false);
+        btnReadyForApproval.setDisable(false);
     }
 
     /**
@@ -144,6 +178,8 @@ public class TechDocEditorController extends BaseController {
             isEdit = true;
             doEditOfDoc();
             addTech(techDoc, user);
+            enableButtons();
+            fillDevice();
         }
         lblSaveStatus.setText("Saved successfully!");
         clearSavedLabelText();
@@ -454,7 +490,7 @@ public class TechDocEditorController extends BaseController {
     /**
      * Fills out the device table view, with the specified columns.
      */
-    private void fillDevice(TechDocModel model) {
+    private void fillDevice() {
         try {
             tcDevice.setCellValueFactory(new PropertyValueFactory<>("device"));
             tcUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -501,13 +537,6 @@ public class TechDocEditorController extends BaseController {
         } catch (Exception e) {
             displayError(e);
         }
-    }
-
-    /**
-     * Disables the pdf button if the document is approved.
-     */
-    private void enablePdfBtn(){
-        btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
     }
 
     /**
