@@ -111,6 +111,7 @@ public class MainViewController extends BaseController implements Initializable 
             checkCustomerAddressFields();
             createEmailPattern(tfCustomerEmail);
             addNumericalListener(tfCustomerPhonenumber);
+            listenerMainTable();
         } catch (Exception e) {
             displayError(e);
         }
@@ -308,7 +309,10 @@ public class MainViewController extends BaseController implements Initializable 
      */
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
-        setSceneSelectCompany(btnOpenCustomer, tvMain.getSelectionModel().getSelectedItem());
+        Customer customer = tvMain.getSelectionModel().getSelectedItem();
+        if (customer != null) {
+            setSceneSelectCompany(btnOpenCustomer, customer);
+        }
     }
 
     /**
@@ -553,5 +557,23 @@ public class MainViewController extends BaseController implements Initializable 
                 textField.setText(newValue.substring(0, 8));
             }
         });
+    }
+
+    /**
+     *  Creates a listener for the table of customers,
+     *  enables delete and open customer if one is selected.
+     */
+    private void listenerMainTable() {
+        btnDeleteCustomer.setDisable(true);
+        btnOpenCustomer.setDisable(true);
+        tvMain.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                btnDeleteCustomer.setDisable(false);
+                btnOpenCustomer.setDisable(false);
+            } else {
+                btnDeleteCustomer.setDisable(true);
+                btnOpenCustomer.setDisable(true);
+            }
+        }));
     }
 }

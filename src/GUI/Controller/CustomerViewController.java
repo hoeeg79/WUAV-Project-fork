@@ -149,7 +149,8 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * A cancel button that enables the edit customer button, and disables the edit fields.
+     * Handle for the cancel button when editing customers,
+     * it will negate any changes and bring it back to what it was.
      */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
@@ -331,7 +332,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * Closes the tech menu
+     * Closes the manage tech access menu
      */
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
@@ -459,6 +460,7 @@ public class CustomerViewController extends BaseController{
             btnAddTech.setVisible(false);
             btnCreateNewTech.setVisible(false);
             btnDeleteTechDoc.setVisible(false);
+            btnManageTech.setVisible(false);
             techDocHighlighter();
         }
     }
