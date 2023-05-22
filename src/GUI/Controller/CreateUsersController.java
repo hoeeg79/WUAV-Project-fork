@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javax.swing.*;
+import java.util.Optional;
+
 public class CreateUsersController extends BaseController{
     @FXML
     private Button btnCancel;
@@ -256,15 +258,17 @@ public class CreateUsersController extends BaseController{
     @FXML
     private void handleDeleteUser(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete " + userList.getSelectionModel().getSelectedItem() + "?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            User user = userList.getSelectionModel().getSelectedItem();
 
-            if (result == JOptionPane.YES_OPTION) {
-                User user = userList.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete " + user.getName().toUpperCase());
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
                 super.getUModel().deleteUser(user);
             }
+
         } catch (Exception e) {
             displayError(e);
         }

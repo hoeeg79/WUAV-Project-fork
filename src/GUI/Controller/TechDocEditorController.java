@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -394,12 +395,12 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete the current picture?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete this picture?");
+            Optional<ButtonType> result = alert.showAndWait();
 
-            if (result == JOptionPane.YES_OPTION) {
+            if (result.get() == ButtonType.OK) {
                 if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
                     imageList.remove(currentImageIndex);
                     super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
@@ -415,6 +416,7 @@ public class TechDocEditorController extends BaseController {
                     }
                 }
             }
+
         } catch (Exception e) {
             displayError(e);
         }
@@ -482,16 +484,18 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete " + tvDevice.getSelectionModel().getSelectedItem().getDevice() + "?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
 
-            if (result == JOptionPane.YES_OPTION) {
-                Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete " + deleteDevice.getDevice().toUpperCase());
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK){
                 super.getTModel().deleteDevice(deleteDevice);
                 refreshDevice();
             }
+
         } catch (Exception e) {
             displayError(e);
         }
