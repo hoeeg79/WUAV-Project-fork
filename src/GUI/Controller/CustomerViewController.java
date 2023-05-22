@@ -354,6 +354,8 @@ public class CustomerViewController extends BaseController{
             if (result.get() == ButtonType.OK) {
                 super.getTModel().deleteTechDoc(techDoc);
                 lvTechDocs.getItems().remove(techDoc);
+                lvTechDocs.getSelectionModel().clearSelection();
+                fillTechs(null);
             }
 
         } catch (Exception e) {
@@ -421,7 +423,7 @@ public class CustomerViewController extends BaseController{
                     }
                 }
 
-                if (lvTechDocs.getSelectionModel() != null) {
+                if (lvTechDocs.getSelectionModel().getSelectedItem() != null) {
                     linkedTechList.addAll(super.getUModel().getLinkedUsers(techDoc));
                     for (int i = 0; i < linkedTechList.size(); i++) {
                         techList.remove(linkedTechList.get(i));
@@ -434,7 +436,6 @@ public class CustomerViewController extends BaseController{
                 displayError(e);
             }
         });
-
         Platform.runLater(thread);
     }
 
