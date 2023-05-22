@@ -53,7 +53,6 @@ public abstract class BaseController {
 
     /**
      * Closes the window where the provided button is in.
-     * @param btn
      */
     public void closeWindow(Button btn) {
         Stage stage = (Stage) btn.getScene().getWindow();

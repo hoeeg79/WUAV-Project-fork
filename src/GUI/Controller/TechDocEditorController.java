@@ -107,7 +107,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Changes the view back to the customer view.
-     * @param actionEvent
      */
     @FXML
     private void handleClose(ActionEvent actionEvent) {
@@ -135,7 +134,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Saves the document and connects the user to the document if it's new.
-     * @param actionEvent
      */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
@@ -178,7 +176,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Sets the document to edit mode.
-     * @param techDoc
      */
     public void setIsEdit(TechDoc techDoc) {
         try {
@@ -258,8 +255,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Links a tech to the document.
-     * @param techDoc techDoc to be linked.
-     * @param user User to be linked.
      */
     private void addTech(TechDoc techDoc, User user) {
         try {
