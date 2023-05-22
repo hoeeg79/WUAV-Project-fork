@@ -38,11 +38,20 @@ public class PictureDescriptionController extends BaseController{
         }
     }
 
+    /**
+     * Closes the window.
+     * @param actionEvent
+     */
     @FXML
     private void handleCloseDescription(ActionEvent actionEvent) {
         closeWindow(btnCloseDescription);
     }
 
+
+    /**
+     * Creates a new picture and sets its description and adds it to the tech-doc.
+     * @param actionEvent
+     */
     @FXML
     private void handleSaveDescription(ActionEvent actionEvent) {
         try {
@@ -55,6 +64,10 @@ public class PictureDescriptionController extends BaseController{
         }
     }
 
+    /**
+     * Opens a filechooser that allows the user to pick an image file to add to the tech-doc.
+     * @param actionEvent
+     */
     @FXML
     private void handleBrowse(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
