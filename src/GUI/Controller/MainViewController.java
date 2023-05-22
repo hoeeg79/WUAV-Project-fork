@@ -23,6 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -96,7 +97,6 @@ public class MainViewController extends BaseController implements Initializable 
     /**
      * A method inherited from the baseController class, used to instantiate models
      * and call methods from the class.
-     * @throws Exception
      */
     @Override
     public void setup() {
@@ -121,7 +121,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * a button that opens/closes the customer menu and clears the text fields.
-     * @param actionEvent
      */
     @FXML
     private void handleCreateCustomersMenu(ActionEvent actionEvent) {
@@ -131,8 +130,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to create customers, with the specified information.
-     * @param actionEvent
-     * @throws Exception
      */
     @FXML
     private void handleCreateCustomer(ActionEvent actionEvent) {
@@ -172,7 +169,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to close the customer menu.
-     * @param actionEvent
      */
     @FXML
     private void handleCancelCustomer(ActionEvent actionEvent) {
@@ -289,8 +285,15 @@ public class MainViewController extends BaseController implements Initializable 
     @FXML
     private void handleDeleteCustomer(ActionEvent actionEvent) {
         try {
-            super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
-            refreshList();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + tvMain.getSelectionModel().getSelectedItem().getName() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                super.getCModel().deleteCustomer(tvMain.getSelectionModel().getSelectedItem());
+                refreshList();
+            }
         } catch (Exception e) {
             displayError(e);
         }
@@ -298,7 +301,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A button used to open the customer view.
-     * @param actionEvent
      */
     @FXML
     private void handleOpenCustomer(ActionEvent actionEvent) {
@@ -307,7 +309,6 @@ public class MainViewController extends BaseController implements Initializable 
 
     /**
      * A logout button, in case you want to change user.
-     * @param actionEvent
      */
     @FXML
     private void handleLogOut(ActionEvent actionEvent) {
@@ -370,7 +371,7 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     /**
-     * A method used to refresh lists.
+     * A method used to refresh the customer list.
      */
     private void refreshList() {
         try {
@@ -423,7 +424,7 @@ public class MainViewController extends BaseController implements Initializable 
     }
 
     /**
-     * A method that highlights a document that is ready for approval. Once it have been approved it removes the highlight.
+     * A method that highlights a customer if there is a document ready for approval.
      */
     private void customerHighlighter() {
         tcName.setCellFactory(column -> new TableCell<Customer, String>() {
@@ -466,29 +467,17 @@ public class MainViewController extends BaseController implements Initializable 
      */
     private void checkCreateCustomerFields() {
         tfCustomerName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerName = true;
-            } else {
-                txtInCustomerName = false;
-            }
+            txtInCustomerName = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerEmail = true;
-            } else {
-                txtInCustomerEmail = false;
-            }
+            txtInCustomerEmail = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerPhonenumber.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerPhoneNumber = true;
-            } else {
-                txtInCustomerPhoneNumber = false;
-            }
+            txtInCustomerPhoneNumber = !newValue.isEmpty();
             enableTheButtons();
         });
     }
@@ -497,12 +486,7 @@ public class MainViewController extends BaseController implements Initializable 
      * A method that checks Customer name, email and phoneNumber, returns false if there is nothing in the fields
      */
     private boolean checksForGeneralInfo() {
-        if (txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return txtInCustomerName && txtInCustomerEmail && txtInCustomerPhoneNumber;
     }
 
     /**
@@ -510,55 +494,33 @@ public class MainViewController extends BaseController implements Initializable 
      */
     private void checkCustomerAddressFields() {
         tfCustomerStreetName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerStreetName = true;
-            } else {
-                txtInCustomerStreetName = false;
-            }
+            txtInCustomerStreetName = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerZipcode.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerZipcode = true;
-            } else {
-                txtInCustomerZipcode = false;
-            }
+            txtInCustomerZipcode = !newValue.isEmpty();
             enableTheButtons();
         });
 
         tfCustomerCity.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                txtInCustomerCity = true;
-            } else {
-                txtInCustomerCity = false;
-            }
+            txtInCustomerCity = !newValue.isEmpty();
             enableTheButtons();
         });
     }
 
     /**
      * Returns true if the text fields for streetname, zipcode and city are filled, else it will return false
-     * @return
      */
     private boolean checksForAddress() {
-        if (txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity) {
-            return true;
-        } else {
-            return false;
-        }
+        return txtInCustomerStreetName && txtInCustomerZipcode && txtInCustomerCity;
     }
 
     /**
      * Enables or disables a button dependent on whether checksForGenelInfo & checksForAddress are true or not.
      */
     private void enableTheButtons() {
-        if (checksForGeneralInfo() && checksForAddress()) {
-            btnCreateCustomer.setDisable(false);
-        }
-        else {
-            btnCreateCustomer.setDisable(true);
-        }
+        btnCreateCustomer.setDisable(!checksForGeneralInfo() || !checksForAddress());
     }
 
     /**

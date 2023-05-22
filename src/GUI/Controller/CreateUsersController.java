@@ -8,8 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.security.cert.Extension;
-
+import javax.swing.*;
 public class CreateUsersController extends BaseController{
     @FXML
     private Button btnCancel;
@@ -67,78 +66,61 @@ public class CreateUsersController extends BaseController{
         }
     }
 
+    /**
+     * Adds listeners to text-fields and radiobuttons to see if something have been written or selected
+     * to determine the state of the buttons in the view.
+     */
     private void beGoneButton(){
         btnEditUsers.setDisable(true);
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                btnEditUsers.setDisable(false);
-            } else {
-                btnEditUsers.setDisable(true);
-            }
+            btnEditUsers.setDisable(newValue == null);
         });
 
         btnDeleteUser.setDisable(true);
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                btnDeleteUser.setDisable(false);
-            } else {
-                btnDeleteUser.setDisable(true);
-            }
+            btnDeleteUser.setDisable(newValue == null);
         });
 
         txtUsernameUser.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                txtInUsernameField = true;
-            } else {
-                txtInUsernameField = false;
-            }
+            txtInUsernameField = newValue != null;
             enableTheButtons();
         });
 
         txtNameUser.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                txtInNameField = true;
-            } else {
-                txtInNameField = false;
-            }
+            txtInNameField = newValue != null;
             enableTheButtons();
         });
 
         txtPasswordUser.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                txtInPasswordField = true;
-            } else {
-                txtInPasswordField = false;
-            }
+            txtInPasswordField = newValue != null;
             enableTheButtons();
         });
 
         txtConfirmPwUser.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                txtInConfirmField = true;
-            } else {
-                txtInConfirmField = false;
-            }
+            txtInConfirmField = newValue != null;
             enableTheButtons();
         });
 
         userType.selectedToggleProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                userTypes = true;
-            } else {
-                userTypes = false;
-            }
+            userTypes = newValue != null;
             enableTheButtons();
         }));
 
     }
 
+    /**
+     * Enables the save button  if the fields have something written in them and a radiobutton have been selected.
+     */
     private void enableTheButtons() {
         if (userTypes && txtInNameField && txtInConfirmField && txtInPasswordField && txtInUsernameField) {
             btnSaveUser.setDisable(false);
         }
     }
 
+    /**
+     * Saves the new or edited user to the database and checks if there is another use with the same name.
+     * @param actionEvent
+     */
     @FXML
     private void handleSaveUser(ActionEvent actionEvent) {
         try {
@@ -164,6 +146,10 @@ public class CreateUsersController extends BaseController{
         }
     }
 
+    /**
+     * Compares the entered username with the other users.
+     * @return True if no other user have that name.
+     */
     private boolean checkUsername(){
         for (User user : userList.getItems()) {
             if (txtUsernameUser.getText().equals(user.getUsername())){
@@ -173,6 +159,9 @@ public class CreateUsersController extends BaseController{
         return false;
     }
 
+    /**
+     * Clears the text-fields and the selection of the radiobuttons.
+     */
     private void clearItAll() {
         txtConfirmPwUser.clear();
         txtPasswordUser.clear();
@@ -187,6 +176,9 @@ public class CreateUsersController extends BaseController{
         userList.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Edits the selected user to the edited values.
+     */
     private void editUser() {
         try {
             User user = userList.getSelectionModel().getSelectedItem();
@@ -221,6 +213,9 @@ public class CreateUsersController extends BaseController{
         }
     }
 
+    /**
+     * Creates a new user with the provided values from the text-fields and radiobuttons.
+     */
     private void newUser(){
         String username = txtUsernameUser.getText();
         String name = txtNameUser.getText();
@@ -254,21 +249,40 @@ public class CreateUsersController extends BaseController{
     }
 
 
+    /**
+     * Creates a confirmation pop-up. If the yes button is pressed the selected user is deleted.
+     * @param actionEvent
+     */
     @FXML
     private void handleDeleteUser(ActionEvent actionEvent) {
         try {
-            User user = userList.getSelectionModel().getSelectedItem();
-            super.getUModel().deleteUser(user);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            int result = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + userList.getSelectionModel().getSelectedItem() + "?",
+                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                User user = userList.getSelectionModel().getSelectedItem();
+                super.getUModel().deleteUser(user);
+            }
         } catch (Exception e) {
             displayError(e);
         }
     }
 
+    /**
+     * Closes the window.
+     * @param actionEvent
+     */
     @FXML
     private void handleCloseWindow(ActionEvent actionEvent) {
         closeWindow(btnClose);
     }
 
+    /**
+     * Inserts all users into the user table.
+     * @throws Exception
+     */
     private void insertIntoTable() throws Exception {
         userscln.setCellValueFactory(new PropertyValueFactory<>("name"));
         typecln.setCellValueFactory(new PropertyValueFactory<>("userType"));
@@ -276,6 +290,10 @@ public class CreateUsersController extends BaseController{
         userList.setItems(super.getUModel().getObservableUsers());
     }
 
+    /**
+     * Adds the values from the selected user into their respective fields.
+     * @param actionEvent
+     */
     @FXML
     private void handleEditUsers(ActionEvent actionEvent) {
         btnDeleteUser.setDisable(true);

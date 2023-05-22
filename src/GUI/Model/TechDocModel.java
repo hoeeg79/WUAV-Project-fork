@@ -6,8 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class TechDocModel {
     private final TechDocManager techDocManager;

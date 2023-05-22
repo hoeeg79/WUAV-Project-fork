@@ -5,15 +5,13 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnector {
 
     private static final String PROP_FILE = "config/database.settings";
-    private SQLServerDataSource ds;
+    private final SQLServerDataSource ds;
 
     /**
      * Constructor of the DBConnector class, used to declare the database information.

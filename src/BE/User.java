@@ -28,7 +28,6 @@ public class User {
     }
 
     public User(String username, String password, String name, int userTypeID) {
-        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -43,13 +42,6 @@ public class User {
         this.userTypeID = userTypeID;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
     public int getId() {
         return id;
     }

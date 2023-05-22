@@ -152,7 +152,7 @@ public class DrawController extends BaseController implements Initializable {
     }
 
     /**
-     * Checks if the file is a image file.
+     * Checks if the file is an image file.
      * @param file File to check.
      * @return True if it is a png, jpg or jpeg file.
      */

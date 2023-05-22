@@ -58,42 +58,19 @@ public class TechDocDAO {
     }
 
     /**
-     * A method used to add a tech document to a user
-     * @param techDoc
-     * @param user
-     * @throws SQLException
+     * A method used to add a tech document to a customer.
      */
     public void addTech(TechDoc techDoc, User user) throws SQLException {
         String sql = "INSERT INTO DocLinkUser VALUES(?,?);";
-
-        try(Connection conn = dbc.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, user.getId());
-            stmt.setInt(2, techDoc.getId());
-
-            stmt.executeUpdate();
-        } catch (SQLException e){
-            throw new SQLException(e);
-        }
+        techStatement(sql, user, techDoc);
     }
 
     /**
-     * A method used to remove a tech document from a user.
+     * A method used to remove a tech document from a customer.
      */
     public void removeTech(TechDoc techDoc, User user) throws SQLException{
         String sql = "DELETE FROM DocLinkUser WHERE UserID = ? AND TechDocID = ?";
-
-        try(Connection conn = dbc.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, user.getId());
-            stmt.setInt(2, techDoc.getId());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException(e);
-        }
+        techStatement(sql, user, techDoc);
     }
 
     /**
@@ -111,9 +88,6 @@ public class TechDocDAO {
     /**
      * A method that gets a list of tech documents on a specified customer id.
      * Ordered by whether the document is locked or not.
-     * @param customer
-     * @return
-     * @throws SQLException
      */
     private List<TechDoc> getAllTechDocs(Customer customer) throws SQLException {
         ArrayList<TechDoc> techDocs = new ArrayList<>();
@@ -208,8 +182,6 @@ public class TechDocDAO {
 
     /**
      * A method that updates a tech document on a specified id.
-     * @param techDoc
-     * @throws SQLException
      */
     public void updateTechDoc(TechDoc techDoc) throws SQLException {
 
@@ -558,14 +530,24 @@ public class TechDocDAO {
     /**
      * A method used to call all the methods that are used to bypass foreign key constraints,
      * so we can properly delete a tech document.
-     * @param techDoc
-     * @param conn
-     * @throws SQLException
      */
     private void clearDoc(TechDoc techDoc, Connection conn) throws SQLException{
         deletePictureBasedOnTechDoc(techDoc, conn);
         deleteDocLinkUser(techDoc, conn);
         removeFromApproved(techDoc, conn);
         deleteSelectedTechDoc(techDoc, conn);
+    }
+
+    private void techStatement(String sql, User user, TechDoc techDoc) throws SQLException{
+        try(Connection conn = dbc.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, techDoc.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            throw new SQLException(e);
+        }
     }
 }

@@ -3,7 +3,6 @@ package GUI.Controller;
 import BE.User;
 import GUI.Model.CustomerModel;
 import GUI.Model.LoginModel;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class LoginController extends BaseController {
     @FXML
@@ -107,7 +104,6 @@ public class LoginController extends BaseController {
 
     /**
      * A method inherited from BaseController.
-     * @throws Exception
      */
     @Override
     public void setup() throws Exception {
