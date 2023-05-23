@@ -98,9 +98,6 @@ public class TechDocEditorController extends BaseController {
             } else {
                 fillDevice();
             }
-            if (techDoc.getPictures() != null) {
-                lblNoPictures.setVisible(false);
-            }
             enablePdfBtn();
         } catch (Exception e) {
             displayError(e);
@@ -386,7 +383,6 @@ public class TechDocEditorController extends BaseController {
 
             techDoc = super.getTModel().getTechDoc(techDoc);
             if (getPicturesFromTechDoc()) {
-                lblNoPictures.setVisible(false);
                 if (currentImageIndex == -1) {
                     currentImageIndex = 0;
                 } else {
@@ -414,9 +410,11 @@ public class TechDocEditorController extends BaseController {
     }
 
     private void imageNumber() {
-        if (imageList != null) {
+        if (imageList.size() > 0) {
             lblNoPictures.setVisible(true);
             lblNoPictures.setText((currentImageIndex+1) + "/" + imageList.size());
+        } else {
+            lblNoPictures.setText("There are no pictures to display");
         }
     }
 
@@ -453,7 +451,7 @@ public class TechDocEditorController extends BaseController {
                     if (imageList.isEmpty()) {
                         currentImageIndex = -1;
                         imageViewTechDoc.setImage(null);
-                        lblNoPictures.setVisible(true);
+                        imageNumber();
                     } else {
                         if (currentImageIndex >= imageList.size()) {
                             currentImageIndex = 0;
