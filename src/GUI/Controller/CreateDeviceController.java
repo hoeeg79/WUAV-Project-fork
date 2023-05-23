@@ -25,7 +25,7 @@ public class CreateDeviceController extends BaseController {
 
 
     /**
-     * Setup - a method from the basecontroller, used to initialize the TechDocModel
+     * Setup - a method from the BaseController, used to initialize the TechDocModel
      */
     @Override
     public void setup() {

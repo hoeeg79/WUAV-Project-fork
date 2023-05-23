@@ -11,6 +11,9 @@ public class FacadeDAL {
     private final TechDocDAO techDocDAO;
     private final LoginDAO loginDAO;
 
+    /**
+     * The constructor of the FacadeDal class.
+     */
     public FacadeDAL() throws Exception {
         customerDAO = new CustomerDAO();
         usersDAO = new UsersDAO();

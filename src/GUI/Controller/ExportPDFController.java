@@ -60,6 +60,9 @@ public class ExportPDFController extends BaseController {
     private Customer customer;
     private ArrayList<Device> deviceList;
 
+    /**
+     * A method inherited by the BaseController, used to call the method disableBoxes.
+     */
     @Override
     public void setup() throws Exception {
         disableBoxes();
@@ -93,7 +96,6 @@ public class ExportPDFController extends BaseController {
 
     /**
      * Handler for a button to generate a pdf and preview it.
-     * @param actionEvent
      */
     @FXML
     private void handleExport(ActionEvent actionEvent) {
@@ -102,7 +104,6 @@ public class ExportPDFController extends BaseController {
 
     /**
      * Handler for a button to close the window.
-     * @param actionEvent
      */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
@@ -297,14 +298,23 @@ public class ExportPDFController extends BaseController {
         return result.toString();
     }
 
+    /**
+     * A setter for the customer.
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * A setter for the deviceList.
+     */
     public void setDeviceList(ArrayList<Device> deviceList) {
         this.deviceList = deviceList;
     }
 
+    /**
+     * A setter for the tech document.
+     */
     public void setTechDoc(TechDoc techDoc) {
         this.techDoc = techDoc;
     }

@@ -10,6 +10,9 @@ import java.util.List;
 public class TechDocDAO {
     private final DBConnector dbc;
 
+    /**
+     * The constructor of the TechDocDAO.
+     */
     public TechDocDAO() throws Exception {
         dbc = new DBConnector();
     }
@@ -489,6 +492,9 @@ public class TechDocDAO {
         stmt.executeUpdate();
     }
 
+    /**
+     * A method that deletes devices on a specified techDocId. Used to bypass foreign key constraints.
+     */
     private void deleteDeviceBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
         String sql = "DELETE FROM Device WHERE techDocID = ?;";
         PreparedStatement pstmt = conn.prepareStatement(sql);

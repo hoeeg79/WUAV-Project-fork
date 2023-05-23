@@ -84,6 +84,9 @@ public class TechDocEditorController extends BaseController {
     private int currentImageIndex = -1;
     private final ArrayList<Device> deviceList = new ArrayList<>();
 
+    /**
+     * A method inherited by the BaseController.
+     */
     @Override
     public void setup() {
         try {
@@ -409,6 +412,10 @@ public class TechDocEditorController extends BaseController {
         }
     }
 
+    /**
+     * A method that displays the amount of images on a tech document.
+     * If there are no messages, it gives a specific message.
+     */
     private void imageNumber() {
         if (imageList.size() > 0) {
             lblNoPictures.setVisible(true);

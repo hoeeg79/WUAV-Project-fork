@@ -29,6 +29,10 @@ public class PictureDescriptionController extends BaseController{
     private Pictures picture;
     private TechDoc techDoc;
 
+    /**
+     * Setup is a method inherited by BaseController.
+     * Used to instantiate the TechDocModel.
+     */
     @Override
     public void setup() {
         try {
@@ -40,7 +44,6 @@ public class PictureDescriptionController extends BaseController{
 
     /**
      * Closes the window.
-     * @param actionEvent
      */
     @FXML
     private void handleCloseDescription(ActionEvent actionEvent) {
@@ -50,7 +53,6 @@ public class PictureDescriptionController extends BaseController{
 
     /**
      * Creates a new picture and sets its description and adds it to the tech-doc.
-     * @param actionEvent
      */
     @FXML
     private void handleSaveDescription(ActionEvent actionEvent) {
@@ -66,7 +68,6 @@ public class PictureDescriptionController extends BaseController{
 
     /**
      * Opens a filechooser that allows the user to pick an image file to add to the tech-doc.
-     * @param actionEvent
      */
     @FXML
     private void handleBrowse(ActionEvent actionEvent) {
@@ -79,6 +80,9 @@ public class PictureDescriptionController extends BaseController{
         txtFilePath.setText(selectedFile.getPath());
     }
 
+    /**
+     * A setter for the Tech document.
+     */
     public void setTechDoc(TechDoc techDoc) {
         this.techDoc = techDoc;
     }

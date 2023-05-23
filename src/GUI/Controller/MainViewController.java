@@ -117,6 +117,9 @@ public class MainViewController extends BaseController implements Initializable 
         }
     }
 
+    /**
+     * A setter for user.
+     */
     public void setUser(User user){
         this.user = user;
     }
