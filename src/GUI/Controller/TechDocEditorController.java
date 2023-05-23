@@ -409,6 +409,14 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);
             lblPictureDescription.setText(imageList.get(currentImageIndex).getDescription());
+            imageNumber();
+        }
+    }
+
+    private void imageNumber() {
+        if (imageList != null) {
+            lblNoPictures.setVisible(true);
+            lblNoPictures.setText((currentImageIndex+1) + "/" + imageList.size());
         }
     }
 

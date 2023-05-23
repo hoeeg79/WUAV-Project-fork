@@ -347,7 +347,6 @@ public class MainViewController extends BaseController implements Initializable 
                 checkCustomers();
             } else {
                 btnCreateUsers.setVisible(false);
-                checkCustomers();
             }
         } catch (Exception e) {
             displayError(e);

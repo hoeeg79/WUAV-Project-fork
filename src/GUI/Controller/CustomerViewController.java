@@ -461,7 +461,7 @@ public class CustomerViewController extends BaseController{
             btnCreateNewTech.setVisible(false);
             btnDeleteTechDoc.setVisible(false);
             btnManageTech.setVisible(false);
-            techDocHighlighter();
+            btnEditTechDoc.setVisible(false);
         }
     }
 
