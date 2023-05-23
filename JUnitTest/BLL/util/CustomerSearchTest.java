@@ -110,4 +110,17 @@ class CustomerSearchTest {
         // Assert - check if actual value is equal to expected value
         Assertions.assertEquals(expectedResult, actualResult);
     }
+
+    @Test
+    void testZipcodeSearch2() {
+        // Arrange - set up our test objects etc.
+        /* Since everything is set up in pretest, nothing here */
+
+        // Act - do the actual calc or method run
+        int actualResult = customerSearch.searchCustomers(customers, "67").size();
+        int expectedResult = 2;
+
+        // Assert - check if actual value is equal to expected value
+        Assertions.assertEquals(expectedResult, actualResult);
+    }
 }
