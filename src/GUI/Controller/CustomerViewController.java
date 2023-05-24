@@ -21,6 +21,8 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -430,14 +432,18 @@ public class CustomerViewController extends BaseController{
                         techList.remove(linkedTechList.get(i));
                         techsWithAccessList.add(linkedTechList.get(i));
                     }
-                    lvTechs.setItems(techList);
-                    lvTechsWorking.setItems(techsWithAccessList);
+
+                    Platform.runLater(() -> {
+                        lvTechsWorking.setItems(techsWithAccessList);
+                        lvTechs.setItems(techList);
+                    });
                 }
             } catch (Exception e) {
                 displayError(e);
             }
         });
-        Platform.runLater(thread);
+
+        thread.start();
     }
 
     /**
