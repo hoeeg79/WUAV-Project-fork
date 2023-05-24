@@ -337,7 +337,6 @@ public class DrawController extends BaseController implements Initializable {
         endY = e.getY();
         tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
         tempBrushTool.strokeLine(startX, startY, endX, endY);
-
     }
 
     /**
