@@ -22,9 +22,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -83,6 +84,9 @@ public class TechDocEditorController extends BaseController {
     private int currentImageIndex = -1;
     private final ArrayList<Device> deviceList = new ArrayList<>();
 
+    /**
+     * A method inherited by the BaseController.
+     */
     @Override
     public void setup() {
         try {
@@ -92,11 +96,10 @@ public class TechDocEditorController extends BaseController {
             if (!isEdit) {
                 initializeList();
                 generateTechDoc();
+                disableButtons();
+                
             } else {
-                fillDevice(super.getTModel());
-            }
-            if (techDoc.getPictures() != null) {
-                lblNoPictures.setVisible(false);
+                fillDevice();
             }
             enablePdfBtn();
         } catch (Exception e) {
@@ -105,8 +108,40 @@ public class TechDocEditorController extends BaseController {
     }
 
     /**
+     * Disables the pdf button if the document is approved.
+     */
+    private void enablePdfBtn(){
+        btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
+    }
+
+    /**
+     * Disables buttons that shouldn't be used before a document have been saved once.
+     */
+    private void disableButtons() {
+        btnDevice.setDisable(true);
+        btnDeleteDevice.setDisable(true);
+        btnAddPicture.setDisable(true);
+        btnDeletePicture.setDisable(true);
+        btnNextPicture.setDisable(true);
+        btnDraw.setDisable(true);
+        btnReadyForApproval.setDisable(true);
+    }
+
+    /**
+     * Enables buttons that can be used after a document have been saved once.
+     */
+    private void enableButtons() {
+        btnDevice.setDisable(false);
+        btnDeleteDevice.setDisable(false);
+        btnAddPicture.setDisable(false);
+        btnDeletePicture.setDisable(false);
+        btnNextPicture.setDisable(false);
+        btnDraw.setDisable(false);
+        btnReadyForApproval.setDisable(false);
+    }
+
+    /**
      * Changes the view back to the customer view.
-     * @param actionEvent
      */
     @FXML
     private void handleClose(ActionEvent actionEvent) {
@@ -134,7 +169,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Saves the document and connects the user to the document if it's new.
-     * @param actionEvent
      */
     @FXML
     private void handleSave(ActionEvent actionEvent) {
@@ -144,6 +178,8 @@ public class TechDocEditorController extends BaseController {
             isEdit = true;
             doEditOfDoc();
             addTech(techDoc, user);
+            enableButtons();
+            fillDevice();
         }
         lblSaveStatus.setText("Saved successfully!");
         clearSavedLabelText();
@@ -177,7 +213,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Sets the document to edit mode.
-     * @param techDoc
      */
     public void setIsEdit(TechDoc techDoc) {
         try {
@@ -257,8 +292,6 @@ public class TechDocEditorController extends BaseController {
 
     /**
      * Links a tech to the document.
-     * @param techDoc techDoc to be linked.
-     * @param user User to be linked.
      */
     private void addTech(TechDoc techDoc, User user) {
         try {
@@ -321,7 +354,8 @@ public class TechDocEditorController extends BaseController {
     private void displayDrawing() {
         try {
             if (techDoc.getFilePathDiagram() != null) {
-                Image drawing = new Image(techDoc.getFilePathDiagram());
+                File file = new File(techDoc.getFilePathDiagram());
+                Image drawing = new Image(String.valueOf(file.toURI()));
                 techDrawing.setImage(drawing);
             }
         } catch (Exception ignored) {
@@ -352,7 +386,6 @@ public class TechDocEditorController extends BaseController {
 
             techDoc = super.getTModel().getTechDoc(techDoc);
             if (getPicturesFromTechDoc()) {
-                lblNoPictures.setVisible(false);
                 if (currentImageIndex == -1) {
                     currentImageIndex = 0;
                 } else {
@@ -375,6 +408,20 @@ public class TechDocEditorController extends BaseController {
             imageViewTechDoc.setFitWidth(400);
             imageViewTechDoc.setFitHeight(400);
             lblPictureDescription.setText(imageList.get(currentImageIndex).getDescription());
+            imageNumber();
+        }
+    }
+
+    /**
+     * A method that displays the amount of images on a tech document.
+     * If there are no messages, it gives a specific message.
+     */
+    private void imageNumber() {
+        if (imageList.size() > 0) {
+            lblNoPictures.setVisible(true);
+            lblNoPictures.setText((currentImageIndex+1) + "/" + imageList.size());
+        } else {
+            lblNoPictures.setText("There are no pictures to display");
         }
     }
 
@@ -399,19 +446,19 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeletePicture(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete the current picture?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete this picture?");
+            Optional<ButtonType> result = alert.showAndWait();
 
-            if (result == JOptionPane.YES_OPTION) {
+            if (result.get() == ButtonType.OK) {
                 if (currentImageIndex >= 0 && currentImageIndex < imageList.size()) {
                     imageList.remove(currentImageIndex);
                     super.getTModel().deletePictures(techDoc.getPictures().get(currentImageIndex));
                     if (imageList.isEmpty()) {
                         currentImageIndex = -1;
                         imageViewTechDoc.setImage(null);
-                        lblNoPictures.setVisible(true);
+                        imageNumber();
                     } else {
                         if (currentImageIndex >= imageList.size()) {
                             currentImageIndex = 0;
@@ -420,6 +467,7 @@ public class TechDocEditorController extends BaseController {
                     }
                 }
             }
+
         } catch (Exception e) {
             displayError(e);
         }
@@ -455,7 +503,7 @@ public class TechDocEditorController extends BaseController {
     /**
      * Fills out the device table view, with the specified columns.
      */
-    private void fillDevice(TechDocModel model) {
+    private void fillDevice() {
         try {
             tcDevice.setCellValueFactory(new PropertyValueFactory<>("device"));
             tcUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -487,26 +535,21 @@ public class TechDocEditorController extends BaseController {
     @FXML
     private void handleDeleteDevice(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete " + tvDevice.getSelectionModel().getSelectedItem().getDevice() + "?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
 
-            if (result == JOptionPane.YES_OPTION) {
-                Device deleteDevice = tvDevice.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete " + deleteDevice.getDevice().toUpperCase());
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK){
                 super.getTModel().deleteDevice(deleteDevice);
                 refreshDevice();
             }
+
         } catch (Exception e) {
             displayError(e);
         }
-    }
-
-    /**
-     * Disables the pdf button if the document is approved.
-     */
-    private void enablePdfBtn(){
-        btnPDF.setDisable(!techDoc.isLocked() && !techDoc.isApproved());
     }
 
     /**

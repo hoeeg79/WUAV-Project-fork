@@ -14,6 +14,9 @@ public class UsersDAO {
 
     private final DBConnector dbConnector;
 
+    /**
+     * The constructor of the UsersDAO.
+     */
     public UsersDAO() throws Exception {
         dbConnector = new DBConnector();
     }

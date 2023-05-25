@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javax.swing.*;
+import java.util.Optional;
+
 public class CreateUsersController extends BaseController{
     @FXML
     private Button btnCancel;
@@ -54,6 +56,9 @@ public class CreateUsersController extends BaseController{
     private boolean isEdit;
 
 
+    /**
+     * Setups is a method inherited from the BaseController.
+     */
     @Override
     public void setup() {
         try {
@@ -119,7 +124,6 @@ public class CreateUsersController extends BaseController{
 
     /**
      * Saves the new or edited user to the database and checks if there is another use with the same name.
-     * @param actionEvent
      */
     @FXML
     private void handleSaveUser(ActionEvent actionEvent) {
@@ -251,20 +255,21 @@ public class CreateUsersController extends BaseController{
 
     /**
      * Creates a confirmation pop-up. If the yes button is pressed the selected user is deleted.
-     * @param actionEvent
      */
     @FXML
     private void handleDeleteUser(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete " + userList.getSelectionModel().getSelectedItem() + "?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            User user = userList.getSelectionModel().getSelectedItem();
 
-            if (result == JOptionPane.YES_OPTION) {
-                User user = userList.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete " + user.getName().toUpperCase());
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
                 super.getUModel().deleteUser(user);
             }
+
         } catch (Exception e) {
             displayError(e);
         }
@@ -272,7 +277,6 @@ public class CreateUsersController extends BaseController{
 
     /**
      * Closes the window.
-     * @param actionEvent
      */
     @FXML
     private void handleCloseWindow(ActionEvent actionEvent) {
@@ -281,7 +285,6 @@ public class CreateUsersController extends BaseController{
 
     /**
      * Inserts all users into the user table.
-     * @throws Exception
      */
     private void insertIntoTable() throws Exception {
         userscln.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -292,7 +295,6 @@ public class CreateUsersController extends BaseController{
 
     /**
      * Adds the values from the selected user into their respective fields.
-     * @param actionEvent
      */
     @FXML
     private void handleEditUsers(ActionEvent actionEvent) {
@@ -330,6 +332,9 @@ public class CreateUsersController extends BaseController{
         }
     }
 
+    /**
+     * A button used to call the cLearItAll method.
+     */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
         clearItAll();

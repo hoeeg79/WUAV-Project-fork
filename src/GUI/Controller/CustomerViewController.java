@@ -21,6 +21,9 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class CustomerViewController extends BaseController{
@@ -148,7 +151,8 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * A cancel button that enables the edit customer button, and disables the edit fields.
+     * Handle for the cancel button when editing customers,
+     * it will negate any changes and bring it back to what it was.
      */
     @FXML
     private void handleCancel(ActionEvent actionEvent) {
@@ -330,7 +334,7 @@ public class CustomerViewController extends BaseController{
     }
 
     /**
-     * Closes the tech menu
+     * Closes the manage tech access menu
      */
     @FXML
     private void handleCancelAddTechMenu(ActionEvent actionEvent) {
@@ -343,16 +347,20 @@ public class CustomerViewController extends BaseController{
     @FXML
     private void handleDeleteTechDoc(ActionEvent actionEvent) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to delete " + lvTechDocs.getSelectionModel().getSelectedItem().getSetupName() + "?",
-                    "Confirm deletion", JOptionPane.YES_NO_OPTION);
+            TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
 
-            if (result == JOptionPane.YES_OPTION) {
-                TechDoc techDoc = lvTechDocs.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Deletion Confirmation");
+            alert.setContentText("Are you sure you want to delete " + techDoc.getSetupName().toUpperCase());
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
                 super.getTModel().deleteTechDoc(techDoc);
                 lvTechDocs.getItems().remove(techDoc);
+                lvTechDocs.getSelectionModel().clearSelection();
+                fillTechs(null);
             }
+
         } catch (Exception e) {
             displayError(e);
         }
@@ -418,21 +426,24 @@ public class CustomerViewController extends BaseController{
                     }
                 }
 
-                if (lvTechDocs.getSelectionModel() != null) {
+                if (lvTechDocs.getSelectionModel().getSelectedItem() != null) {
                     linkedTechList.addAll(super.getUModel().getLinkedUsers(techDoc));
                     for (int i = 0; i < linkedTechList.size(); i++) {
                         techList.remove(linkedTechList.get(i));
                         techsWithAccessList.add(linkedTechList.get(i));
                     }
-                    lvTechs.setItems(techList);
-                    lvTechsWorking.setItems(techsWithAccessList);
+
+                    Platform.runLater(() -> {
+                        lvTechsWorking.setItems(techsWithAccessList);
+                        lvTechs.setItems(techList);
+                    });
                 }
             } catch (Exception e) {
                 displayError(e);
             }
         });
 
-        Platform.runLater(thread);
+        thread.start();
     }
 
     /**
@@ -455,7 +466,8 @@ public class CustomerViewController extends BaseController{
             btnAddTech.setVisible(false);
             btnCreateNewTech.setVisible(false);
             btnDeleteTechDoc.setVisible(false);
-            techDocHighlighter();
+            btnManageTech.setVisible(false);
+            btnEditTechDoc.setVisible(false);
         }
     }
 

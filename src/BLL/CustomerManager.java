@@ -26,6 +26,9 @@ public class CustomerManager {
         return facadeDAL.createCustomer(customer);
     }
 
+    /**
+     * A method that retrieves a list of customers.
+     */
     public List<Customer> getCustomers() throws Exception{
         return facadeDAL.getCustomers();
     }

@@ -10,6 +10,9 @@ import java.util.List;
 public class TechDocDAO {
     private final DBConnector dbc;
 
+    /**
+     * The constructor of the TechDocDAO.
+     */
     public TechDocDAO() throws Exception {
         dbc = new DBConnector();
     }
@@ -490,6 +493,16 @@ public class TechDocDAO {
     }
 
     /**
+     * A method that deletes devices on a specified techDocId. Used to bypass foreign key constraints.
+     */
+    private void deleteDeviceBasedOnTechDoc(TechDoc techDoc, Connection conn) throws SQLException {
+        String sql = "DELETE FROM Device WHERE techDocID = ?;";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, techDoc.getId());
+        pstmt.executeUpdate();
+    }
+
+    /**
      * A method that updates the file path of a drawing in the TechDoc table.
      */
     public void updateDrawing(String filePath, TechDoc techDoc) throws SQLException {
@@ -534,10 +547,14 @@ public class TechDocDAO {
     private void clearDoc(TechDoc techDoc, Connection conn) throws SQLException{
         deletePictureBasedOnTechDoc(techDoc, conn);
         deleteDocLinkUser(techDoc, conn);
+        deleteDeviceBasedOnTechDoc(techDoc, conn);
         removeFromApproved(techDoc, conn);
         deleteSelectedTechDoc(techDoc, conn);
     }
 
+    /**
+     * A method used to avoid duplicate code.
+     */
     private void techStatement(String sql, User user, TechDoc techDoc) throws SQLException{
         try(Connection conn = dbc.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);

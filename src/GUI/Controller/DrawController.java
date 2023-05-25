@@ -61,6 +61,9 @@ public class DrawController extends BaseController implements Initializable {
     private TechDoc techDoc;
     private TechDocModel techDocModel;
 
+    /**
+     * A method inherited by the BaseController.
+     */
     @Override
     public void setup() {
         try {
@@ -71,10 +74,16 @@ public class DrawController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * A setter for the Tech Document.
+     */
     public void setTechDoc(TechDoc techDoc) {
         this.techDoc = techDoc;
     }
 
+    /**
+     * A method implemented with the initializable.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         brushTool = canvas.getGraphicsContext2D();
@@ -171,6 +180,9 @@ public class DrawController extends BaseController implements Initializable {
         eraserSelected = false;
     }
 
+    /**
+     * A button used to select the brush in our drawing program.
+     */
     @FXML
     private void handleSelectBrush() {
         unselectAll();
@@ -179,6 +191,9 @@ public class DrawController extends BaseController implements Initializable {
         disableButton(btnBrush);
     }
 
+    /**
+     * A button used to select the line in our drawing program.
+     */
     @FXML
     private void handleSelectLine() {
         unselectAll();
@@ -187,6 +202,9 @@ public class DrawController extends BaseController implements Initializable {
         disableButton(btnLine);
     }
 
+    /**
+     * A button used to select the eraser in our drawing program.
+     */
     @FXML
     private void handleSelectEraser() {
         unselectAll();
@@ -194,6 +212,10 @@ public class DrawController extends BaseController implements Initializable {
         enableButtons();
         disableButton(btnEraser);
     }
+
+    /**
+     * A button used to select the icon in our drawing program.
+     */
     @FXML
     private void handleSelectIcon() {
         unselectAll();
@@ -214,7 +236,6 @@ public class DrawController extends BaseController implements Initializable {
     /**
      * Opens a file chooser for a destination to save the drawing and
      * then sets the filepath for the drawing to the tech-doc.
-     * @param actionEvent
      */
     public void handleSave(ActionEvent actionEvent) {
         try {
@@ -240,7 +261,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Begins to draw depending on what the user have selected.
-     * @param e
      */
     @FXML
     private void mousePressed(MouseEvent e) {
@@ -254,7 +274,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Draws depending on what the user have selected.
-     * @param e
      */
     @FXML
     private void mouseDragged(MouseEvent e) {
@@ -274,7 +293,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Finished drawing depending on what the user have selected.
-     * @param e
      */
     @FXML
     private void mouseReleased(MouseEvent e) {
@@ -289,7 +307,6 @@ public class DrawController extends BaseController implements Initializable {
     /**
      * Erases part of the canvas when mouse is dragged.
      * Size is dependant of selected brush size.
-     * @param e
      */
     private void eraserDragged(MouseEvent e) {
         double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
@@ -302,7 +319,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Gets the starting coordinates for the line.
-     * @param e
      */
     private void linePressed(MouseEvent e) {
         startX = e.getX();
@@ -315,19 +331,16 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Draws a temporary line on a separate canvas to show the line being drawn.
-     * @param e
      */
     private void lineDrag(MouseEvent e) {
         endX = e.getX();
         endY = e.getY();
         tempBrushTool.clearRect(0, 0, tempCanvas.getWidth(), tempCanvas.getHeight());
         tempBrushTool.strokeLine(startX, startY, endX, endY);
-
     }
 
     /**
      * Draws the line on the canvas while clearing the temporary canvas.
-     * @param e
      */
     private void lineReleased(MouseEvent e) {
         endX = e.getX();
@@ -338,7 +351,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Draws a dot when mouse is being dragged.
-     * @param e
      */
     private void brushDragged(MouseEvent e) {
         double size = Double.parseDouble(cbBrushSize.getSelectionModel().getSelectedItem().toString());
@@ -351,7 +363,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Gets the starting coordinates for the image to be drawn.
-     * @param e
      */
     private void imagePressed(MouseEvent e) {
         startX = e.getX();
@@ -360,7 +371,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Draws a temporary image on a separate canvas to show the image being drawn when dragged.
-     * @param e
      */
     private void imageDrag(MouseEvent e) {
         endX = e.getX();
@@ -380,7 +390,6 @@ public class DrawController extends BaseController implements Initializable {
 
     /**
      * Draws the image on the canvas when released and clears the temporary canvas.
-     * @param e
      */
     private void imageReleased(MouseEvent e) {
         endX = e.getX();
