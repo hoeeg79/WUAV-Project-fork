@@ -56,7 +56,7 @@
          <padding>
             <Insets bottom="5.0" left="5.0" right="16.0" top="5.0" />
          </padding></TextField>
-      <Button fx:id="btnCreateUsers" layoutX="111.0" layoutY="493.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Create Users" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="493.0" />
+      <Button fx:id="btnCreateUsers" layoutX="111.0" layoutY="493.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleCreateUsers" text="Manage Users" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="493.0" />
       <Button fx:id="btnDeleteCustomer" layoutX="111.0" layoutY="407.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" text="Delete Customer" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="407.0" />
       <Button fx:id="btnOpenCustomer" layoutX="111.0" layoutY="450.0" minHeight="25.0" minWidth="115.0" mnemonicParsing="false" onAction="#handleOpenCustomer" text="Open Customer" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="450.0" />
       <TableView fx:id="tvMain" layoutX="389.0" layoutY="214.0" prefHeight="583.0" prefWidth="757.0">
