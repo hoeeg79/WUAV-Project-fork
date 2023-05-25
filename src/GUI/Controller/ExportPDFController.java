@@ -287,10 +287,14 @@ public class ExportPDFController extends BaseController {
         StringBuilder result = new StringBuilder();
 
         for (Device d: deviceList) {
-            result.append("Name: ").append(d.getDevice())
-                    .append(", username: ").append(d.getUsername())
-                    .append(", password: ").append(d.getPassword())
-                    .append("\n");
+            result.append("Name: ").append(d.getDevice());
+            if (!d.getUsername().isEmpty()) {
+                result.append(", username: ").append(d.getUsername());
+            }
+            if (!d.getPassword().isEmpty()) {
+                result.append(", password: ").append(d.getPassword());
+            }
+            result.append("\n");
         }
 
 
