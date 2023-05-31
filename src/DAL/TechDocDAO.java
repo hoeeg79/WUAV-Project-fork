@@ -107,11 +107,13 @@ public class TechDocDAO {
                 int id = rs.getInt("id");
                 String setupName = rs.getString("setupname");
                 String setupDescription = rs.getString("setupDescription");
+                String filepathDiagram = rs.getString("filepathDiagram");
                 boolean isLocked = rs.getBoolean("isLocked");
 
                 TechDoc techDoc = new TechDoc(id,setupName,customerID);
                 techDoc.setPictures(getTechPictures(techDoc));
                 techDoc.setSetupDescription(setupDescription);
+                techDoc.setFilePathDiagram(filepathDiagram);
                 techDoc.setLocked(isLocked);
                 techDoc.setApproved(checkIfApproved(conn, id));
                 techDocs.add(techDoc);
